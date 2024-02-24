@@ -113,7 +113,9 @@ mod mapi_bindgen {
         let replacement = r#"
             #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
             #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]"#;
-        Ok(pattern.replace_all(&outlook_mapi_sys, replacement).to_string())
+        Ok(pattern
+            .replace_all(&outlook_mapi_sys, replacement)
+            .to_string())
     }
 
     fn format_mapi_sys(source_path: &Path) -> super::Result<()> {
