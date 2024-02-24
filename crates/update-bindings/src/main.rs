@@ -40,7 +40,7 @@ mod mapi_path {
             || Err(super::Error::MissingParent(manifest_dir)),
             |parent| Ok(PathBuf::from(parent)),
         )?;
-        mapi_sys_dir.push("mapi-sys");
+        mapi_sys_dir.push("outlook-mapi-sys");
         Ok(mapi_sys_dir)
     }
 }
@@ -99,21 +99,21 @@ mod mapi_bindgen {
             .expect("bindgen failed")
         );
 
-        let mut mapi_sys = Default::default();
-        fs::File::open(source_path.clone())?.read_to_string(&mut mapi_sys)?;
+        let mut outlook_mapi_sys = Default::default();
+        fs::File::open(source_path.clone())?.read_to_string(&mut outlook_mapi_sys)?;
 
         let mut source_file = fs::File::create(source_path.clone())?;
 
-        source_file.write_all(patch_mapi_sys(mapi_sys)?.as_bytes())?;
+        source_file.write_all(patch_mapi_sys(outlook_mapi_sys)?.as_bytes())?;
         Ok(source_path)
     }
 
-    fn patch_mapi_sys(mapi_sys: String) -> super::Result<String> {
+    fn patch_mapi_sys(outlook_mapi_sys: String) -> super::Result<String> {
         let pattern = Regex::new(r#"#\s*\[\s*link\s*\(\s*name\s*=\s*"mapi32"\s*\)\s*\]"#)?;
         let replacement = r#"
             #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
             #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]"#;
-        Ok(pattern.replace_all(&mapi_sys, replacement).to_string())
+        Ok(pattern.replace_all(&outlook_mapi_sys, replacement).to_string())
     }
 
     fn format_mapi_sys(source_path: &Path) -> super::Result<()> {
