@@ -9,6 +9,10 @@ license = "MIT"
 keywords = [ "win32", "mapi" ]
 categories = [ "os::windows-apis" ]
 
+[features]
+default = [ "olmapi32" ]
+olmapi32 = []
+
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
 targets = [

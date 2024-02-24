@@ -28,11 +28,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows::Win32::System::Com::IMalloc>,
                     P1: ::windows_core::IntoParam<::windows::Win32::Foundation::HINSTANCE>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn BuildDisplayTable(
@@ -72,11 +69,8 @@ pub mod Office {
                     iroidle: u16,
                     ircidle: u16,
                 ) {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ChangeIdleRoutine(
@@ -104,11 +98,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows::Win32::Storage::Imapi::LPMSGSESS>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn CloseIMsgSession(
@@ -126,11 +117,8 @@ pub mod Office {
                     lpvreserved: *mut ::core::ffi::c_void,
                     lpppropdata: *mut ::core::option::Option<IPropData>,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn CreateIProp(
@@ -163,11 +151,8 @@ pub mod Office {
                     lpsproptagarraycolumns: *mut SPropTagArray,
                     lpptabledata: *mut ::core::option::Option<ITableData>,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn CreateTable(
@@ -196,11 +181,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn DeinitMapiUtil() {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn DeinitMapiUtil() -> ();
@@ -209,11 +191,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn DeregisterIdleRoutine(ftg: *mut ::core::ffi::c_void) {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn DeregisterIdleRoutine(ftg: *mut ::core::ffi::c_void) -> ();
@@ -225,11 +204,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows::Win32::Foundation::BOOL>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn EnableIdleRoutine(
@@ -241,11 +217,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadColumnSet(lpptacols: *mut SPropTagArray) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadColumnSet(lpptacols: *mut SPropTagArray) -> u32;
@@ -256,11 +229,8 @@ pub mod Office {
                 pub unsafe fn FBadEntryList(
                     lpentrylist: *mut SBinaryArray,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadEntryList(
@@ -271,11 +241,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadProp(lpprop: *mut SPropValue) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadProp(lpprop: *mut SPropValue) -> u32;
@@ -284,11 +251,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadPropTag(ulproptag: u32) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadPropTag(ulproptag: u32) -> u32;
@@ -297,11 +261,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadRestriction(lpres: *mut SRestriction) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadRestriction(lpres: *mut SRestriction) -> u32;
@@ -313,11 +274,8 @@ pub mod Office {
                     lppnameid: *mut *mut MAPINAMEID,
                     cnames: u32,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadRglpNameID(
@@ -332,11 +290,8 @@ pub mod Office {
                     lppszw: *const ::windows_core::PCWSTR,
                     cstrings: u32,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadRglpszW(
@@ -348,11 +303,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadRow(lprow: *mut SRow) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadRow(lprow: *mut SRow) -> u32;
@@ -363,11 +315,8 @@ pub mod Office {
                 pub unsafe fn FBadRowSet(
                     lprowset: *mut SRowSet,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadRowSet(
@@ -378,11 +327,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FBadSortOrderSet(lpsos: *mut SSortOrderSet) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBadSortOrderSet(lpsos: *mut SSortOrderSet) -> u32;
@@ -394,11 +340,8 @@ pub mod Office {
                     lpsz: *const i8,
                     lpb: *mut u8,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FBinFromHex(
@@ -413,11 +356,8 @@ pub mod Office {
                     lpname1: *mut MAPINAMEID,
                     lpname2: *mut MAPINAMEID,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FEqualNames(
@@ -433,11 +373,8 @@ pub mod Office {
                     ulrelop: u32,
                     lpspropvalue2: *mut SPropValue,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FPropCompareProp(
@@ -454,11 +391,8 @@ pub mod Office {
                     lpspropvaluesrc: *mut SPropValue,
                     ulfuzzylevel: u32,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FPropContainsProp(
@@ -477,11 +411,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPIProp>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FPropExists(
@@ -493,11 +424,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FreePadrlist(lpadrlist: *mut ADRLIST) {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FreePadrlist(lpadrlist: *mut ADRLIST) -> ();
@@ -506,11 +434,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn FreeProws(lprows: *mut SRowSet) {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FreeProws(lprows: *mut SRowSet) -> ();
@@ -522,11 +447,8 @@ pub mod Office {
                     ftaddend1: ::windows::Win32::Foundation::FILETIME,
                     ftaddend2: ::windows::Win32::Foundation::FILETIME,
                 ) -> ::windows::Win32::Foundation::FILETIME {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtAddFt(
@@ -544,11 +466,8 @@ pub mod Office {
                     ftmultiplier: u32,
                     ftmultiplicand: ::windows::Win32::Foundation::FILETIME,
                 ) -> ::windows::Win32::Foundation::FILETIME {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtMulDw(
@@ -563,11 +482,8 @@ pub mod Office {
                     ftmultiplicand: u32,
                     ftmultiplier: u32,
                 ) -> ::windows::Win32::Foundation::FILETIME {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtMulDwDw(
@@ -581,11 +497,8 @@ pub mod Office {
                 pub unsafe fn FtNegFt(
                     ft: ::windows::Win32::Foundation::FILETIME,
                 ) -> ::windows::Win32::Foundation::FILETIME {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtNegFt(
@@ -599,11 +512,8 @@ pub mod Office {
                     ftminuend: ::windows::Win32::Foundation::FILETIME,
                     ftsubtrahend: ::windows::Win32::Foundation::FILETIME,
                 ) -> ::windows::Win32::Foundation::FILETIME {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtSubFt(
@@ -624,11 +534,8 @@ pub mod Office {
                     csecidle: u32,
                     iroidle: u16,
                 ) -> *mut ::core::ffi::c_void {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn FtgRegisterIdleRoutine(
@@ -647,11 +554,8 @@ pub mod Office {
                     lpproptagarray: *mut SPropTagArray,
                     lpppropattrarray: *mut *mut SPropAttrArray,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn GetAttribIMsgOnIStg(
@@ -664,11 +568,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn HexFromBin(lpb: *mut u8, cb: i32, lpsz: *const i8) {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HexFromBin(lpb: *mut u8, cb: i32, lpsz: *const i8) -> ();
@@ -685,11 +586,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPITable>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrAddColumns(
@@ -718,11 +616,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPITable>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrAddColumnsEx(
@@ -748,11 +643,8 @@ pub mod Office {
                     lpvcontext: *mut ::core::ffi::c_void,
                     lppadvisesink: *mut ::core::option::Option<IMAPIAdviseSink>,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrAllocAdviseSink(
@@ -784,12 +676,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<IMAPISession>,
                     P1: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrCompareABEntryIDsWithExchangeContext(
                             pmsess: *mut ::core::ffi::c_void,
@@ -829,11 +716,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISession>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrComposeEID(
@@ -869,11 +753,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISession>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrComposeMsgID(
@@ -908,11 +789,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISession>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrDecomposeEID(
@@ -948,11 +826,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISession>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrDecomposeMsgID(
@@ -976,11 +851,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn HrDispatchNotifications(ulflags: u32) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrDispatchNotifications(ulflags: u32) -> ::windows_core::HRESULT;
@@ -1006,12 +878,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<IMAPISession>,
                     P1: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrDoABDetailsWithExchangeContext(
                             pmsess: *mut ::core::ffi::c_void,
@@ -1061,12 +928,7 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrDoABDetailsWithProviderUID(
                             pemsabpuid: *const MAPIUID,
@@ -1103,11 +965,8 @@ pub mod Office {
                     lpcb: *mut u32,
                     lppentryid: *mut *mut ENTRYID,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrEntryIDFromSz(
@@ -1130,12 +989,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<IMAPISession>,
                     P1: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrGetGALFromEmsmdbUID(
                             psess: *mut ::core::ffi::c_void,
@@ -1163,11 +1017,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPIProp>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrGetOneProp(
@@ -1190,11 +1041,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::IUnknown>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrIStorageFromStream(
@@ -1227,12 +1075,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<IMAPISession>,
                     P1: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryUsingDefaultContext(
                             pmsess: *mut ::core::ffi::c_void,
@@ -1273,12 +1116,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<IMAPISession>,
                     P1: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryWithExchangeContext(
                             pmsess: *mut ::core::ffi::c_void,
@@ -1319,12 +1157,7 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryWithProviderUID(
                             pemsabpuid: *const MAPIUID,
@@ -1363,12 +1196,7 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISupport>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryWithProviderUIDSupport(
                             pemsabpuid: *const MAPIUID,
@@ -1407,12 +1235,7 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IAddrBook>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryWithResolvedRow(
                             prwresolved: *mut SRow,
@@ -1450,12 +1273,7 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISupport>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrOpenABEntryWithSupport(
                             lpsup: *mut ::core::ffi::c_void,
@@ -1490,11 +1308,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPITable>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrQueryAllRows(
@@ -1524,11 +1339,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPIProp>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrSetOneProp(
@@ -1544,11 +1356,8 @@ pub mod Office {
                     lpentryid: *mut ENTRYID,
                     lpsz: *const *const i8,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrSzFromEntryID(
@@ -1566,11 +1375,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPIAdviseSink>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrThisThreadAdviseSink(
@@ -1593,11 +1399,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMsgStore>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn HrValidateIPMSubtree(
@@ -1622,12 +1425,7 @@ pub mod Office {
                     emethod: METHODS,
                     ppfirstarg: *mut *mut ::core::ffi::c_void,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "system" {
                         pub fn HrValidateParameters(
                             emethod: METHODS,
@@ -1641,11 +1439,8 @@ pub mod Office {
                     lpsz: *const ::core::ffi::c_void,
                     cchmax: u32,
                 ) -> ::windows::Win32::Foundation::BOOL {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn IsBadBoundedStringPtr(
@@ -1660,11 +1455,8 @@ pub mod Office {
                     lpspropvaluea: *mut SPropValue,
                     lpspropvalueb: *mut SPropValue,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn LPropCompareProp(
@@ -1680,11 +1472,8 @@ pub mod Office {
                     cvalues: u32,
                     lpproparray: *mut SPropValue,
                 ) -> *mut SPropValue {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn LpValFindProp(
@@ -1713,11 +1502,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIAddress(
@@ -1750,11 +1536,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MAPIAdminProfiles(param0: u32) -> ::windows_core::Result<IProfAdmin> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIAdminProfiles(
@@ -1770,11 +1553,8 @@ pub mod Office {
                     param0: u32,
                     param1: *mut *mut ::core::ffi::c_void,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIAllocateBuffer(
@@ -1790,11 +1570,8 @@ pub mod Office {
                     param1: *mut ::core::ffi::c_void,
                     param2: *mut *mut ::core::ffi::c_void,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIAllocateMore(
@@ -1807,11 +1584,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MAPIDeinitIdle() {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIDeinitIdle() -> ();
@@ -1829,11 +1603,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIDeleteMail(
@@ -1854,11 +1625,8 @@ pub mod Office {
                     param3: u32,
                     param4: u32,
                 ) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIDetails(
@@ -1886,11 +1654,8 @@ pub mod Office {
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P2: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIFindNext(
@@ -1915,11 +1680,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MAPIFreeBuffer(param0: *mut ::core::ffi::c_void) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIFreeBuffer(param0: *mut ::core::ffi::c_void) -> u32;
@@ -1930,11 +1692,8 @@ pub mod Office {
                 pub unsafe fn MAPIGetDefaultMalloc(
                 ) -> ::core::option::Option<::windows::Win32::System::Com::IMalloc>
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIGetDefaultMalloc(
@@ -1944,11 +1703,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MAPIInitIdle(lpvreserved: *mut ::core::ffi::c_void) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIInitIdle(lpvreserved: *mut ::core::ffi::c_void) -> i32;
@@ -1959,11 +1715,8 @@ pub mod Office {
                 pub unsafe fn MAPIInitialize(
                     param0: *mut ::core::ffi::c_void,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIInitialize(
@@ -1979,11 +1732,8 @@ pub mod Office {
                     param2: u32,
                     param3: u32,
                 ) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPILogoff(
@@ -2008,11 +1758,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPILogon(
@@ -2041,11 +1788,8 @@ pub mod Office {
                     param3: u32,
                     param4: *mut ::core::option::Option<IMAPISession>,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPILogonEx(
@@ -2072,11 +1816,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMAPISession>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIOpenFormMgr(
@@ -2090,11 +1831,8 @@ pub mod Office {
                 #[inline]
                 pub unsafe fn MAPIOpenLocalFormContainer(
                 ) -> ::windows_core::Result<IMAPIFormContainer> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIOpenLocalFormContainer(
@@ -2116,11 +1854,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIReadMail(
@@ -2153,11 +1888,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIResolveName(
@@ -2190,11 +1922,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPISaveMail(
@@ -2228,11 +1957,8 @@ pub mod Office {
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P2: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPISendDocuments(
@@ -2259,11 +1985,8 @@ pub mod Office {
                     param3: u32,
                     param4: u32,
                 ) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPISendMail(
@@ -2278,11 +2001,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MAPIUninitialize() {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MAPIUninitialize() -> ();
@@ -2302,11 +2022,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_CompareStringW(
@@ -2335,11 +2052,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_IsBadStringPtrW(
@@ -2362,11 +2076,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_MultiByteToWideChar(
@@ -2403,11 +2114,8 @@ pub mod Office {
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P2: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_WideCharToMultiByte(
@@ -2438,11 +2146,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_lstrcmpW(
@@ -2461,11 +2166,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_lstrcpyW(
@@ -2480,11 +2182,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MNLS_lstrlenW(lpstring: ::windows_core::PCWSTR) -> i32;
@@ -2507,12 +2206,7 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows::Win32::Foundation::HINSTANCE>,
                     P1: ::windows_core::IntoParam<::windows::Win32::System::Com::IMalloc>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
-
+                    #[link(name = "olmapi32")]
                     extern "cdecl" {
                         pub fn MSProviderInit(
                             param0: ::windows::Win32::Foundation::HINSTANCE,
@@ -2541,11 +2235,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn MapStorageSCode(stgscode: i32) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn MapStorageSCode(stgscode: i32) -> i32;
@@ -2573,11 +2264,8 @@ pub mod Office {
                         ::windows::Win32::System::Com::StructuredStorage::IStorage,
                     >,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn OpenIMsgOnIStg(
@@ -2617,11 +2305,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows::Win32::System::Com::IMalloc>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn OpenIMsgSession(
@@ -2641,11 +2326,8 @@ pub mod Office {
                     lpszprefix: ::core::option::Option<*const i8>,
                 ) -> ::windows_core::Result<::windows::Win32::System::Com::IStream>
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn OpenStreamOnFile(
@@ -2674,11 +2356,8 @@ pub mod Office {
                     cvalues: u32,
                     ulproptag: u32,
                 ) -> *mut SPropValue {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn PpropFindProp(
@@ -2696,11 +2375,8 @@ pub mod Office {
                     lpfallocmore: LPALLOCATEMORE,
                     lpvobject: *mut ::core::ffi::c_void,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn PropCopyMore(
@@ -2720,11 +2396,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<IMessage>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn RTFSync(
@@ -2738,11 +2411,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn ScBinFromHexBounded(lpsz: *const i8, lpb: *mut u8, cb: u32) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScBinFromHexBounded(lpsz: *const i8, lpb: *mut u8, cb: u32) -> i32;
@@ -2756,11 +2426,8 @@ pub mod Office {
                     lpvdst: *mut ::core::ffi::c_void,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScCopyNotifications(
@@ -2779,11 +2446,8 @@ pub mod Office {
                     lpvdst: *mut ::core::ffi::c_void,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScCopyProps(
@@ -2801,11 +2465,8 @@ pub mod Office {
                     lpnotifications: *mut NOTIFICATION,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScCountNotifications(
@@ -2822,11 +2483,8 @@ pub mod Office {
                     lpproparray: *mut SPropValue,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScCountProps(
@@ -2844,11 +2502,8 @@ pub mod Office {
                     lpcbconvindex: *mut u32,
                     lppbconvindex: *mut *mut u8,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScCreateConversationIndex(
@@ -2867,11 +2522,8 @@ pub mod Office {
                     lpallocatebuffer: LPALLOCATEBUFFER,
                     lppproparray: *mut *mut SPropValue,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScDupPropset(
@@ -2885,11 +2537,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn ScInitMapiUtil(ulflags: u32) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScInitMapiUtil(ulflags: u32) -> i32;
@@ -2906,11 +2555,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScLocalPathFromUNC(
@@ -2932,11 +2578,8 @@ pub mod Office {
                     lpinterface: *mut ::windows_core::GUID,
                     lppmapisession: *mut ::core::option::Option<IMAPISession>,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScMAPIXFromSMAPI(
@@ -2961,11 +2604,8 @@ pub mod Office {
                     lpvbasenew: *mut ::core::ffi::c_void,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScRelocNotifications(
@@ -2992,11 +2632,8 @@ pub mod Office {
                     lpvbasenew: *mut ::core::ffi::c_void,
                     lpcb: *mut u32,
                 ) -> i32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScRelocProps(
@@ -3019,11 +2656,8 @@ pub mod Office {
                     P0: ::windows_core::IntoParam<::windows_core::PCSTR>,
                     P1: ::windows_core::IntoParam<::windows_core::PCSTR>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn ScUNCFromLocalPath(
@@ -3045,11 +2679,8 @@ pub mod Office {
                     lppropattrs: *mut SPropAttrArray,
                     lpppropproblems: *mut *mut SPropProblemArray,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn SetAttribIMsgOnIStg(
@@ -3063,11 +2694,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn SzFindCh(lpsz: *mut i8, ch: u16) -> *mut i8 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn SzFindCh(lpsz: *mut i8, ch: u16) -> *mut i8;
@@ -3076,11 +2704,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn SzFindLastCh(lpsz: *mut i8, ch: u16) -> *mut i8 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn SzFindLastCh(lpsz: *mut i8, ch: u16) -> *mut i8;
@@ -3089,11 +2714,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn SzFindSz(lpsz: *mut i8, lpszkey: *mut i8) -> *mut i8 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn SzFindSz(lpsz: *mut i8, lpszkey: *mut i8) -> *mut i8;
@@ -3102,11 +2724,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn UFromSz(lpsz: *mut i8) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn UFromSz(lpsz: *mut i8) -> u32;
@@ -3115,11 +2734,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn UlAddRef(lpunk: *mut ::core::ffi::c_void) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn UlAddRef(lpunk: *mut ::core::ffi::c_void) -> u32;
@@ -3128,11 +2744,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn UlFromSzHex(lpsz: *mut i8) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn UlFromSzHex(lpsz: *mut i8) -> u32;
@@ -3141,11 +2754,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn UlPropSize(lpspropvalue: *mut SPropValue) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn UlPropSize(lpspropvalue: *mut SPropValue) -> u32;
@@ -3154,11 +2764,8 @@ pub mod Office {
                 }
                 #[inline]
                 pub unsafe fn UlRelease(lpunk: *mut ::core::ffi::c_void) -> u32 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn UlRelease(lpunk: *mut ::core::ffi::c_void) -> u32;
@@ -3173,11 +2780,8 @@ pub mod Office {
                 where
                     P0: ::windows_core::IntoParam<::windows::Win32::System::Com::IStream>,
                 {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn WrapCompressedRTFStream(
@@ -3203,11 +2807,8 @@ pub mod Office {
                     lpcbwrappedentry: *mut u32,
                     lppwrappedentry: *mut *mut ENTRYID,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn WrapStoreEntryID(
@@ -3234,11 +2835,8 @@ pub mod Office {
                     emethod: METHODS,
                     ppfirst: *const ::core::ffi::c_void,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn __CPPValidateParameters(
@@ -3253,11 +2851,8 @@ pub mod Office {
                     emethod: METHODS,
                     ppthis: *mut ::core::ffi::c_void,
                 ) -> ::windows_core::Result<()> {
-                    #[cfg_attr(
-                        target_env = "msvc",
-                        link(name = "mapiLoaderStatic", kind = "static")
-                    )]
-                    #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+                    #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+                    #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
 
                     extern "system" {
                         pub fn __ValidateParameters(

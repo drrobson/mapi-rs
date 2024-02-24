@@ -109,10 +109,10 @@ mod mapi_bindgen {
     }
 
     fn patch_mapi_sys(mapi_sys: String) -> super::Result<String> {
-        let pattern = Regex::new(r#"#\s*\[\s*link\s*\(\s*name\s*=\s*"olmapi32"\s*\)\s*\]"#)?;
+        let pattern = Regex::new(r#"#\s*\[\s*link\s*\(\s*name\s*=\s*"mapi32"\s*\)\s*\]"#)?;
         let replacement = r#"
-            #[cfg_attr(target_env = "msvc", link(name = "mapiLoaderStatic", kind = "static"))]
-            #[cfg_attr(not(target_env = "msvc"), link(name = "mapiLoader.dll"))]
+            #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
+            #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
         "#;
         Ok(pattern.replace_all(&mapi_sys, replacement).to_string())
     }

@@ -18,8 +18,12 @@ targets = [
     "i686-pc-windows-gnu",
 ]
 
+[features]
+default = [ "olmapi32" ]
+olmapi32 = [ "mapi-sys/olmapi32" ]
+
 [dependencies]
-mapi-sys = "0.28.0"
+mapi-sys = "0.1.0"
 windows-core = "0.52"
 windows-implement = "0.52"
 windows-interface = "0.52"
