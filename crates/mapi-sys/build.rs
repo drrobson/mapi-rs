@@ -74,7 +74,7 @@ mod mapi32_link {
 
         match lib_path.to_str() {
             Some(path) if lib_path.exists() => println!("cargo:rustc-link-search=native={path}"),
-            _ => unimplemented!("`{}` is not supported by WebView2", target_arch),
+            _ => unimplemented!("`{}` is not supported by MAPI", target_arch),
         };
 
         Ok(())
