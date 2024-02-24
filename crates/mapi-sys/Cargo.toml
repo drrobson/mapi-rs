@@ -6,7 +6,7 @@ rust-version = "1.61"
 description = "Bindings generated with the windows crate for the Outlook MAPI interface"
 repository = "https://github.com/wravery/mapi-rs"
 license = "MIT"
-keywords = [ "win32", "mapi" ]
+keywords = [ "win32", "outlook", "mapi" ]
 categories = [ "os::windows-apis" ]
 
 [features]

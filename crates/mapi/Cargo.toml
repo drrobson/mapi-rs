@@ -1,12 +1,12 @@
 [package]
-name = "mapi"
+name = "outlook-mapi"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.61"
 description = "Rust bindings for the Outlook MAPI interface"
 repository = "https://github.com/wravery/mapi-rs"
 license = "MIT"
-keywords = [ "win32", "mapi" ]
+keywords = [ "win32", "outlook", "mapi" ]
 categories = [ "os::windows-apis" ]
 
 [package.metadata.docs.rs]
