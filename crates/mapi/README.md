@@ -5,7 +5,7 @@ This crate implements Rust bindings for the [WebView2](https://aka.ms/webview2) 
 Include a reference to `mapi` in your `Cargo.toml`:
 ```toml
 [dependencies]
-mapi = "0.28.0"
+mapi = "0.1.0"
 ```
 
 See the [docs](https://docs.rs/mapi/) or take a look at the [sample.rs](https://github.com/wravery/webview2-rs/blob/main/crates/mapi/examples/sample.rs) example (adapted from [microsoft/windows-samples-rs](https://github.com/microsoft/windows-samples-rs/tree/master/webview2_win32)) for more details.

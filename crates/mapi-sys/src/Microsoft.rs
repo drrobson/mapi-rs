@@ -30,7 +30,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn BuildDisplayTable(
                             lpallocatebuffer: LPALLOCATEBUFFER,
@@ -71,7 +70,6 @@ pub mod Office {
                 ) {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ChangeIdleRoutine(
                             ftg: *mut ::core::ffi::c_void,
@@ -100,7 +98,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn CloseIMsgSession(
                             lpmsgsess: ::windows::Win32::Storage::Imapi::LPMSGSESS,
@@ -119,7 +116,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn CreateIProp(
                             lpinterface: *mut ::windows_core::GUID,
@@ -153,7 +149,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn CreateTable(
                             lpinterface: *mut ::windows_core::GUID,
@@ -183,7 +178,6 @@ pub mod Office {
                 pub unsafe fn DeinitMapiUtil() {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn DeinitMapiUtil() -> ();
                     }
@@ -193,7 +187,6 @@ pub mod Office {
                 pub unsafe fn DeregisterIdleRoutine(ftg: *mut ::core::ffi::c_void) {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn DeregisterIdleRoutine(ftg: *mut ::core::ffi::c_void) -> ();
                     }
@@ -206,7 +199,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn EnableIdleRoutine(
                             ftg: *mut ::core::ffi::c_void,
@@ -219,7 +211,6 @@ pub mod Office {
                 pub unsafe fn FBadColumnSet(lpptacols: *mut SPropTagArray) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadColumnSet(lpptacols: *mut SPropTagArray) -> u32;
                     }
@@ -231,7 +222,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadEntryList(
                             lpentrylist: *mut SBinaryArray,
@@ -243,7 +233,6 @@ pub mod Office {
                 pub unsafe fn FBadProp(lpprop: *mut SPropValue) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadProp(lpprop: *mut SPropValue) -> u32;
                     }
@@ -253,7 +242,6 @@ pub mod Office {
                 pub unsafe fn FBadPropTag(ulproptag: u32) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadPropTag(ulproptag: u32) -> u32;
                     }
@@ -263,7 +251,6 @@ pub mod Office {
                 pub unsafe fn FBadRestriction(lpres: *mut SRestriction) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadRestriction(lpres: *mut SRestriction) -> u32;
                     }
@@ -276,7 +263,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadRglpNameID(
                             lppnameid: *mut *mut MAPINAMEID,
@@ -292,7 +278,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadRglpszW(
                             lppszw: *const ::windows_core::PCWSTR,
@@ -305,7 +290,6 @@ pub mod Office {
                 pub unsafe fn FBadRow(lprow: *mut SRow) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadRow(lprow: *mut SRow) -> u32;
                     }
@@ -317,7 +301,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadRowSet(
                             lprowset: *mut SRowSet,
@@ -329,7 +312,6 @@ pub mod Office {
                 pub unsafe fn FBadSortOrderSet(lpsos: *mut SSortOrderSet) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBadSortOrderSet(lpsos: *mut SSortOrderSet) -> u32;
                     }
@@ -342,7 +324,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FBinFromHex(
                             lpsz: *const i8,
@@ -358,7 +339,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FEqualNames(
                             lpname1: *mut MAPINAMEID,
@@ -375,7 +355,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FPropCompareProp(
                             lpspropvalue1: *mut SPropValue,
@@ -393,7 +372,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FPropContainsProp(
                             lpspropvaluedst: *mut SPropValue,
@@ -413,7 +391,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FPropExists(
                             lpmapiprop: *mut ::core::ffi::c_void,
@@ -426,7 +403,6 @@ pub mod Office {
                 pub unsafe fn FreePadrlist(lpadrlist: *mut ADRLIST) {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FreePadrlist(lpadrlist: *mut ADRLIST) -> ();
                     }
@@ -436,7 +412,6 @@ pub mod Office {
                 pub unsafe fn FreeProws(lprows: *mut SRowSet) {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FreeProws(lprows: *mut SRowSet) -> ();
                     }
@@ -449,7 +424,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::FILETIME {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtAddFt(
                             ftaddend1: ::windows::Win32::Foundation::FILETIME,
@@ -468,7 +442,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::FILETIME {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtMulDw(
                             ftmultiplier: u32,
@@ -484,7 +457,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::FILETIME {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtMulDwDw(
                             ftmultiplicand: u32,
@@ -499,7 +471,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::FILETIME {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtNegFt(
                             ft: ::windows::Win32::Foundation::FILETIME,
@@ -514,7 +485,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::FILETIME {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtSubFt(
                             ftminuend: ::windows::Win32::Foundation::FILETIME,
@@ -536,7 +506,6 @@ pub mod Office {
                 ) -> *mut ::core::ffi::c_void {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn FtgRegisterIdleRoutine(
                             lpfnidle: PFNIDLE,
@@ -556,7 +525,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn GetAttribIMsgOnIStg(
                             lpobject: *mut ::core::ffi::c_void,
@@ -570,7 +538,6 @@ pub mod Office {
                 pub unsafe fn HexFromBin(lpb: *mut u8, cb: i32, lpsz: *const i8) {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HexFromBin(lpb: *mut u8, cb: i32, lpsz: *const i8) -> ();
                     }
@@ -588,7 +555,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrAddColumns(
                             lptbl: *mut ::core::ffi::c_void,
@@ -618,7 +584,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrAddColumnsEx(
                             lptbl: *mut ::core::ffi::c_void,
@@ -645,7 +610,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrAllocAdviseSink(
                             lpfncallback: LPNOTIFCALLBACK,
@@ -718,7 +682,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrComposeEID(
                             lpsession: *mut ::core::ffi::c_void,
@@ -755,7 +718,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrComposeMsgID(
                             lpsession: *mut ::core::ffi::c_void,
@@ -791,7 +753,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrDecomposeEID(
                             lpsession: *mut ::core::ffi::c_void,
@@ -828,7 +789,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrDecomposeMsgID(
                             lpsession: *mut ::core::ffi::c_void,
@@ -853,7 +813,6 @@ pub mod Office {
                 pub unsafe fn HrDispatchNotifications(ulflags: u32) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrDispatchNotifications(ulflags: u32) -> ::windows_core::HRESULT;
                     }
@@ -967,7 +926,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrEntryIDFromSz(
                             lpsz: *const i8,
@@ -1019,7 +977,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrGetOneProp(
                             lpmapiprop: *mut ::core::ffi::c_void,
@@ -1043,7 +1000,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrIStorageFromStream(
                             lpunkin: *mut ::core::ffi::c_void,
@@ -1310,7 +1266,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrQueryAllRows(
                             lptable: *mut ::core::ffi::c_void,
@@ -1341,7 +1296,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrSetOneProp(
                             lpmapiprop: *mut ::core::ffi::c_void,
@@ -1358,7 +1312,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrSzFromEntryID(
                             cb: u32,
@@ -1377,7 +1330,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrThisThreadAdviseSink(
                             lpadvisesink: *mut ::core::ffi::c_void,
@@ -1401,7 +1353,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn HrValidateIPMSubtree(
                             lpmdb: *mut ::core::ffi::c_void,
@@ -1441,7 +1392,6 @@ pub mod Office {
                 ) -> ::windows::Win32::Foundation::BOOL {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn IsBadBoundedStringPtr(
                             lpsz: *const ::core::ffi::c_void,
@@ -1457,7 +1407,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn LPropCompareProp(
                             lpspropvaluea: *mut SPropValue,
@@ -1474,7 +1423,6 @@ pub mod Office {
                 ) -> *mut SPropValue {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn LpValFindProp(
                             ulproptag: u32,
@@ -1504,7 +1452,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIAddress(
                             param0: usize,
@@ -1538,7 +1485,6 @@ pub mod Office {
                 pub unsafe fn MAPIAdminProfiles(param0: u32) -> ::windows_core::Result<IProfAdmin> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIAdminProfiles(
                             param0: u32,
@@ -1555,7 +1501,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIAllocateBuffer(
                             param0: u32,
@@ -1572,7 +1517,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIAllocateMore(
                             param0: u32,
@@ -1586,7 +1530,6 @@ pub mod Office {
                 pub unsafe fn MAPIDeinitIdle() {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIDeinitIdle() -> ();
                     }
@@ -1605,7 +1548,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIDeleteMail(
                             param0: usize,
@@ -1627,7 +1569,6 @@ pub mod Office {
                 ) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIDetails(
                             param0: usize,
@@ -1656,7 +1597,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIFindNext(
                             param0: usize,
@@ -1682,7 +1622,6 @@ pub mod Office {
                 pub unsafe fn MAPIFreeBuffer(param0: *mut ::core::ffi::c_void) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIFreeBuffer(param0: *mut ::core::ffi::c_void) -> u32;
                     }
@@ -1694,7 +1633,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIGetDefaultMalloc(
                         ) -> ::core::option::Option<::windows::Win32::System::Com::IMalloc>;
@@ -1705,7 +1643,6 @@ pub mod Office {
                 pub unsafe fn MAPIInitIdle(lpvreserved: *mut ::core::ffi::c_void) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIInitIdle(lpvreserved: *mut ::core::ffi::c_void) -> i32;
                     }
@@ -1717,7 +1654,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIInitialize(
                             param0: *mut ::core::ffi::c_void,
@@ -1734,7 +1670,6 @@ pub mod Office {
                 ) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPILogoff(
                             param0: usize,
@@ -1760,7 +1695,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPILogon(
                             param0: usize,
@@ -1790,7 +1724,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPILogonEx(
                             param0: usize,
@@ -1818,7 +1751,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIOpenFormMgr(
                             psession: *mut ::core::ffi::c_void,
@@ -1833,7 +1765,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<IMAPIFormContainer> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIOpenLocalFormContainer(
                             ppfcnt: *mut *mut ::core::ffi::c_void,
@@ -1856,7 +1787,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIReadMail(
                             param0: usize,
@@ -1890,7 +1820,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIResolveName(
                             param0: usize,
@@ -1924,7 +1853,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPISaveMail(
                             param0: usize,
@@ -1959,7 +1887,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPISendDocuments(
                             param0: usize,
@@ -1987,7 +1914,6 @@ pub mod Office {
                 ) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPISendMail(
                             param0: usize,
@@ -2003,7 +1929,6 @@ pub mod Office {
                 pub unsafe fn MAPIUninitialize() {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MAPIUninitialize() -> ();
                     }
@@ -2024,7 +1949,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_CompareStringW(
                             locale: u32,
@@ -2054,7 +1978,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_IsBadStringPtrW(
                             lpsz: ::windows_core::PCWSTR,
@@ -2078,7 +2001,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_MultiByteToWideChar(
                             ucodepage: u32,
@@ -2116,7 +2038,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_WideCharToMultiByte(
                             ucodepage: u32,
@@ -2148,7 +2069,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_lstrcmpW(
                             lpstring1: ::windows_core::PCWSTR,
@@ -2168,7 +2088,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_lstrcpyW(
                             lpstring1: ::windows_core::PCWSTR,
@@ -2184,7 +2103,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MNLS_lstrlenW(lpstring: ::windows_core::PCWSTR) -> i32;
                     }
@@ -2237,7 +2155,6 @@ pub mod Office {
                 pub unsafe fn MapStorageSCode(stgscode: i32) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn MapStorageSCode(stgscode: i32) -> i32;
                     }
@@ -2266,7 +2183,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn OpenIMsgOnIStg(
                             lpmsgsess: ::windows::Win32::Storage::Imapi::LPMSGSESS,
@@ -2307,7 +2223,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn OpenIMsgSession(
                             lpmalloc: *mut ::core::ffi::c_void,
@@ -2328,7 +2243,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn OpenStreamOnFile(
                             lpallocatebuffer: LPALLOCATEBUFFER,
@@ -2358,7 +2272,6 @@ pub mod Office {
                 ) -> *mut SPropValue {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn PpropFindProp(
                             lpproparray: *mut SPropValue,
@@ -2377,7 +2290,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn PropCopyMore(
                             lpspropvaluedest: *mut SPropValue,
@@ -2398,7 +2310,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn RTFSync(
                             lpmessage: *mut ::core::ffi::c_void,
@@ -2413,7 +2324,6 @@ pub mod Office {
                 pub unsafe fn ScBinFromHexBounded(lpsz: *const i8, lpb: *mut u8, cb: u32) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScBinFromHexBounded(lpsz: *const i8, lpb: *mut u8, cb: u32) -> i32;
                     }
@@ -2428,7 +2338,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScCopyNotifications(
                             cnotification: i32,
@@ -2448,7 +2357,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScCopyProps(
                             cvalues: i32,
@@ -2467,7 +2375,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScCountNotifications(
                             cnotifications: i32,
@@ -2485,7 +2392,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScCountProps(
                             cvalues: i32,
@@ -2504,7 +2410,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScCreateConversationIndex(
                             cbparent: u32,
@@ -2524,7 +2429,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScDupPropset(
                             cvalues: i32,
@@ -2539,7 +2443,6 @@ pub mod Office {
                 pub unsafe fn ScInitMapiUtil(ulflags: u32) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScInitMapiUtil(ulflags: u32) -> i32;
                     }
@@ -2557,7 +2460,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScLocalPathFromUNC(
                             lpszunc: ::windows_core::PCSTR,
@@ -2580,7 +2482,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScMAPIXFromSMAPI(
                             lhsimplesession: usize,
@@ -2606,7 +2507,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScRelocNotifications(
                             cnotification: i32,
@@ -2634,7 +2534,6 @@ pub mod Office {
                 ) -> i32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScRelocProps(
                             cvalues: i32,
@@ -2658,7 +2557,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn ScUNCFromLocalPath(
                             lpszlocal: ::windows_core::PCSTR,
@@ -2681,7 +2579,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn SetAttribIMsgOnIStg(
                             lpobject: *mut ::core::ffi::c_void,
@@ -2696,7 +2593,6 @@ pub mod Office {
                 pub unsafe fn SzFindCh(lpsz: *mut i8, ch: u16) -> *mut i8 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn SzFindCh(lpsz: *mut i8, ch: u16) -> *mut i8;
                     }
@@ -2706,7 +2602,6 @@ pub mod Office {
                 pub unsafe fn SzFindLastCh(lpsz: *mut i8, ch: u16) -> *mut i8 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn SzFindLastCh(lpsz: *mut i8, ch: u16) -> *mut i8;
                     }
@@ -2716,7 +2611,6 @@ pub mod Office {
                 pub unsafe fn SzFindSz(lpsz: *mut i8, lpszkey: *mut i8) -> *mut i8 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn SzFindSz(lpsz: *mut i8, lpszkey: *mut i8) -> *mut i8;
                     }
@@ -2726,7 +2620,6 @@ pub mod Office {
                 pub unsafe fn UFromSz(lpsz: *mut i8) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn UFromSz(lpsz: *mut i8) -> u32;
                     }
@@ -2736,7 +2629,6 @@ pub mod Office {
                 pub unsafe fn UlAddRef(lpunk: *mut ::core::ffi::c_void) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn UlAddRef(lpunk: *mut ::core::ffi::c_void) -> u32;
                     }
@@ -2746,7 +2638,6 @@ pub mod Office {
                 pub unsafe fn UlFromSzHex(lpsz: *mut i8) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn UlFromSzHex(lpsz: *mut i8) -> u32;
                     }
@@ -2756,7 +2647,6 @@ pub mod Office {
                 pub unsafe fn UlPropSize(lpspropvalue: *mut SPropValue) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn UlPropSize(lpspropvalue: *mut SPropValue) -> u32;
                     }
@@ -2766,7 +2656,6 @@ pub mod Office {
                 pub unsafe fn UlRelease(lpunk: *mut ::core::ffi::c_void) -> u32 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn UlRelease(lpunk: *mut ::core::ffi::c_void) -> u32;
                     }
@@ -2782,7 +2671,6 @@ pub mod Office {
                 {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn WrapCompressedRTFStream(
                             lpcompressedrtfstream: *mut ::core::ffi::c_void,
@@ -2809,7 +2697,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn WrapStoreEntryID(
                             ulflags: u32,
@@ -2837,7 +2724,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn __CPPValidateParameters(
                             emethod: METHODS,
@@ -2853,7 +2739,6 @@ pub mod Office {
                 ) -> ::windows_core::Result<()> {
                     #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
                     #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-
                     extern "system" {
                         pub fn __ValidateParameters(
                             emethod: METHODS,

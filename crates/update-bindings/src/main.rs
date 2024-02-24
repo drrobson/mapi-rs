@@ -112,8 +112,7 @@ mod mapi_bindgen {
         let pattern = Regex::new(r#"#\s*\[\s*link\s*\(\s*name\s*=\s*"mapi32"\s*\)\s*\]"#)?;
         let replacement = r#"
             #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
-            #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]
-        "#;
+            #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]"#;
         Ok(pattern.replace_all(&mapi_sys, replacement).to_string())
     }
 
