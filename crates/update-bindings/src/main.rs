@@ -40,7 +40,7 @@ mod mapi_path {
             || Err(super::Error::MissingParent(manifest_dir)),
             |parent| Ok(PathBuf::from(parent)),
         )?;
-        mapi_sys_dir.push("outlook-mapi-sys");
+        mapi_sys_dir.push("mapi-sys");
         Ok(mapi_sys_dir)
     }
 }
