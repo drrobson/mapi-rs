@@ -64,11 +64,12 @@ unsafe fn get_outlook_path(category: PCWSTR) -> Result<PathBuf> {
     Ok(path)
 }
 
-pub fn ensure_olmapi32() -> Result<()> {
+pub fn ensure_olmapi32() -> Result<HMODULE> {
     unsafe {
         // If olmapi32.dll is already loaded, we're done.
-        if GetModuleHandleW(OLMAPI32_MODULE).is_ok() {
-            return Ok(());
+        let module = GetModuleHandleW(OLMAPI32_MODULE);
+        if module.is_ok() {
+            return module;
         }
 
         for category in OUTLOOK_QUALIFIED_COMPONENTS {
@@ -79,8 +80,7 @@ pub fn ensure_olmapi32() -> Result<()> {
                     .encode_utf16()
                     .chain(iter::once(0))
                     .collect();
-                let _ = LoadLibraryW(PCWSTR::from_raw(buffer.as_ptr()))?;
-                return Ok(());
+                return LoadLibraryW(PCWSTR::from_raw(buffer.as_ptr()));
             }
         }
     }

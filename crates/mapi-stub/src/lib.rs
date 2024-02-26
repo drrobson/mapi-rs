@@ -92,16 +92,19 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
 
     let func_type = format_ident!("PFN{}", name);
     let proc_name = LitStr::new(&format!("{name}"), name.span());
-    let missing_export = LitStr::new(&format!("{name} is not exported from {}", dll.value()), name.span());
+    let missing_export = LitStr::new(
+        &format!("{name} is not exported from {}", dll.value()),
+        name.span(),
+    );
 
     let gen = quote! {
         unsafe fn #name ( #inputs ) #output {
             use std::{mem, sync::OnceLock};
 
             type #func_type = unsafe extern #abi fn ( #inputs ) #output;
-            static CELL: OnceLock< #func_type > = OnceLock::new();
+            static EXPORT: OnceLock< #func_type > = OnceLock::new();
 
-            (CELL.get_or_init(|| {
+            (EXPORT.get_or_init(|| {
                 use ::windows_core::*;
                 use ::windows::Win32::System::LibraryLoader::*;
 

@@ -1,5 +1,8 @@
 use windows::Win32::{Foundation::*, System::LibraryLoader::*};
 
+#[cfg(feature = "olmapi32")]
+mod load_mapi;
+
 fn get_mapi_module() -> HMODULE {
     use std::sync::OnceLock;
     use windows_core::*;
@@ -8,12 +11,12 @@ fn get_mapi_module() -> HMODULE {
     *MAPI_MODULE.get_or_init(|| unsafe {
         #[cfg(feature = "olmapi32")]
         {
-            GetModuleHandleW(w!("olmapi32")).expect("olmapi32 should already be loaded")
+            if let Ok(module) = load_mapi::ensure_olmapi32() {
+                return module;
+            }
         }
-        #[cfg(not(feature = "olmapi32"))]
-        {
-            LoadLibraryW(w!("mapi32")).expect("mapi32 should be loaded on demand")
-        }
+
+        LoadLibraryW(w!("mapi32")).expect("mapi32 should be loaded on demand")
     })
 }
 

@@ -1,6 +1,6 @@
 [package]
 name = "outlook-mapi-sys"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.61"
 description = "Bindings generated with the windows crate for the Outlook MAPI interface"
@@ -11,7 +11,9 @@ categories = [ "os::windows-apis" ]
 
 [features]
 default = [ "olmapi32" ]
-olmapi32 = []
+olmapi32 = [
+    "windows/Win32_System_ApplicationInstallationAndServicing",
+]
 
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
