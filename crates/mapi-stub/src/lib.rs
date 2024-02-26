@@ -204,7 +204,7 @@ fn no_arg_size(undecorated: &str) -> bool {
 }
 
 fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
-    let dll = &attr.name;
+    let dll = &attr.name.value();
     let abi = &ast.abi;
     let name = &ast.ident;
     let inputs = &ast.inputs;
@@ -229,10 +229,6 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
 
     let func_type = format_ident!("PFN{}", name);
     let proc_name = LitStr::new(&format!("{name}"), name.span());
-    let missing_export = LitStr::new(
-        &format!("{name} is not exported from {}", dll.value()),
-        name.span(),
-    );
 
     let undecorated = format!("{name}");
     let build_proc_name = if no_arg_size(undecorated.as_str()) {
@@ -252,14 +248,31 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
         }
     };
 
-    let gen = quote! {
-        unsafe fn #name(#inputs) #output {
-            use std::{mem, sync::OnceLock};
-            use ::windows_core::*;
+    let call_export = if dll.as_str() == "olmapi32" {
+        quote! {
+            static EXPORT: OnceLock<Option<#func_type>> = OnceLock::new();
 
-            #build_proc_name
+            use ::windows::Win32::{Foundation::E_FAIL, System::LibraryLoader::*};
 
-            type #func_type = unsafe extern #abi fn(#inputs) #output;
+            match (EXPORT.get_or_init(|| {
+                unsafe {
+                    let module = crate::get_mapi_module();
+                    GetProcAddress(module, proc_name).map(|export| unsafe { mem::transmute(export) })
+                }
+            })) {
+                Some(export) => {
+                    unsafe {
+                        export(#forward_args)
+                    }
+                },
+                None => E_FAIL
+            }
+        }
+    } else {
+        let missing_export =
+            LitStr::new(&format!("{name} is not exported from {dll}"), name.span());
+
+        quote! {
             static EXPORT: OnceLock<#func_type> = OnceLock::new();
 
             (EXPORT.get_or_init(|| {
@@ -270,6 +283,19 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
                     mem::transmute(GetProcAddress(module, proc_name).expect(#missing_export))
                 }
             }))(#forward_args)
+        }
+    };
+
+    let gen = quote! {
+        unsafe fn #name(#inputs) #output {
+            use std::{mem, sync::OnceLock};
+            use ::windows_core::*;
+
+            #build_proc_name
+
+            type #func_type = unsafe extern #abi fn(#inputs) #output;
+
+            #call_export
         }
     };
 
