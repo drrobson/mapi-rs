@@ -1,6 +1,6 @@
 [package]
 name = "outlook-mapi-sys"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.61"
 description = "Bindings generated with the windows crate for the Outlook MAPI interface"
@@ -24,7 +24,7 @@ targets = [
 
 [dependencies]
 windows-core = "0.52"
-outlook-mapi-stub = "0.1.0"
+outlook-mapi-stub = "0.2.0"
 
 [dependencies.windows]
 version = "0.52"
