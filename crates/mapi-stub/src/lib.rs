@@ -69,6 +69,140 @@ pub fn delay_load(attr: TokenStream, input: TokenStream) -> TokenStream {
     impl_delay_load(&attr, &ast)
 }
 
+fn no_arg_size(undecorated: &str) -> bool {
+    use std::{collections::BTreeSet, sync::OnceLock};
+
+    static NO_ARG_SIZE_MAPI: OnceLock<BTreeSet<&'static str>> = OnceLock::new();
+    let no_arg_size_mapi = NO_ARG_SIZE_MAPI.get_or_init(|| {
+        BTreeSet::from([
+            // "BMAPIAddress",
+            // "BMAPIDetails",
+            // "BMAPIFindNext",
+            // "BMAPIGetAddress",
+            // "BMAPIGetReadMail",
+            // "BMAPIReadMail",
+            // "BMAPIResolveName",
+            // "BMAPISaveMail",
+            // "BMAPISendMail",
+            // "FGetComponentPath",
+            "FixMAPI",
+            "GetOutlookVersion",
+            // "GetTnefStreamCodepage",
+            "HrGetOmiProvidersFlags",
+            "HrSetOmiProvidersFlagsInvalid",
+            // "LAUNCHWIZARD",
+            // "MAPIAddress",
+            // "MAPIAdminProfiles",
+            // "MAPIAllocateBuffer",
+            // "MAPIAllocateMore",
+            // "MAPIDeleteMail",
+            // "MAPIDetails",
+            // "MAPIFindNext",
+            // "MAPIFreeBuffer",
+            // "MAPIInitialize",
+            // "MAPILogoff",
+            // "MAPILogon",
+            // "MAPILogonEx",
+            // "MAPIOpenFormMgr",
+            // "MAPIOpenLocalFormContainer",
+            // "MAPIReadMail",
+            // "MAPIResolveName",
+            // "MAPISaveMail",
+            // "MAPISendDocuments",
+            // "MAPISendMail",
+            // "MAPISendMailW",
+            // "MAPIUninitialize",
+            // "OpenStreamOnFile",
+            // "OpenTnefStream",
+            // "OpenTnefStreamEx",
+            // "PRProviderInit",
+            // "RTFSync",
+            // "ScMAPIXFromCMC",
+            // "ScMAPIXFromSMAPI",
+            // "WrapCompressedRTFStream",
+        ])
+    });
+
+    static NO_ARG_SIZE_OLMAPI: OnceLock<BTreeSet<&'static str>> = OnceLock::new();
+    let no_arg_size_olmapi = NO_ARG_SIZE_OLMAPI.get_or_init(|| {
+        BTreeSet::from([
+            "BMAPIAddress",
+            "BMAPIDetails",
+            "BMAPIFindNext",
+            "BMAPIGetAddress",
+            "BMAPIGetReadMail",
+            "BMAPIReadMail",
+            "BMAPIResolveName",
+            "BMAPISaveMail",
+            "BMAPISendMail",
+            "ClosePerformanceData",
+            "CollectPerformanceData",
+            "CreateMapiInitializationMonitor",
+            "CreateObject",
+            "DoDeliveryReport",
+            "EndBoot",
+            "EtwTraceMessage",
+            "FGetComponentPath",
+            "GetTnefStreamCodepage",
+            "HrEnsureProviderResourceDLL",
+            "HrGetDefaultStoragePathA",
+            "HrGetDefaultStoragePathW",
+            "HrGetEDPIdentifierFromStoreEIDOnMapi",
+            "HrGetOpenTnefStream",
+            "HrGetProviderResourceDLL",
+            "HrNotify",
+            "LAUNCHWIZARD",
+            "MAPIAddress",
+            "MAPIAdminProfiles",
+            "MAPIAllocateBuffer",
+            "MAPIAllocateBufferProv",
+            "MAPIAllocateMore",
+            "MAPIAllocateMoreProv",
+            "MAPICrashRecovery",
+            "MAPIDeleteMail",
+            "MAPIDetails",
+            "MAPIFindNext",
+            "MAPIFreeBuffer",
+            "MAPIInitialize",
+            "MAPILogoff",
+            "MAPILogon",
+            "MAPILogonEx",
+            "MAPIOpenFormMgr",
+            "MAPIOpenLocalFormContainer",
+            "MAPIReadMail",
+            "MAPIResolveName",
+            "MAPISaveMail",
+            "MAPISendDocuments",
+            "MAPISendMail",
+            "MAPISendMailW",
+            "MAPIUninitialize",
+            "MAPIValidateAllocatedBuffer",
+            "MSProviderInit",
+            "OpenPerformanceData",
+            "OpenStreamOnFile",
+            "OpenStreamOnFileW",
+            "OpenTnefStream",
+            "OpenTnefStreamEx",
+            "OverrideMAPIResourcePath",
+            "PRProviderInit",
+            "RPCTRACE",
+            "RTFSync",
+            "RTFSyncCpid",
+            "RopString",
+            "RpcTraceReadRegSettings",
+            "ScMAPIXFromCMC",
+            "ScMAPIXFromSMAPI",
+            "Unload",
+            "WrapCompressedRTFStream",
+            "WrapCompressedRTFStreamEx",
+            "fnevString",
+            "g_dwRpcThreshold",
+        ])
+    });
+
+    no_arg_size_mapi.contains(undecorated) || no_arg_size_olmapi.contains(undecorated)
+}
+
 fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
     let dll = &attr.name;
     let abi = &ast.abi;
@@ -100,11 +234,13 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
         name.span(),
     );
 
-    let gen = quote! {
-        unsafe fn #name(#inputs) #output {
-            use std::{mem, sync::OnceLock};
-            use ::windows_core::*;
-
+    let undecorated = format!("{name}");
+    let build_proc_name = if no_arg_size(undecorated.as_str()) {
+        quote! {
+            let proc_name = s!(#proc_name);
+        }
+    } else {
+        quote! {
             let mut proc_name: Vec<_> = #proc_name.bytes().collect();
             #[cfg(target_pointer_width = "32")]
             {
@@ -113,6 +249,15 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
             }
             proc_name.push(0);
             let proc_name = PCSTR::from_raw(proc_name.as_ptr());
+        }
+    };
+
+    let gen = quote! {
+        unsafe fn #name(#inputs) #output {
+            use std::{mem, sync::OnceLock};
+            use ::windows_core::*;
+
+            #build_proc_name
 
             type #func_type = unsafe extern #abi fn(#inputs) #output;
             static EXPORT: OnceLock<#func_type> = OnceLock::new();
