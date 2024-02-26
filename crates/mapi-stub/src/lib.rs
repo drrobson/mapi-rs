@@ -76,15 +76,18 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
     let inputs = &ast.inputs;
     let output = &ast.output;
 
+    let mut args_size = quote! { 0 };
     let mut forward_args: Punctuated<Box<Pat>, Comma> = Punctuated::new();
     for pair in inputs.pairs() {
         match pair {
-            Pair::Punctuated(FnArg::Typed(PatType { pat, .. }), comma) => {
+            Pair::Punctuated(FnArg::Typed(PatType { pat, ty, .. }), comma) => {
                 forward_args.push_value(pat.clone());
                 forward_args.push_punct(*comma);
+                args_size = quote! { #args_size + mem::size_of::<#ty>() };
             }
-            Pair::End(FnArg::Typed(PatType { pat, .. })) => {
+            Pair::End(FnArg::Typed(PatType { pat, ty, .. })) => {
                 forward_args.push_value(pat.clone());
+                args_size = quote! { #args_size + mem::size_of::<#ty>() };
             }
             _ => panic!("should not have a receiver/self argument"),
         }
@@ -98,21 +101,30 @@ fn impl_delay_load(attr: &DelayLoadAttr, ast: &ExternDecl) -> TokenStream {
     );
 
     let gen = quote! {
-        unsafe fn #name ( #inputs ) #output {
+        unsafe fn #name(#inputs) #output {
             use std::{mem, sync::OnceLock};
+            use ::windows_core::*;
 
-            type #func_type = unsafe extern #abi fn ( #inputs ) #output;
-            static EXPORT: OnceLock< #func_type > = OnceLock::new();
+            let mut proc_name: Vec<_> = #proc_name.bytes().collect();
+            #[cfg(target_pointer_width = "32")]
+            {
+                const ARG_SIZE: usize = #args_size;
+                proc_name.extend(format!("@{ARG_SIZE}").bytes());
+            }
+            proc_name.push(0);
+            let proc_name = PCSTR::from_raw(proc_name.as_ptr());
+
+            type #func_type = unsafe extern #abi fn(#inputs) #output;
+            static EXPORT: OnceLock<#func_type> = OnceLock::new();
 
             (EXPORT.get_or_init(|| {
-                use ::windows_core::*;
                 use ::windows::Win32::System::LibraryLoader::*;
 
                 unsafe {
                     let module = crate::get_mapi_module();
-                    mem::transmute(GetProcAddress(module, s!( #proc_name )).expect( #missing_export ))
+                    mem::transmute(GetProcAddress(module, proc_name).expect(#missing_export))
                 }
-            }))( #forward_args )
+            }))(#forward_args)
         }
     };
 
