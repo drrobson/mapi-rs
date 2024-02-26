@@ -4,3 +4,4 @@ resolver = "2"
 
 [patch.crates-io]
 outlook-mapi-sys = { path = "crates/mapi-sys/" }
+outlook-mapi-stub = { path = "crates/mapi-stub" }
