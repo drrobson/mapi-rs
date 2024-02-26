@@ -10,10 +10,8 @@ fn get_mapi_module() -> HMODULE {
     static MAPI_MODULE: OnceLock<HMODULE> = OnceLock::new();
     *MAPI_MODULE.get_or_init(|| unsafe {
         #[cfg(feature = "olmapi32")]
-        {
-            if let Ok(module) = load_mapi::ensure_olmapi32() {
-                return module;
-            }
+        if let Ok(module) = load_mapi::ensure_olmapi32() {
+            return module;
         }
 
         LoadLibraryW(w!("mapi32")).expect("mapi32 should be loaded on demand")
