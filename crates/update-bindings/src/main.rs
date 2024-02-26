@@ -109,10 +109,8 @@ mod mapi_bindgen {
     }
 
     fn patch_mapi_sys(outlook_mapi_sys: String) -> super::Result<String> {
-        let pattern = Regex::new(r#"#\s*\[\s*link\s*\(\s*name\s*=\s*"mapi32"\s*\)\s*\]"#)?;
-        let replacement = r#"
-            #[cfg_attr(feature = "olmapi32", link(name = "olmapi32"))]
-            #[cfg_attr(not(feature = "olmapi32"), link(name = "mapi32"))]"#;
+        let pattern = Regex::new(r#"#\s*\[\s*link\s*\("#)?;
+        let replacement = r#"#[delay_load("#;
         Ok(pattern
             .replace_all(&outlook_mapi_sys, replacement)
             .to_string())

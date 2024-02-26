@@ -22,6 +22,7 @@ targets = [
 
 [dependencies]
 windows-core = "0.52"
+outlook-mapi-stub = "0.1.0"
 
 [dependencies.windows]
 version = "0.52"
@@ -36,6 +37,7 @@ features = [
     "Win32_System_Com",
     "Win32_System_Com_StructuredStorage",
     "Win32_System_Com_Urlmon",
+    "Win32_System_LibraryLoader",
     "Win32_System_Ole",
     "Win32_System_Registry",
     "Win32_System_Variant",
