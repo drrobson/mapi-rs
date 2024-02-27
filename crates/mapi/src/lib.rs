@@ -1,51 +1,30 @@
 pub use outlook_mapi_sys::Microsoft;
 
-use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
-use std::{mem, ptr};
-use windows_core::*;
-
-pub struct Session(Option<IMAPISession>);
-
-impl Session {
-    pub fn new(use_default: bool) -> Result<Self> {
-        Ok(Self(unsafe {
-            MAPIInitialize(ptr::from_mut(&mut MAPIINIT {
-                ulVersion: MAPI_INIT_VERSION,
-                ulFlags: 0,
-            }) as *mut _)?;
-            let mut session = None;
-            MAPILogonEx(
-                0,
-                ptr::null_mut(),
-                ptr::null_mut(),
-                MAPI_EXTENDED
-                    | MAPI_UNICODE
-                    | MAPI_LOGON_UI
-                    | if use_default { MAPI_USE_DEFAULT } else { 0 },
-                ptr::from_mut(&mut session),
-            )?;
-            session
-        }))
-    }
-}
-
-impl Drop for Session {
-    fn drop(&mut self) {
-        mem::drop(self.0.take());
-        unsafe {
-            MAPIUninitialize();
-        }
-    }
-}
+pub mod mapi_initialize;
+pub mod mapi_logon;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc;
 
     #[test]
     fn login() {
-        println!("Trying to logon...");
-        let _session = Session::new(true).expect("should be able to init and logon to MAPI");
-        println!("Created the session...");
+        let initialized = mapi_initialize::Initialize::new(Default::default())
+            .expect("failed to initialize MAPI");
+        let _session = mapi_logon::Session::new(
+            Arc::new(initialized),
+            Default::default(),
+            None,
+            None,
+            mapi_logon::Flags {
+                extended: true,
+                unicode: true,
+                logon_ui: true,
+                use_default: true,
+                ..Default::default()
+            },
+        )
+        .expect("should be able to logon to the default MAPI profile");
     }
 }
