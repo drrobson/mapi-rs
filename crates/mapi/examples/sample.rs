@@ -29,16 +29,15 @@ fn main() -> Result<()> {
         let stores_table = logon.session.GetMsgStoresTable(0)?;
         HrQueryAllRows(
             &stores_table,
-            SizedSPropTagArray!(2, PR_ENTRYID, PR_DISPLAY_NAME_W),
+            SizedSPropTagArray!([PR_ENTRYID, PR_DISPLAY_NAME_W]),
             ptr::null_mut(),
             SizedSSortOrderSet!(
-                1,
                 0,
                 0,
-                SSortOrder {
+                [SSortOrder {
                     ulPropTag: PR_DISPLAY_NAME_W,
                     ulOrder: TABLE_SORT_ASCEND,
-                }
+                }]
             ),
             50,
             rows.as_mut_ptr(),

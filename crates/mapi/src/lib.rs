@@ -13,138 +13,176 @@ pub use row_set::*;
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedENTRYID {
-    ($count:expr, $flags:expr, $($bytes:expr),+) => {
-        {
+    ($flags:expr, $bytes:expr) => {
+        std::mem::transmute::<_, &mut $crate::sys::ENTRYID>(&mut {
             #[repr(C)]
             struct EntryId {
                 flags: [u8; 4],
-                bytes: [u8; $count],
+                bytes: [u8; $bytes.len()],
             }
-            std::mem::transmute::<_, &mut $crate::sys::ENTRYID>(&mut EntryId {
+            EntryId {
                 flags: $flags,
-                bytes: [$($bytes,)+],
-            })
-        }
+                bytes: $bytes,
+            }
+        })
     };
 }
 
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedSPropTagArray {
-    ($count:expr, $($tags:expr),+) => {
-        {
+    ($tags:expr) => {
+        std::mem::transmute::<_, &mut $crate::sys::SPropTagArray>(&mut {
             #[repr(C)]
             struct PropTagArray {
                 count: u32,
-                tags: [u32; $count],
+                tags: [u32; $tags.len()],
             }
-            std::mem::transmute::<_, &mut $crate::sys::SPropTagArray>(&mut PropTagArray {
-                count: $count,
-                tags: [$($tags,)+],
-            })
-        }
+            PropTagArray {
+                count: $tags.len() as u32,
+                tags: $tags,
+            }
+        })
     };
 }
 
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedSPropProblemArray {
-    ($count:expr, $($problems:expr),+) => {
-        {
+    ($problems:expr) => {
+        std::mem::transmute::<_, &mut $crate::sys::SPropProblemArray>(&mut {
             #[repr(C)]
             struct ProblemArray {
                 count: u32,
-                problems: [$crate::sys::SPropProblem; $count],
+                problems: [$crate::sys::SPropProblem; $problems.len()],
             }
-            std::mem::transmute::<_, &mut $crate::sys::SPropProblemArray>(&mut ProblemArray {
-                count: $count,
-                problems: [$($problems,)+],
-            })
-        }
+            ProblemArray {
+                count: $problems.len() as u32,
+                problems: $problems,
+            }
+        })
     };
 }
 
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedADRLIST {
-    ($count:expr, $($entries:expr),+) => {
-        {
+    ($entries:expr) => {
+        std::mem::transmute::<_, &mut $crate::sys::ADRLIST>(&mut {
             #[repr(C)]
             struct AdrList {
                 count: u32,
-                entries: [$crate::sys::ADRENTRY; $count],
+                entries: [$crate::sys::ADRENTRY; $entries.len()],
             }
-            std::mem::transmute::<_, &mut $crate::sys::ADRLIST>(&mut AdrList {
-                count: $count,
-                entries: [$($entries,)+],
-            })
-        }
+            AdrList {
+                count: $entries.len() as u32,
+                entries: $entries,
+            }
+        })
     };
 }
 
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedSRowSet {
-    ($count:expr, $($rows:expr),+) => {
-        {
+    ($rows:expr) => {
+        std::mem::transmute::<_, &mut $crate::sys::SRowSet>(&mut {
             #[repr(C)]
             struct RowSet {
                 count: u32,
-                rows: [$crate::sys::SRow; $count],
+                rows: [$crate::sys::SRow; $rows.len()],
             }
-            std::mem::transmute::<_, &mut $crate::sys::SRowSet>(&mut RowSet {
-                count: $count,
-                rows: [$($rows,)+],
-            })
-        }
+            RowSet {
+                count: $rows.len() as u32,
+                rows: $rows,
+            }
+        })
     };
 }
 
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedSSortOrderSet {
-    ($sorts:expr, $categories:expr, $expanded:expr, $($sort_orders:expr),+) => {
-        {
+    ($categories:expr, $expanded:expr, $sorts:expr) => {
+        #[allow(unused_comparisons)]
+        std::mem::transmute::<_, &mut $crate::sys::SSortOrderSet>(&mut {
             #[repr(C)]
             struct SortOrderSet {
                 sorts: u32,
                 categories: u32,
                 expanded: u32,
-                sort_orders: [SSortOrder; $sorts],
+                sort_orders: [$crate::sys::SSortOrder; $sorts.len()],
             }
-            assert!($categories <= $sorts, "cCategories > cSorts");
+
+            assert!($categories <= $sorts.len(), "cCategories > cSorts");
             assert!($expanded <= $categories, "cExpanded > cCategories");
-            std::mem::transmute::<_, &mut $crate::sys::SSortOrderSet>(&mut SortOrderSet {
-                sorts: $sorts,
+            SortOrderSet {
+                sorts: $sorts.len() as u32,
                 categories: $categories,
                 expanded: $expanded,
-                sort_orders: [$($sort_orders,)+],
-            })
-        }
+                sort_orders: $sorts,
+            }
+        })
     };
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::Arc;
+    use std::{mem, ptr};
 
     #[test]
-    fn login() {
-        let initialized = Initialize::new(Default::default()).expect("failed to initialize MAPI");
-        let _logon = Logon::new(
-            Arc::new(initialized),
-            Default::default(),
-            None,
-            None,
-            LogonFlags {
-                extended: true,
-                unicode: true,
-                logon_ui: true,
-                use_default: true,
-                ..Default::default()
-            },
-        )
-        .expect("should be able to logon to the default MAPI profile");
+    fn sized_macros() {
+        assert_eq!(
+            mem::size_of::<sys::ENTRYID>(),
+            mem::size_of_val(unsafe { SizedENTRYID!([0; 4], [0; 1]) })
+        );
+        assert_eq!(
+            mem::size_of::<sys::SPropTagArray>(),
+            mem::size_of_val(unsafe { SizedSPropTagArray!([sys::PR_NULL]) })
+        );
+        assert_eq!(
+            mem::size_of::<sys::SPropProblemArray>(),
+            mem::size_of_val(unsafe {
+                SizedSPropProblemArray!([sys::SPropProblem {
+                    ulIndex: 0,
+                    ulPropTag: sys::PR_NULL,
+                    scode: sys::MAPI_E_NOT_FOUND.0
+                }])
+            })
+        );
+        assert_eq!(
+            mem::size_of::<sys::ADRLIST>(),
+            mem::size_of_val(unsafe {
+                SizedADRLIST!([sys::ADRENTRY {
+                    ulReserved1: 0,
+                    cValues: 0,
+                    rgPropVals: ptr::null_mut(),
+                }])
+            })
+        );
+        assert_eq!(
+            mem::size_of::<sys::SRowSet>(),
+            mem::size_of_val(unsafe {
+                SizedSRowSet!([sys::SRow {
+                    ulAdrEntryPad: 0,
+                    cValues: 0,
+                    lpProps: ptr::null_mut(),
+                }])
+            })
+        );
+        assert_eq!(
+            mem::size_of::<sys::SSortOrderSet>(),
+            mem::size_of_val(unsafe {
+                SizedSSortOrderSet!(
+                    0,
+                    0,
+                    [sys::SSortOrder {
+                        ulPropTag: sys::PR_NULL,
+                        ulOrder: sys::TABLE_SORT_ASCEND,
+                    }]
+                )
+            })
+        );
     }
 }
