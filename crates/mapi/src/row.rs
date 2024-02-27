@@ -1,34 +1,51 @@
-use crate::sys::*;
+//! Define [`Row`].
+
+use crate::sys;
 use core::{mem, slice};
 use std::ptr;
 
+/// Container for the members of a [`sys::SRow`] structure. The [`sys::SPropValue`] pointer should
+/// be freed in the destructor with a call to [`sys::MAPIFreeBuffer`].
+///
+/// Typically, the memory for the [`sys::SRow`] itself is still owned by an [`sys::SRowSet`]
+/// allocation, but the [`sys::SRow::lpProps`] member is a separate allocation. [`Row`] copies the
+/// [`sys::SRow::cValues`] member and takes ownership of the [`sys::SRow::lpProps`] pointer away
+/// from the [`sys::SRow`], leaving both [`sys::SRow`] members empty in the source structure.
 pub struct Row {
     count: usize,
-    props: *mut SPropValue,
+    props: *mut sys::SPropValue,
 }
 
 impl Row {
-    pub fn new(row: &mut SRow) -> Self {
+    /// Take ownership of the [`sys::SRow`] members.
+    pub fn new(row: &mut sys::SRow) -> Self {
         Self {
             count: mem::replace(&mut row.cValues, 0) as usize,
             props: mem::replace(&mut row.lpProps, ptr::null_mut()),
         }
     }
 
+    /// Test for a count of 0 properties or a null [`sys::SPropValue`] pointer.
     pub fn is_empty(&self) -> bool {
         self.count == 0 || self.props.is_null()
     }
 
+    /// Get the number of [`sys::SPropValue`] column values in the [`Row`].
     pub fn len(&self) -> usize {
-        self.count
+        if self.props.is_null() {
+            0
+        } else {
+            self.count
+        }
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = &SPropValue> {
+    /// Iterate over the [`sys::SPropValue`] column values in the [`Row`].
+    pub fn iter(&self) -> impl Iterator<Item = &sys::SPropValue> {
         if self.props.is_null() {
             vec![]
         } else {
             unsafe {
-                let data: &[SPropValue] = slice::from_raw_parts(self.props, self.count);
+                let data: &[sys::SPropValue] = slice::from_raw_parts(self.props, self.count);
                 let data = data.iter().collect();
                 data
             }
@@ -38,10 +55,11 @@ impl Row {
 }
 
 impl Drop for Row {
+    /// Free the [`sys::SPropValue`] pointer with [`sys::MAPIFreeBuffer`].
     fn drop(&mut self) {
         if !self.props.is_null() {
             unsafe {
-                MAPIFreeBuffer(mem::transmute(self.props));
+                sys::MAPIFreeBuffer(mem::transmute(self.props));
             }
         }
     }

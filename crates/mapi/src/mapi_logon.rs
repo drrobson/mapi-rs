@@ -1,67 +1,109 @@
-use crate::sys::*;
+//! Define [`Logon`] and [`LogonFlags`].
+
+use crate::{sys, Initialize};
 use std::{iter, ptr, sync::Arc};
 use windows::Win32::Foundation::*;
 use windows_core::*;
 
-use crate::mapi_initialize::Initialize;
-
+/// Set of flags that can be passed to [`sys::MAPILogonEx`].
 #[derive(Default)]
 pub struct LogonFlags {
+    /// Pass [`sys::MAPI_ALLOW_OTHERS`].
     pub allow_others: bool,
+
+    /// Pass [`sys::MAPI_BG_SESSION`].
     pub bg_session: bool,
+
+    /// Pass [`sys::MAPI_EXPLICIT_PROFILE`].
     pub explicit_profile: bool,
+
+    /// Pass [`sys::MAPI_EXTENDED`].
     pub extended: bool,
+
+    /// Pass [`sys::MAPI_FORCE_DOWNLOAD`].
     pub force_download: bool,
+
+    /// Pass [`sys::MAPI_LOGON_UI`].
     pub logon_ui: bool,
+
+    /// Pass [`sys::MAPI_NEW_SESSION`].
     pub new_session: bool,
+
+    /// Pass [`sys::MAPI_NO_MAIL`].
     pub no_mail: bool,
+
+    /// Pass [`sys::MAPI_NT_SERVICE`].
     pub nt_service: bool,
+
+    /// Pass [`sys::MAPI_SERVICE_UI_ALWAYS`].
     pub service_ui_always: bool,
+
+    /// Pass [`sys::MAPI_TIMEOUT_SHORT`].
     pub timeout_short: bool,
+
+    /// Pass [`sys::MAPI_UNICODE`].
     pub unicode: bool,
+
+    /// Pass [`sys::MAPI_USE_DEFAULT`].
     pub use_default: bool,
 }
 
 impl From<LogonFlags> for u32 {
     fn from(value: LogonFlags) -> Self {
         let allow_others = if value.allow_others {
-            MAPI_ALLOW_OTHERS
+            sys::MAPI_ALLOW_OTHERS
         } else {
             0
         };
-        let bg_session = if value.bg_session { MAPI_BG_SESSION } else { 0 };
+        let bg_session = if value.bg_session {
+            sys::MAPI_BG_SESSION
+        } else {
+            0
+        };
         let explicit_profile = if value.explicit_profile {
-            MAPI_EXPLICIT_PROFILE
+            sys::MAPI_EXPLICIT_PROFILE
         } else {
             0
         };
-        let extended = if value.extended { MAPI_EXTENDED } else { 0 };
+        let extended = if value.extended {
+            sys::MAPI_EXTENDED
+        } else {
+            0
+        };
         let force_download = if value.force_download {
-            MAPI_FORCE_DOWNLOAD
+            sys::MAPI_FORCE_DOWNLOAD
         } else {
             0
         };
-        let logon_ui = if value.logon_ui { MAPI_LOGON_UI } else { 0 };
+        let logon_ui = if value.logon_ui {
+            sys::MAPI_LOGON_UI
+        } else {
+            0
+        };
         let new_session = if value.new_session {
-            MAPI_NEW_SESSION
+            sys::MAPI_NEW_SESSION
         } else {
             0
         };
-        let no_mail = if value.no_mail { MAPI_NO_MAIL } else { 0 };
-        let nt_service = if value.nt_service { MAPI_NT_SERVICE } else { 0 };
+        let no_mail = if value.no_mail { sys::MAPI_NO_MAIL } else { 0 };
+        let nt_service = if value.nt_service {
+            sys::MAPI_NT_SERVICE
+        } else {
+            0
+        };
         let service_ui_always = if value.service_ui_always {
-            MAPI_SERVICE_UI_ALWAYS
+            sys::MAPI_SERVICE_UI_ALWAYS
         } else {
             0
         };
         let timeout_short = if value.timeout_short {
-            MAPI_TIMEOUT_SHORT
+            sys::MAPI_TIMEOUT_SHORT
         } else {
             0
         };
-        let unicode = if value.unicode { MAPI_UNICODE } else { 0 };
+        let unicode = if value.unicode { sys::MAPI_UNICODE } else { 0 };
         let use_default = if value.use_default {
-            MAPI_USE_DEFAULT
+            sys::MAPI_USE_DEFAULT
         } else {
             0
         };
@@ -82,9 +124,16 @@ impl From<LogonFlags> for u32 {
     }
 }
 
+/// Call [`sys::MAPILogonEx`] and hold on to the [`sys::IMAPISession`].
+///
+/// This helper also holds onto an `Arc<Initialize>`, which ensures that there are balanced calls
+/// to [`sys::MAPIInitialize`] and [`sys::MAPIUninitialize`] around every [`Logon`] object that
+/// shares a reference to that instance of [`Initialize`].
 pub struct Logon {
     _initialized: Arc<Initialize>,
-    pub session: IMAPISession,
+
+    /// Access the [`sys::IMAPISession`].
+    pub session: sys::IMAPISession,
 }
 
 impl Logon {
@@ -112,7 +161,7 @@ impl Logon {
             _initialized: initialized,
             session: unsafe {
                 let mut session = None;
-                MAPILogonEx(
+                sys::MAPILogonEx(
                     ui_param.0 as usize,
                     profile_name as *mut _,
                     password as *mut _,
