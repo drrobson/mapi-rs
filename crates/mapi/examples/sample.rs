@@ -1,6 +1,5 @@
 use core::{ptr, slice};
 use outlook_mapi::{sys::*, *};
-use std::sync::Arc;
 use windows_core::*;
 
 fn main() -> Result<()> {
@@ -8,7 +7,7 @@ fn main() -> Result<()> {
     let initialized = Initialize::new(Default::default()).expect("failed to initialize MAPI");
     println!("Trying to logon to the default profile...");
     let logon = Logon::new(
-        Arc::new(initialized),
+        initialized,
         Default::default(),
         None,
         None,

@@ -2,6 +2,7 @@
 
 use crate::sys;
 use core::ptr;
+use std::sync::Arc;
 use windows_core::*;
 
 /// Set of flags that can be passed to [`sys::MAPIInitialize`] through the
@@ -46,7 +47,7 @@ pub struct Initialize();
 
 impl Initialize {
     /// Call [`sys::MAPIInitialize`] with the specified flags in [`InitializeFlags`].
-    pub fn new(flags: InitializeFlags) -> Result<Self> {
+    pub fn new(flags: InitializeFlags) -> Result<Arc<Self>> {
         unsafe {
             sys::MAPIInitialize(ptr::from_mut(&mut sys::MAPIINIT {
                 ulVersion: sys::MAPI_INIT_VERSION,
@@ -54,7 +55,7 @@ impl Initialize {
             }) as *mut _)?;
         }
 
-        Ok(Self())
+        Ok(Arc::new(Self()))
     }
 }
 
