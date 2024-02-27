@@ -5,16 +5,48 @@ This crate implements Rust bindings for the [Outlook MAPI](https://learn.microso
 Include a reference to `outlook-mapi` in your `Cargo.toml`:
 ```toml
 [dependencies]
-outlook-mapi = "0.4.0"
+outlook-mapi = "0.5.0"
 ```
 
 See the [docs](https://docs.rs/outlook-mapi/) for more details.
 
 ## Safety
-Most of the bindings are re-exported transparently from `outlook-mapi-sys`, and they are still marked `unsafe`. Unlike typical idiomatic Rust crates wrapped around a `-sys` crate, the emphasis of this crate is on writing as little manual wrapper code as possible. This way, `outlook-mapi` can project 100% of the Outlook MAPI COM API, but the downside is you will need to wrap most uses in an `unsafe` block or function.
+Most of the bindings are re-exported transparently from `outlook-mapi-sys` as the `outlook-mapi::sys` module, and they are still marked `unsafe`. Unlike typical idiomatic Rust crates wrapped around a `-sys` crate, the emphasis of this crate is on writing as little manual wrapper code as possible. This way, `outlook-mapi` can project 100% of the Outlook MAPI COM API, but the downside is you will need to wrap most uses in an `unsafe` block or function.
 
 ## Convenience Types
-_NYI: This crate should implement helpers and safe wrappers for the most commonly used COM interfaces and MAPI structs._
+This crate does add several Rust structs and macro definitions to make it easier to work with MAPI types, and to add some lifetime guarantees when used in place of the raw MAPI API. For instance, the typical sequence of MAPI calls in C++ looks something like this:
+
+```cpp
+MAPIInitialize(...);
+MAPILogonEx(..., &session);
+
+// Do stuff with the session...
+
+MAPIUninitialize();
+```
+
+The convenience types ensure that you have a matching pair of `MAPIInitialize` and `MAPIUninitialize` calls, and they live at least as long as the `session` is in use. They also constrain which flags you can pass to each of these calls:
+
+```rs
+println!("Initializing MAPI...");
+let initialized = Initialize::new(Default::default()).expect("failed to initialize MAPI");
+println!("Trying to logon to the default profile...");
+let logon = Logon::new(
+    Arc::new(initialized),
+    Default::default(),
+    None,
+    None,
+    LogonFlags {
+        extended: true,
+        unicode: true,
+        logon_ui: true,
+        use_default: true,
+        ..Default::default()
+    },
+)
+.expect("should be able to logon to the default MAPI profile");
+println!("Success!");
+```
 
 ## Windows Metadata
 The Windows crate requires a Windows Metadata (`winmd`) file describing the API. The one used in this crate was generated with the [mapi-win32md](https://github.com/wravery/mapi-win32md) project. This crate needs it to use the `#[implement]` macro from the Windows crate. 
