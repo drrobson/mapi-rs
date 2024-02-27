@@ -5,7 +5,7 @@ This crate implements Rust bindings for the [Outlook MAPI](https://learn.microso
 Include a reference to `outlook-mapi` in your `Cargo.toml`:
 ```toml
 [dependencies]
-outlook-mapi = "0.3.0"
+outlook-mapi = "0.4.0"
 ```
 
 See the [docs](https://docs.rs/outlook-mapi/) for more details.

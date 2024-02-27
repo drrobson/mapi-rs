@@ -22,45 +22,45 @@ pub struct Flags {
     pub use_default: bool,
 }
 
-impl Into<u32> for Flags {
-    fn into(self) -> u32 {
-        let allow_others = if self.allow_others {
+impl From<Flags> for u32 {
+    fn from(value: Flags) -> Self {
+        let allow_others = if value.allow_others {
             MAPI_ALLOW_OTHERS
         } else {
             0
         };
-        let bg_session = if self.bg_session { MAPI_BG_SESSION } else { 0 };
-        let explicit_profile = if self.explicit_profile {
+        let bg_session = if value.bg_session { MAPI_BG_SESSION } else { 0 };
+        let explicit_profile = if value.explicit_profile {
             MAPI_EXPLICIT_PROFILE
         } else {
             0
         };
-        let extended = if self.extended { MAPI_EXTENDED } else { 0 };
-        let force_download = if self.force_download {
+        let extended = if value.extended { MAPI_EXTENDED } else { 0 };
+        let force_download = if value.force_download {
             MAPI_FORCE_DOWNLOAD
         } else {
             0
         };
-        let logon_ui = if self.logon_ui { MAPI_LOGON_UI } else { 0 };
-        let new_session = if self.new_session {
+        let logon_ui = if value.logon_ui { MAPI_LOGON_UI } else { 0 };
+        let new_session = if value.new_session {
             MAPI_NEW_SESSION
         } else {
             0
         };
-        let no_mail = if self.no_mail { MAPI_NO_MAIL } else { 0 };
-        let nt_service = if self.nt_service { MAPI_NT_SERVICE } else { 0 };
-        let service_ui_always = if self.service_ui_always {
+        let no_mail = if value.no_mail { MAPI_NO_MAIL } else { 0 };
+        let nt_service = if value.nt_service { MAPI_NT_SERVICE } else { 0 };
+        let service_ui_always = if value.service_ui_always {
             MAPI_SERVICE_UI_ALWAYS
         } else {
             0
         };
-        let timeout_short = if self.timeout_short {
+        let timeout_short = if value.timeout_short {
             MAPI_TIMEOUT_SHORT
         } else {
             0
         };
-        let unicode = if self.unicode { MAPI_UNICODE } else { 0 };
-        let use_default = if self.use_default {
+        let unicode = if value.unicode { MAPI_UNICODE } else { 0 };
+        let use_default = if value.use_default {
             MAPI_USE_DEFAULT
         } else {
             0
@@ -82,12 +82,12 @@ impl Into<u32> for Flags {
     }
 }
 
-pub struct Session {
+pub struct Logon {
     _initialized: Arc<Initialize>,
     pub session: IMAPISession,
 }
 
-impl Session {
+impl Logon {
     pub fn new(
         initialized: Arc<Initialize>,
         ui_param: HWND,
