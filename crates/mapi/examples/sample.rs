@@ -31,14 +31,14 @@ fn main() -> Result<()> {
             &stores_table,
             SizedSPropTagArray!([PR_ENTRYID, PR_DISPLAY_NAME_W]),
             ptr::null_mut(),
-            SizedSSortOrderSet!(
-                0,
-                0,
-                [SSortOrder {
+            SizedSSortOrderSet!({
+                categories: 0,
+                expanded: 0,
+                sorts: [SSortOrder {
                     ulPropTag: PR_DISPLAY_NAME_W,
                     ulOrder: TABLE_SORT_ASCEND,
                 }]
-            ),
+            }),
             50,
             rows.as_mut_ptr(),
         )?;

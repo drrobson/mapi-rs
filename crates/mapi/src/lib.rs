@@ -13,7 +13,7 @@ pub use row_set::*;
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedENTRYID {
-    ($flags:expr, $bytes:expr) => {
+    ({ flags: $flags:expr, bytes: $bytes:expr }) => {
         std::mem::transmute::<_, &mut $crate::sys::ENTRYID>(&mut {
             #[repr(C)]
             struct EntryId {
@@ -33,13 +33,14 @@ macro_rules! SizedENTRYID {
 macro_rules! SizedSPropTagArray {
     ($tags:expr) => {
         std::mem::transmute::<_, &mut $crate::sys::SPropTagArray>(&mut {
+            const COUNT: usize = $tags.len();
             #[repr(C)]
             struct PropTagArray {
                 count: u32,
-                tags: [u32; $tags.len()],
+                tags: [u32; COUNT],
             }
             PropTagArray {
-                count: $tags.len() as u32,
+                count: COUNT as u32,
                 tags: $tags,
             }
         })
@@ -51,13 +52,14 @@ macro_rules! SizedSPropTagArray {
 macro_rules! SizedSPropProblemArray {
     ($problems:expr) => {
         std::mem::transmute::<_, &mut $crate::sys::SPropProblemArray>(&mut {
+            const COUNT: usize = $problems.len();
             #[repr(C)]
             struct ProblemArray {
                 count: u32,
-                problems: [$crate::sys::SPropProblem; $problems.len()],
+                problems: [$crate::sys::SPropProblem; COUNT],
             }
             ProblemArray {
-                count: $problems.len() as u32,
+                count: COUNT as u32,
                 problems: $problems,
             }
         })
@@ -69,13 +71,14 @@ macro_rules! SizedSPropProblemArray {
 macro_rules! SizedADRLIST {
     ($entries:expr) => {
         std::mem::transmute::<_, &mut $crate::sys::ADRLIST>(&mut {
+            const COUNT: usize = $entries.len();
             #[repr(C)]
             struct AdrList {
                 count: u32,
-                entries: [$crate::sys::ADRENTRY; $entries.len()],
+                entries: [$crate::sys::ADRENTRY; COUNT],
             }
             AdrList {
-                count: $entries.len() as u32,
+                count: COUNT as u32,
                 entries: $entries,
             }
         })
@@ -87,13 +90,14 @@ macro_rules! SizedADRLIST {
 macro_rules! SizedSRowSet {
     ($rows:expr) => {
         std::mem::transmute::<_, &mut $crate::sys::SRowSet>(&mut {
+            const COUNT: usize = $rows.len();
             #[repr(C)]
             struct RowSet {
                 count: u32,
-                rows: [$crate::sys::SRow; $rows.len()],
+                rows: [$crate::sys::SRow; COUNT],
             }
             RowSet {
-                count: $rows.len() as u32,
+                count: COUNT as u32,
                 rows: $rows,
             }
         })
@@ -103,24 +107,29 @@ macro_rules! SizedSRowSet {
 #[macro_export]
 #[allow(non_snake_case)]
 macro_rules! SizedSSortOrderSet {
-    ($categories:expr, $expanded:expr, $sorts:expr) => {
-        #[allow(unused_comparisons)]
+    ({ categories: $categories:expr, expanded: $expanded:expr, sorts: $sorts:expr }) => {
         std::mem::transmute::<_, &mut $crate::sys::SSortOrderSet>(&mut {
+            const COUNT: usize = $sorts.len();
+
+            let count = COUNT;
+            let categories = $categories;
+            let expanded = $expanded;
+
+            assert!(categories <= count);
+            assert!(expanded <= categories);
+
             #[repr(C)]
             struct SortOrderSet {
-                sorts: u32,
+                count: u32,
                 categories: u32,
                 expanded: u32,
-                sort_orders: [$crate::sys::SSortOrder; $sorts.len()],
+                sorts: [$crate::sys::SSortOrder; COUNT],
             }
-
-            assert!($categories <= $sorts.len(), "cCategories > cSorts");
-            assert!($expanded <= $categories, "cExpanded > cCategories");
             SortOrderSet {
-                sorts: $sorts.len() as u32,
-                categories: $categories,
-                expanded: $expanded,
-                sort_orders: $sorts,
+                count: count as u32,
+                categories: categories as u32,
+                expanded: expanded as u32,
+                sorts: $sorts,
             }
         })
     };
@@ -135,7 +144,7 @@ mod tests {
     fn sized_macros() {
         assert_eq!(
             mem::size_of::<sys::ENTRYID>(),
-            mem::size_of_val(unsafe { SizedENTRYID!([0; 4], [0; 1]) })
+            mem::size_of_val(unsafe { SizedENTRYID!({ flags: [0; 4], bytes: [0; 1] }) })
         );
         assert_eq!(
             mem::size_of::<sys::SPropTagArray>(),
@@ -174,14 +183,14 @@ mod tests {
         assert_eq!(
             mem::size_of::<sys::SSortOrderSet>(),
             mem::size_of_val(unsafe {
-                SizedSSortOrderSet!(
-                    0,
-                    0,
-                    [sys::SSortOrder {
+                SizedSSortOrderSet!({
+                    categories: 0,
+                    expanded: 0,
+                    sorts: [sys::SSortOrder {
                         ulPropTag: sys::PR_NULL,
                         ulOrder: sys::TABLE_SORT_ASCEND,
                     }]
-                )
+                })
             })
         );
     }
