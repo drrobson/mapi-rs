@@ -12,6 +12,24 @@ pub use row_set::*;
 
 #[macro_export]
 #[allow(non_snake_case)]
+macro_rules! SizedENTRYID {
+    ($count:expr, $flags:expr, $($bytes:expr),+) => {
+        {
+            #[repr(C)]
+            struct EntryId {
+                flags: [u8; 4],
+                bytes: [u8; $count],
+            }
+            std::mem::transmute::<_, &mut $crate::sys::ENTRYID>(&mut EntryId {
+                flags: $flags,
+                bytes: [$($bytes,)+],
+            })
+        }
+    };
+}
+
+#[macro_export]
+#[allow(non_snake_case)]
 macro_rules! SizedSPropTagArray {
     ($count:expr, $($tags:expr),+) => {
         {
@@ -30,11 +48,64 @@ macro_rules! SizedSPropTagArray {
 
 #[macro_export]
 #[allow(non_snake_case)]
+macro_rules! SizedSPropProblemArray {
+    ($count:expr, $($problems:expr),+) => {
+        {
+            #[repr(C)]
+            struct ProblemArray {
+                count: u32,
+                problems: [$crate::sys::SPropProblem; $count],
+            }
+            std::mem::transmute::<_, &mut $crate::sys::SPropProblemArray>(&mut ProblemArray {
+                count: $count,
+                problems: [$($problems,)+],
+            })
+        }
+    };
+}
+
+#[macro_export]
+#[allow(non_snake_case)]
+macro_rules! SizedADRLIST {
+    ($count:expr, $($entries:expr),+) => {
+        {
+            #[repr(C)]
+            struct AdrList {
+                count: u32,
+                entries: [$crate::sys::ADRENTRY; $count],
+            }
+            std::mem::transmute::<_, &mut $crate::sys::ADRLIST>(&mut AdrList {
+                count: $count,
+                entries: [$($entries,)+],
+            })
+        }
+    };
+}
+
+#[macro_export]
+#[allow(non_snake_case)]
+macro_rules! SizedSRowSet {
+    ($count:expr, $($rows:expr),+) => {
+        {
+            #[repr(C)]
+            struct RowSet {
+                count: u32,
+                rows: [$crate::sys::SRow; $count],
+            }
+            std::mem::transmute::<_, &mut $crate::sys::SRowSet>(&mut RowSet {
+                count: $count,
+                rows: [$($rows,)+],
+            })
+        }
+    };
+}
+
+#[macro_export]
+#[allow(non_snake_case)]
 macro_rules! SizedSSortOrderSet {
     ($sorts:expr, $categories:expr, $expanded:expr, $($sort_orders:expr),+) => {
         {
             #[repr(C)]
-            #[allow(non_snake_case)]
             struct SortOrderSet {
                 sorts: u32,
                 categories: u32,
