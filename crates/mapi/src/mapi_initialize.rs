@@ -1,16 +1,16 @@
+use crate::sys::*;
 use core::ptr;
-use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
 use windows_core::*;
 
 #[derive(Default)]
-pub struct Flags {
+pub struct InitializeFlags {
     pub multithread_notifications: bool,
     pub nt_service: bool,
     pub no_coinit: bool,
 }
 
-impl From<Flags> for u32 {
-    fn from(value: Flags) -> Self {
+impl From<InitializeFlags> for u32 {
+    fn from(value: InitializeFlags) -> Self {
         let multithread_notifications = if value.multithread_notifications {
             MAPI_MULTITHREAD_NOTIFICATIONS
         } else {
@@ -26,7 +26,7 @@ impl From<Flags> for u32 {
 pub struct Initialize();
 
 impl Initialize {
-    pub fn new(flags: Flags) -> Result<Self> {
+    pub fn new(flags: InitializeFlags) -> Result<Self> {
         unsafe {
             MAPIInitialize(ptr::from_mut(&mut MAPIINIT {
                 ulVersion: MAPI_INIT_VERSION,

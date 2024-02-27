@@ -1,24 +1,18 @@
-#[macro_use]
-extern crate outlook_mapi;
-
 use core::{ptr, slice};
-use outlook_mapi::{
-    mapi_initialize, mapi_logon, row_set, Microsoft::Office::Outlook::MAPI::Win32::*,
-};
+use outlook_mapi::{sys::*, *};
 use std::sync::Arc;
 use windows_core::*;
 
 fn main() -> Result<()> {
     println!("Initializing MAPI...");
-    let initialized =
-        mapi_initialize::Initialize::new(Default::default()).expect("failed to initialize MAPI");
+    let initialized = Initialize::new(Default::default()).expect("failed to initialize MAPI");
     println!("Trying to logon to the default profile...");
-    let logon = mapi_logon::Logon::new(
+    let logon = Logon::new(
         Arc::new(initialized),
         Default::default(),
         None,
         None,
-        mapi_logon::Flags {
+        LogonFlags {
             extended: true,
             unicode: true,
             logon_ui: true,
@@ -30,7 +24,7 @@ fn main() -> Result<()> {
     println!("Success!");
 
     // Now try to list the stores in the default MAPI profile.
-    let mut rows: row_set::RowSet = Default::default();
+    let mut rows: RowSet = Default::default();
     unsafe {
         let stores_table = logon.session.GetMsgStoresTable(0)?;
         HrQueryAllRows(

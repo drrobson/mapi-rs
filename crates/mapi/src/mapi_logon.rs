@@ -1,4 +1,4 @@
-use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
+use crate::sys::*;
 use std::{iter, ptr, sync::Arc};
 use windows::Win32::Foundation::*;
 use windows_core::*;
@@ -6,7 +6,7 @@ use windows_core::*;
 use crate::mapi_initialize::Initialize;
 
 #[derive(Default)]
-pub struct Flags {
+pub struct LogonFlags {
     pub allow_others: bool,
     pub bg_session: bool,
     pub explicit_profile: bool,
@@ -22,8 +22,8 @@ pub struct Flags {
     pub use_default: bool,
 }
 
-impl From<Flags> for u32 {
-    fn from(value: Flags) -> Self {
+impl From<LogonFlags> for u32 {
+    fn from(value: LogonFlags) -> Self {
         let allow_others = if value.allow_others {
             MAPI_ALLOW_OTHERS
         } else {
@@ -93,7 +93,7 @@ impl Logon {
         ui_param: HWND,
         profile_name: Option<&str>,
         password: Option<&str>,
-        flags: Flags,
+        flags: LogonFlags,
     ) -> Result<Self> {
         let mut profile_name: Option<Vec<_>> =
             profile_name.map(|value| value.bytes().chain(iter::once(0)).collect());

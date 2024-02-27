@@ -1,11 +1,14 @@
-#![allow(non_snake_case)]
-
-pub use outlook_mapi_sys::Microsoft;
+pub use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32 as sys;
 
 pub mod mapi_initialize;
 pub mod mapi_logon;
 pub mod row;
 pub mod row_set;
+
+pub use mapi_initialize::*;
+pub use mapi_logon::*;
+pub use row::*;
+pub use row_set::*;
 
 #[macro_export]
 #[allow(non_snake_case)]
@@ -17,7 +20,7 @@ macro_rules! SizedSPropTagArray {
                 count: u32,
                 tags: [u32; $count],
             }
-            std::mem::transmute(&mut PropTagArray {
+            std::mem::transmute::<_, &mut $crate::sys::SPropTagArray>(&mut PropTagArray {
                 count: $count,
                 tags: [$($tags,)+],
             })
@@ -38,9 +41,9 @@ macro_rules! SizedSSortOrderSet {
                 expanded: u32,
                 sort_orders: [SSortOrder; $sorts],
             }
-            assert!($categories <= $sorts, "categories > sorts");
+            assert!($categories <= $sorts, "cCategories > cSorts");
             assert!($expanded <= $categories, "cExpanded > cCategories");
-            std::mem::transmute(&mut SortOrderSet {
+            std::mem::transmute::<_, &mut $crate::sys::SSortOrderSet>(&mut SortOrderSet {
                 sorts: $sorts,
                 categories: $categories,
                 expanded: $expanded,
@@ -57,14 +60,13 @@ mod tests {
 
     #[test]
     fn login() {
-        let initialized = mapi_initialize::Initialize::new(Default::default())
-            .expect("failed to initialize MAPI");
-        let _logon = mapi_logon::Logon::new(
+        let initialized = Initialize::new(Default::default()).expect("failed to initialize MAPI");
+        let _logon = Logon::new(
             Arc::new(initialized),
             Default::default(),
             None,
             None,
-            mapi_logon::Flags {
+            LogonFlags {
                 extended: true,
                 unicode: true,
                 logon_ui: true,

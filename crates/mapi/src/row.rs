@@ -1,5 +1,5 @@
+use crate::sys::*;
 use core::{mem, slice};
-use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
 use std::ptr;
 
 pub struct Row {

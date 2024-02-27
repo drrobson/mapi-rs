@@ -1,7 +1,5 @@
+use crate::{sys::*, *};
 use core::{ptr, slice};
-use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
-
-use crate::row;
 
 pub struct RowSet {
     rows: *mut SRowSet,
@@ -40,7 +38,7 @@ impl Default for RowSet {
 }
 
 impl IntoIterator for RowSet {
-    type Item = row::Row;
+    type Item = Row;
     type IntoIter = <Vec<Self::Item> as IntoIterator>::IntoIter;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -48,7 +46,7 @@ impl IntoIterator for RowSet {
             if let Some(rows) = self.rows.as_mut() {
                 let count = rows.cRows as usize;
                 let data: &mut [SRow] = slice::from_raw_parts_mut(rows.aRow.as_mut_ptr(), count);
-                let data = data.iter_mut().map(row::Row::new).collect();
+                let data = data.iter_mut().map(Row::new).collect();
                 data
             } else {
                 vec![]
