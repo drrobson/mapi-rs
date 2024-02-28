@@ -1,4 +1,4 @@
-use core::{ptr, slice};
+use core::ptr;
 use outlook_mapi::{sys::*, *};
 use windows_core::*;
 
@@ -45,22 +45,36 @@ fn main() -> Result<()> {
 
     println!("Found {rows} stores", rows = rows.len());
     for (idx, row) in rows.into_iter().enumerate() {
+        // Use 1-based indices for messages.
+        let idx = idx + 1;
+
         assert_eq!(2, row.len());
         let mut values = row.iter();
-        let entry_id = values.next().expect("missing entry ID");
-        assert_eq!(entry_id.ulPropTag, PR_ENTRYID);
-        let display_name = values.next().expect("missing display name");
-        assert_eq!(display_name.ulPropTag, PR_DISPLAY_NAME_W);
-        unsafe {
-            let entry_id =
-                slice::from_raw_parts(entry_id.Value.bin.lpb, entry_id.Value.bin.cb as usize);
-            let display_name = String::from_utf16(display_name.Value.lpszW.as_wide())?;
-            println!(
-                "Store {idx}: {display_name} ({entry_id} byte ID)",
-                idx = idx + 1,
-                entry_id = entry_id.len()
-            );
-        }
+
+        let Some(PropValue {
+            tag: PR_ENTRYID,
+            value: PropValueData::Binary(entry_id),
+        }) = values.next()
+        else {
+            eprintln!("Store {idx}: missing entry ID");
+            continue;
+        };
+
+        let Some(PropValue {
+            tag: PR_DISPLAY_NAME_W,
+            value: PropValueData::Unicode(display_name),
+        }) = values.next()
+        else {
+            eprintln!("Store {idx}: missing display name");
+            continue;
+        };
+        let display_name = unsafe { display_name.to_string() }
+            .unwrap_or_else(|err| format!("bad display name: {err}"));
+
+        println!(
+            "Store {idx}: {display_name} ({entry_id} byte ID)",
+            entry_id = entry_id.len()
+        );
     }
 
     Ok(())

@@ -1,6 +1,6 @@
 //! Define [`Row`].
 
-use crate::sys;
+use crate::{sys, PropValue};
 use core::{mem, slice};
 use std::ptr;
 
@@ -40,13 +40,13 @@ impl Row {
     }
 
     /// Iterate over the [`sys::SPropValue`] column values in the [`Row`].
-    pub fn iter(&self) -> impl Iterator<Item = &sys::SPropValue> {
+    pub fn iter(&self) -> impl Iterator<Item = PropValue> {
         if self.props.is_null() {
             vec![]
         } else {
             unsafe {
                 let data: &[sys::SPropValue] = slice::from_raw_parts(self.props, self.count);
-                let data = data.iter().collect();
+                let data = data.iter().map(PropValue::from).collect();
                 data
             }
         }

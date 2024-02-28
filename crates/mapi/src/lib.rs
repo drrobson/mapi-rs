@@ -8,11 +8,13 @@ pub use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32 as sys;
 
 pub mod mapi_initialize;
 pub mod mapi_logon;
+pub mod prop_value;
 pub mod row;
 pub mod row_set;
 
 pub use mapi_initialize::*;
 pub use mapi_logon::*;
+pub use prop_value::*;
 pub use row::*;
 pub use row_set::*;
 
