@@ -23,21 +23,27 @@ fn main() -> Result<()> {
     println!("Success!");
 
     // Now try to list the stores in the default MAPI profile.
+    SizedSPropTagArray! { PropTagArray[2] }
+    let mut prop_tag_array = PropTagArray {
+        aulPropTag: [PR_ENTRYID, PR_DISPLAY_NAME_W],
+        ..Default::default()
+    };
+    SizedSSortOrderSet! { SortOrderSet[1] }
+    let mut sort_order_set: SortOrderSet = SortOrderSet {
+        aSort: [SSortOrder {
+            ulPropTag: PR_DISPLAY_NAME_W,
+            ulOrder: TABLE_SORT_ASCEND,
+        }],
+        ..Default::default()
+    };
     let mut rows: RowSet = Default::default();
     unsafe {
         let stores_table = logon.session.GetMsgStoresTable(0)?;
         HrQueryAllRows(
             &stores_table,
-            SizedSPropTagArray!([PR_ENTRYID, PR_DISPLAY_NAME_W]),
+            prop_tag_array.as_mut_ptr(),
             ptr::null_mut(),
-            SizedSSortOrderSet!({
-                categories: 0,
-                expanded: 0,
-                sorts: [SSortOrder {
-                    ulPropTag: PR_DISPLAY_NAME_W,
-                    ulOrder: TABLE_SORT_ASCEND,
-                }]
-            }),
+            sort_order_set.as_mut_ptr(),
             50,
             rows.as_mut_ptr(),
         )?;

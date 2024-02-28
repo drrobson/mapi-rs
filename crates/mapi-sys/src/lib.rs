@@ -1,3 +1,7 @@
+//! This crate implements unsafe Rust bindings for the
+//! [Outlook MAPI](https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/outlook-mapi-reference)
+//! COM APIs using the [Windows](https://github.com/microsoft/windows-rs) crate.
+
 use windows::Win32::{Foundation::*, System::LibraryLoader::*};
 
 #[cfg(feature = "olmapi32")]
