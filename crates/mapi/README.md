@@ -18,9 +18,14 @@ This crate does add several Rust structs and macro definitions to make it easier
 
 ```cpp
 MAPIInitialize(...);
+
+// Logon with a new session.
 MAPILogonEx(..., &session);
 
 // Do stuff with the session...
+
+// This should be the last reference to the session!
+session->Release();
 
 MAPIUninitialize();
 ```
@@ -47,6 +52,3 @@ let logon = Logon::new(
 .expect("should be able to logon to the default MAPI profile");
 println!("Success!");
 ```
-
-## Windows Metadata
-The Windows crate requires a Windows Metadata (`winmd`) file describing the API. The one used in this crate was generated with the [mapi-win32md](https://github.com/wravery/mapi-win32md) project. This crate needs it to use the `#[implement]` macro from the Windows crate. 

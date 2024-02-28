@@ -1,4 +1,4 @@
-//! Public macros exported from the `outlook_mapi` crate.
+//! Public macros exported from the [outlook-mapi](https://crates.io/crates/outlook-mapi) crate.
 
 #[allow(unused_imports)]
 use crate::sys;

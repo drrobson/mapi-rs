@@ -2,7 +2,7 @@
 name = "outlook-mapi-macros"
 version = "0.1.0"
 edition = "2021"
-description = "Private macros used by the `outlook_mapi` crate internally"
+description = "Private macros used by the outlook-mapi crate internally"
 repository = "https://github.com/wravery/mapi-rs"
 license = "MIT"
 keywords = [ "win32", "outlook", "mapi" ]

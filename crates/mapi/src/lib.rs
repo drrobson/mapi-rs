@@ -1,10 +1,12 @@
 //! All of the safe wrappers added by this crate, as well as any macros, are exported from the root
 //! module of this crate.
 //!
-//! All of the nested, unsafe types from `outlook_mapi_sys` are re-exported as the `sys` module in
-//! this crate.
+//! All of the nested, unsafe types from
+//! [outlook-mapi-sys](https://crates.io/crates/outlook-mapi-sys) are re-exported as the `sys`
+//! module in this crate.
 
-/// Re-export all of the unsafe bindings from the `outlook_mapi_sys` crate.
+/// Re-export all of the unsafe bindings from the
+/// [outlook-mapi-sys](https://crates.io/crates/outlook-mapi-sys) crate.
 pub mod sys {
     pub use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
 }

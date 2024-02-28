@@ -1,4 +1,5 @@
-//! Private macros used by the `outlook_mapi` crate internally, they are not re-exported.
+//! Private macros used by the [outlook-mapi](https://crates.io/crates/outlook-mapi) crate
+//! internally that are not re-exported.
 
 /// Build the common casting function `impl` block for all of the SizedXXX macros.
 #[macro_export]
