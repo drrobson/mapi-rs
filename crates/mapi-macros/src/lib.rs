@@ -31,7 +31,7 @@ macro_rules! impl_sized_struct_default {
     };
 }
 
-/// Get the ulFlags default value for any of the display table SizedXXX macros.
+/// Get the `ulFlags` default value for any of the display table SizedXXX macros.
 #[macro_export]
 macro_rules! display_table_default_flags {
     (u8, $unicode:expr) => {

@@ -326,9 +326,9 @@ macro_rules! SizedSSortOrderSet {
 /// - `fn as_ptr(&self) -> *const sys::DTBLLABEL`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLLABEL`
 ///
-/// It also initializes the [`sys::DTBLLABEL::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLLABEL::ulbLpszLabelName`] and [`sys::DTBLLABEL::ulFlags`]
+/// members and implements either of these accessor to fill in the string buffer, depending on
+/// whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label_name(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label_name(&mut self) -> &mut [u16]`
@@ -416,9 +416,9 @@ macro_rules! SizedDtblLabel {
 /// - `fn as_ptr(&self) -> *const sys::DTBLEDIT`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLEDIT`
 ///
-/// It also initializes the [`sys::DTBLEDIT::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLEDIT::ulbLpszCharsAllowed`] and [`sys::DTBLEDIT::ulFlags`]
+/// members and implements either of these accessor to fill in the string buffer, depending on
+/// whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn chars_allowed(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn chars_allowed(&mut self) -> &mut [u16]`
@@ -522,9 +522,9 @@ macro_rules! SizedDtblEdit {
 /// - `fn as_ptr(&self) -> *const sys::DTBLCOMBOBOX`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLCOMBOBOX`
 ///
-/// It also initializes the [`sys::DTBLCOMBOBOX::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLCOMBOBOX::ulbLpszCharsAllowed`] and
+/// [`sys::DTBLCOMBOBOX::ulFlags`] members and implements either of these accessor to fill in the
+/// string buffer, depending on whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn chars_allowed(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn chars_allowed(&mut self) -> &mut [u16]`
@@ -634,9 +634,9 @@ macro_rules! SizedDtblComboBox {
 /// - `fn as_ptr(&self) -> *const sys::DTBLCHECKBOX`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLCHECKBOX`
 ///
-/// It also initializes the [`sys::DTBLCHECKBOX::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLCHECKBOX::ulbLpszLabel`] and [`sys::DTBLCHECKBOX::ulFlags`]
+/// members and implements either of these accessor to fill in the string buffer, depending on
+/// whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label(&mut self) -> &mut [u16]`
@@ -734,9 +734,9 @@ macro_rules! SizedDtblCheckBox {
 /// - `fn as_ptr(&self) -> *const sys::DTBLGROUPBOX`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLGROUPBOX`
 ///
-/// It also initializes the [`sys::DTBLGROUPBOX::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLGROUPBOX::ulbLpszLabel`] and [`sys::DTBLGROUPBOX::ulFlags`]
+/// members and implements either of these accessor to fill in the string buffer, depending on
+/// whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label(&mut self) -> &mut [u16]`
@@ -824,9 +824,9 @@ macro_rules! SizedDtblGroupBox {
 /// - `fn as_ptr(&self) -> *const sys::DTBLBUTTON`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLBUTTON`
 ///
-/// It also initializes the [`sys::DTBLBUTTON::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLBUTTON::ulbLpszLabel`] and [`sys::DTBLBUTTON::ulFlags`]
+/// members and implements either of these accessor to fill in the string buffer, depending on
+/// whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label(&mut self) -> &mut [u16]`
@@ -924,9 +924,9 @@ macro_rules! SizedDtblButton {
 /// - `fn as_ptr(&self) -> *const sys::DTBLPAGE`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLPAGE`
 ///
-/// It also initializes the [`sys::DTBLPAGE::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLPAGE::ulbLpszLabel`], [`sys::DTBLPAGE::ulFlags`], and
+/// [`sys::DTBLPAGE::ulbLpszComponent`] members and implements either of these accessor to fill in
+/// the string buffer, depending on whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label(&mut self) -> &mut [u8]`, and `fn context(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label(&mut self) -> &mut [u16]`, and `fn context(&mut self) -> &mut [u16]`
@@ -1054,9 +1054,9 @@ macro_rules! SizedDtblPage {
 /// - `fn as_ptr(&self) -> *const sys::DTBLRADIOBUTTON`
 /// - `fn as_mut_ptr(&mut self) -> *mut sys::DTBLRADIOBUTTON`
 ///
-/// It also initializes the [`sys::DTBLRADIOBUTTON::ulFlags`] member and implements either of these
-/// accessor to fill in the string buffer, depending on whether it is declared with [`u8`] or
-/// [`u16`]:
+/// It also initializes the [`sys::DTBLRADIOBUTTON::ulbLpszLabel`] and
+/// [`sys::DTBLRADIOBUTTON::ulFlags`] members and implements either of these accessor to fill in
+/// the string buffer, depending on whether it is declared with [`u8`] or [`u16`]:
 ///
 /// - [`u8`]: `fn label(&mut self) -> &mut [u8]`
 /// - [`u16`]: `fn label(&mut self) -> &mut [u16]`
