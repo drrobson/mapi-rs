@@ -58,7 +58,7 @@ fn main() -> Result<()> {
         let mut values = row.iter();
 
         let Some(PropValue {
-            tag: PR_ENTRYID,
+            tag: PropTag(PR_ENTRYID),
             value: PropValueData::Binary(entry_id),
         }) = values.next()
         else {
@@ -67,7 +67,7 @@ fn main() -> Result<()> {
         };
 
         let Some(PropValue {
-            tag: PR_DISPLAY_NAME_W,
+            tag: PropTag(PR_DISPLAY_NAME_W),
             value: PropValueData::Unicode(display_name),
         }) = values.next()
         else {

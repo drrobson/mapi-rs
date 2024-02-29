@@ -1,6 +1,6 @@
 //! Define [`PropValue`] and [`PropValueData`].
 
-use crate::sys;
+use crate::{sys, PropTag};
 use core::{ffi, mem, slice};
 use windows::Win32::{
     Foundation::{E_INVALIDARG, E_POINTER, FILETIME},
@@ -10,7 +10,7 @@ use windows_core::*;
 
 /// Wrapper for a [`sys::SPropValue`] structure which allows pattern matching on [`PropValueData`].
 pub struct PropValue<'a> {
-    pub tag: u32,
+    pub tag: PropTag,
     pub value: PropValueData<'a>,
 }
 
@@ -105,7 +105,8 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
     /// Convert a [`sys::SPropValue`] reference into a friendlier [`PropValue`] type, which often
     /// supports safe access to the [`sys::SPropValue::Value`] union.
     fn from(value: &sys::SPropValue) -> Self {
-        let prop_type = value.ulPropTag & 0xFFFF & !sys::MV_INSTANCE;
+        let tag = PropTag::from(value.ulPropTag);
+        let prop_type = tag.prop_type() as u32 & !sys::MV_INSTANCE;
         let data = unsafe {
             match prop_type {
                 sys::PT_SHORT => PropValueData::Short(value.Value.i),
@@ -273,9 +274,6 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
                 _ => PropValueData::Error(E_INVALIDARG),
             }
         };
-        PropValue {
-            tag: value.ulPropTag,
-            value: data,
-        }
+        PropValue { tag, value: data }
     }
 }
