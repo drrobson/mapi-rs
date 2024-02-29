@@ -343,8 +343,6 @@ macro_rules! SizedSSortOrderSet {
 /// SizedDtblLabel! { DisplayTableLabelA[u8; LABEL.len()] }
 ///
 /// let mut display_table_label = DisplayTableLabelA::default();
-/// assert_eq!(display_table_label.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_label.label_name().copy_from_slice(label.as_slice());
@@ -357,12 +355,11 @@ macro_rules! SizedSSortOrderSet {
 /// }
 ///
 /// let display_table_label: *const sys::DTBLLABEL = display_table_label.as_ptr();
+/// assert_eq!(unsafe { display_table_label.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblLabel! { DisplayTableLabelW[u16; LABEL.len()] }
 ///
 /// let mut display_table_label = DisplayTableLabelW::default();
-/// assert_eq!(display_table_label.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_label.label_name().copy_from_slice(label.as_slice());
@@ -375,6 +372,7 @@ macro_rules! SizedSSortOrderSet {
 /// }
 ///
 /// let display_table_label: *const sys::DTBLLABEL = display_table_label.as_ptr();
+/// assert_eq!(unsafe { display_table_label.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -383,8 +381,8 @@ macro_rules! SizedDtblLabel {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabelName: u32,
-            pub ulFlags: u32,
+            ulbLpszLabelName: u32,
+            ulFlags: u32,
             pub lpszLabelName: [$char; $count + 1],
         }
 
@@ -430,8 +428,6 @@ macro_rules! SizedDtblLabel {
 /// SizedDtblEdit! { DisplayTableEditA[u8; ALLOWED.len()] }
 ///
 /// let mut display_table_edit = DisplayTableEditA::default();
-/// assert_eq!(display_table_edit.ulFlags, 0);
-///
 /// let allowed: Vec<_> = ALLOWED.bytes().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_edit.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -444,12 +440,11 @@ macro_rules! SizedDtblLabel {
 /// }
 ///
 /// let display_table_edit: *const sys::DTBLEDIT = display_table_edit.as_ptr();
+/// assert_eq!(unsafe { display_table_edit.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblEdit! { DisplayTableEditW[u16; ALLOWED.len()] }
 ///
 /// let mut display_table_edit = DisplayTableEditW::default();
-/// assert_eq!(display_table_edit.ulFlags, sys::MAPI_UNICODE);
-///
 /// let allowed: Vec<_> = ALLOWED.encode_utf16().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_edit.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -462,6 +457,7 @@ macro_rules! SizedDtblLabel {
 /// }
 ///
 /// let display_table_edit: *const sys::DTBLEDIT = display_table_edit.as_ptr();
+/// assert_eq!(unsafe { display_table_edit.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -470,8 +466,8 @@ macro_rules! SizedDtblEdit {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszCharsAllowed: u32,
-            pub ulFlags: u32,
+            ulbLpszCharsAllowed: u32,
+            ulFlags: u32,
             pub ulNumCharsAllowed: u32,
             pub ulPropTag: u32,
             pub lpszCharsAllowed: [$char; $count + 1],
@@ -521,8 +517,6 @@ macro_rules! SizedDtblEdit {
 /// SizedDtblComboBox! { DisplayTableComboBoxA[u8; ALLOWED.len()] }
 ///
 /// let mut display_table_combo_box = DisplayTableComboBoxA::default();
-/// assert_eq!(display_table_combo_box.ulFlags, 0);
-///
 /// let allowed: Vec<_> = ALLOWED.bytes().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_combo_box.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -535,12 +529,11 @@ macro_rules! SizedDtblEdit {
 /// }
 ///
 /// let display_table_combo_box: *const sys::DTBLCOMBOBOX = display_table_combo_box.as_ptr();
+/// assert_eq!(unsafe { display_table_combo_box.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblComboBox! { DisplayTableComboBoxW[u16; ALLOWED.len()] }
 ///
 /// let mut display_table_combo_box = DisplayTableComboBoxW::default();
-/// assert_eq!(display_table_combo_box.ulFlags, sys::MAPI_UNICODE);
-///
 /// let allowed: Vec<_> = ALLOWED.encode_utf16().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_combo_box.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -553,6 +546,7 @@ macro_rules! SizedDtblEdit {
 /// }
 ///
 /// let display_table_combo_box: *const sys::DTBLCOMBOBOX = display_table_combo_box.as_ptr();
+/// assert_eq!(unsafe { display_table_combo_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -561,8 +555,8 @@ macro_rules! SizedDtblComboBox {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszCharsAllowed: u32,
-            pub ulFlags: u32,
+            ulbLpszCharsAllowed: u32,
+            ulFlags: u32,
             pub ulNumCharsAllowed: u32,
             pub ulPRPropertyName: u32,
             pub ulPRTableName: u32,
@@ -614,8 +608,6 @@ macro_rules! SizedDtblComboBox {
 /// SizedDtblCheckBox! { DisplayTableCheckBoxA[u8; LABEL.len()] }
 ///
 /// let mut display_table_check_box = DisplayTableCheckBoxA::default();
-/// assert_eq!(display_table_check_box.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_check_box.label().copy_from_slice(label.as_slice());
@@ -628,12 +620,11 @@ macro_rules! SizedDtblComboBox {
 /// }
 ///
 /// let display_table_check_box: *const sys::DTBLCHECKBOX = display_table_check_box.as_ptr();
+/// assert_eq!(unsafe { display_table_check_box.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblCheckBox! { DisplayTableCheckBoxW[u16; LABEL.len()] }
 ///
 /// let mut display_table_check_box = DisplayTableCheckBoxW::default();
-/// assert_eq!(display_table_check_box.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_check_box.label().copy_from_slice(label.as_slice());
@@ -646,6 +637,7 @@ macro_rules! SizedDtblComboBox {
 /// }
 ///
 /// let display_table_check_box: *const sys::DTBLCHECKBOX = display_table_check_box.as_ptr();
+/// assert_eq!(unsafe { display_table_check_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -654,8 +646,8 @@ macro_rules! SizedDtblCheckBox {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabel: u32,
-            pub ulFlags: u32,
+            ulbLpszLabel: u32,
+            ulFlags: u32,
             pub ulPRPropertyName: u32,
             pub lpszLabel: [$char; $count + 1],
         }
@@ -703,8 +695,6 @@ macro_rules! SizedDtblCheckBox {
 /// SizedDtblGroupBox! { DisplayTableGroupBoxA[u8; LABEL.len()] }
 ///
 /// let mut display_table_group_box = DisplayTableGroupBoxA::default();
-/// assert_eq!(display_table_group_box.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_group_box.label().copy_from_slice(label.as_slice());
@@ -717,12 +707,11 @@ macro_rules! SizedDtblCheckBox {
 /// }
 ///
 /// let display_table_group_box: *const sys::DTBLGROUPBOX = display_table_group_box.as_ptr();
+/// assert_eq!(unsafe { display_table_group_box.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblGroupBox! { DisplayTableGroupBoxW[u16; LABEL.len()] }
 ///
 /// let mut display_table_group_box = DisplayTableGroupBoxW::default();
-/// assert_eq!(display_table_group_box.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_group_box.label().copy_from_slice(label.as_slice());
@@ -735,6 +724,7 @@ macro_rules! SizedDtblCheckBox {
 /// }
 ///
 /// let display_table_group_box: *const sys::DTBLGROUPBOX = display_table_group_box.as_ptr();
+/// assert_eq!(unsafe { display_table_group_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -743,8 +733,8 @@ macro_rules! SizedDtblGroupBox {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabel: u32,
-            pub ulFlags: u32,
+            ulbLpszLabel: u32,
+            ulFlags: u32,
             pub lpszLabel: [$char; $count + 1],
         }
 
@@ -790,8 +780,6 @@ macro_rules! SizedDtblGroupBox {
 /// SizedDtblButton! { DisplayTableButtonA[u8; LABEL.len()] }
 ///
 /// let mut display_table_button = DisplayTableButtonA::default();
-/// assert_eq!(display_table_button.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_button.label().copy_from_slice(label.as_slice());
@@ -804,12 +792,11 @@ macro_rules! SizedDtblGroupBox {
 /// }
 ///
 /// let display_table_button: *const sys::DTBLBUTTON = display_table_button.as_ptr();
+/// assert_eq!(unsafe { display_table_button.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblButton! { DisplayTableButtonW[u16; LABEL.len()] }
 ///
 /// let mut display_table_button = DisplayTableButtonW::default();
-/// assert_eq!(display_table_button.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_button.label().copy_from_slice(label.as_slice());
@@ -822,6 +809,7 @@ macro_rules! SizedDtblGroupBox {
 /// }
 ///
 /// let display_table_button: *const sys::DTBLBUTTON = display_table_button.as_ptr();
+/// assert_eq!(unsafe { display_table_button.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -830,8 +818,8 @@ macro_rules! SizedDtblButton {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabel: u32,
-            pub ulFlags: u32,
+            ulbLpszLabel: u32,
+            ulFlags: u32,
             pub ulPRControl: u32,
             pub lpszLabel: [$char; $count + 1],
         }
@@ -880,8 +868,6 @@ macro_rules! SizedDtblButton {
 /// SizedDtblPage! { DisplayTablePageA[u8; LABEL.len(); COMPONENT.len()] }
 ///
 /// let mut display_table_page = DisplayTablePageA::default();
-/// assert_eq!(display_table_page.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_page.label().copy_from_slice(label.as_slice());
@@ -902,12 +888,11 @@ macro_rules! SizedDtblButton {
 /// }
 ///
 /// let display_table_page: *const sys::DTBLPAGE = display_table_page.as_ptr();
+/// assert_eq!(unsafe { display_table_page.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblPage! { DisplayTablePageW[u16; LABEL.len(); COMPONENT.len()] }
 ///
 /// let mut display_table_page = DisplayTablePageW::default();
-/// assert_eq!(display_table_page.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_page.label().copy_from_slice(label.as_slice());
@@ -928,6 +913,7 @@ macro_rules! SizedDtblButton {
 /// }
 ///
 /// let display_table_page: *const sys::DTBLPAGE = display_table_page.as_ptr();
+/// assert_eq!(unsafe { display_table_page.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -936,9 +922,9 @@ macro_rules! SizedDtblPage {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabel: u32,
-            pub ulFlags: u32,
-            pub ulbLpszComponent: u32,
+            ulbLpszLabel: u32,
+            ulFlags: u32,
+            ulbLpszComponent: u32,
             pub ulContext: u32,
             pub lpszLabel: [$char; $count1 + 1],
             pub lpszComponent: [$char; $count2 + 1],
@@ -994,8 +980,6 @@ macro_rules! SizedDtblPage {
 /// SizedDtblRadioButton! { DisplayTableRadioButtonA[u8; LABEL.len()] }
 ///
 /// let mut display_table_radio_button = DisplayTableRadioButtonA::default();
-/// assert_eq!(display_table_radio_button.ulFlags, 0);
-///
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_radio_button.label().copy_from_slice(label.as_slice());
@@ -1008,12 +992,11 @@ macro_rules! SizedDtblPage {
 /// }
 ///
 /// let display_table_radio_button: *const sys::DTBLRADIOBUTTON = display_table_radio_button.as_ptr();
+/// assert_eq!(unsafe { display_table_radio_button.as_ref() }.unwrap().ulFlags, 0);
 ///
 /// SizedDtblRadioButton! { DisplayTableRadioButtonW[u16; LABEL.len()] }
 ///
 /// let mut display_table_radio_button = DisplayTableRadioButtonW::default();
-/// assert_eq!(display_table_radio_button.ulFlags, sys::MAPI_UNICODE);
-///
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_radio_button.label().copy_from_slice(label.as_slice());
@@ -1026,6 +1009,7 @@ macro_rules! SizedDtblPage {
 /// }
 ///
 /// let display_table_radio_button: *const sys::DTBLRADIOBUTTON = display_table_radio_button.as_ptr();
+/// assert_eq!(unsafe { display_table_radio_button.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -1034,8 +1018,8 @@ macro_rules! SizedDtblRadioButton {
         #[repr(C)]
         #[allow(non_snake_case)]
         struct $name {
-            pub ulbLpszLabel: u32,
-            pub ulFlags: u32,
+            ulbLpszLabel: u32,
+            ulFlags: u32,
             pub ulcButtons: u32,
             pub ulPropTag: u32,
             pub lReturnValue: i32,
