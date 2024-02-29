@@ -16,11 +16,11 @@ pub mod mapi_logon;
 pub mod prop_value;
 pub mod row;
 pub mod row_set;
+pub mod sized_types;
 
 pub use mapi_initialize::*;
 pub use mapi_logon::*;
 pub use prop_value::*;
 pub use row::*;
 pub use row_set::*;
-
-mod macros;
+pub use sized_types::*;
