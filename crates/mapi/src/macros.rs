@@ -335,6 +335,7 @@ macro_rules! SizedSSortOrderSet {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblLabel};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -355,7 +356,9 @@ macro_rules! SizedSSortOrderSet {
 /// }
 ///
 /// let display_table_label: *const sys::DTBLLABEL = display_table_label.as_ptr();
-/// assert_eq!(unsafe { display_table_label.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_label = unsafe { display_table_label.as_ref() }.unwrap();
+/// assert_eq!(display_table_label.ulbLpszLabelName, mem::size_of::<sys::DTBLLABEL>() as u32);
+/// assert_eq!(display_table_label.ulFlags, 0);
 ///
 /// SizedDtblLabel! { DisplayTableLabelW[u16; LABEL.len()] }
 ///
@@ -372,7 +375,9 @@ macro_rules! SizedSSortOrderSet {
 /// }
 ///
 /// let display_table_label: *const sys::DTBLLABEL = display_table_label.as_ptr();
-/// assert_eq!(unsafe { display_table_label.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_label = unsafe { display_table_label.as_ref() }.unwrap();
+/// assert_eq!(display_table_label.ulbLpszLabelName, mem::size_of::<sys::DTBLLABEL>() as u32);
+/// assert_eq!(display_table_label.ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -420,6 +425,7 @@ macro_rules! SizedDtblLabel {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblEdit};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -427,7 +433,11 @@ macro_rules! SizedDtblLabel {
 ///
 /// SizedDtblEdit! { DisplayTableEditA[u8; ALLOWED.len()] }
 ///
-/// let mut display_table_edit = DisplayTableEditA::default();
+/// let mut display_table_edit = DisplayTableEditA {
+///     ulNumCharsAllowed: ALLOWED.len() as u32,
+///     ulPropTag: sys::PR_DISPLAY_NAME_A,
+///     ..Default::default()
+/// };
 /// let allowed: Vec<_> = ALLOWED.bytes().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_edit.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -440,11 +450,19 @@ macro_rules! SizedDtblLabel {
 /// }
 ///
 /// let display_table_edit: *const sys::DTBLEDIT = display_table_edit.as_ptr();
-/// assert_eq!(unsafe { display_table_edit.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_edit = unsafe { display_table_edit.as_ref() }.unwrap();
+/// assert_eq!(display_table_edit.ulbLpszCharsAllowed, mem::size_of::<sys::DTBLEDIT>() as u32);
+/// assert_eq!(display_table_edit.ulFlags, 0);
+/// assert_eq!(display_table_edit.ulNumCharsAllowed, ALLOWED.len() as u32);
+/// assert_eq!(display_table_edit.ulPropTag, sys::PR_DISPLAY_NAME_A);
 ///
 /// SizedDtblEdit! { DisplayTableEditW[u16; ALLOWED.len()] }
 ///
-/// let mut display_table_edit = DisplayTableEditW::default();
+/// let mut display_table_edit = DisplayTableEditW {
+///     ulNumCharsAllowed: ALLOWED.len() as u32,
+///     ulPropTag: sys::PR_DISPLAY_NAME_W,
+///     ..Default::default()
+/// };
 /// let allowed: Vec<_> = ALLOWED.encode_utf16().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_edit.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -457,7 +475,11 @@ macro_rules! SizedDtblLabel {
 /// }
 ///
 /// let display_table_edit: *const sys::DTBLEDIT = display_table_edit.as_ptr();
-/// assert_eq!(unsafe { display_table_edit.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_edit = unsafe { display_table_edit.as_ref() }.unwrap();
+/// assert_eq!(display_table_edit.ulbLpszCharsAllowed, mem::size_of::<sys::DTBLEDIT>() as u32);
+/// assert_eq!(display_table_edit.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_edit.ulNumCharsAllowed, ALLOWED.len() as u32);
+/// assert_eq!(display_table_edit.ulPropTag, sys::PR_DISPLAY_NAME_W);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -509,6 +531,7 @@ macro_rules! SizedDtblEdit {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblComboBox};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -516,7 +539,12 @@ macro_rules! SizedDtblEdit {
 ///
 /// SizedDtblComboBox! { DisplayTableComboBoxA[u8; ALLOWED.len()] }
 ///
-/// let mut display_table_combo_box = DisplayTableComboBoxA::default();
+/// let mut display_table_combo_box = DisplayTableComboBoxA {
+///     ulNumCharsAllowed: ALLOWED.len() as u32,
+///     ulPRPropertyName: sys::PR_DISPLAY_NAME_A,
+///     ulPRTableName: sys::PR_MESSAGE_DELIVERY_TIME,
+///     ..Default::default()
+/// };
 /// let allowed: Vec<_> = ALLOWED.bytes().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_combo_box.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -529,11 +557,21 @@ macro_rules! SizedDtblEdit {
 /// }
 ///
 /// let display_table_combo_box: *const sys::DTBLCOMBOBOX = display_table_combo_box.as_ptr();
-/// assert_eq!(unsafe { display_table_combo_box.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_combo_box = unsafe { display_table_combo_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_combo_box.ulbLpszCharsAllowed, mem::size_of::<sys::DTBLCOMBOBOX>() as u32);
+/// assert_eq!(display_table_combo_box.ulFlags, 0);
+/// assert_eq!(display_table_combo_box.ulNumCharsAllowed, ALLOWED.len() as u32);
+/// assert_eq!(display_table_combo_box.ulPRPropertyName, sys::PR_DISPLAY_NAME_A);
+/// assert_eq!(display_table_combo_box.ulPRTableName, sys::PR_MESSAGE_DELIVERY_TIME);
 ///
 /// SizedDtblComboBox! { DisplayTableComboBoxW[u16; ALLOWED.len()] }
 ///
-/// let mut display_table_combo_box = DisplayTableComboBoxW::default();
+/// let mut display_table_combo_box = DisplayTableComboBoxW {
+///     ulNumCharsAllowed: ALLOWED.len() as u32,
+///     ulPRPropertyName: sys::PR_DISPLAY_NAME_W,
+///     ulPRTableName: sys::PR_MESSAGE_DELIVERY_TIME,
+///     ..Default::default()
+/// };
 /// let allowed: Vec<_> = ALLOWED.encode_utf16().collect();
 /// assert_eq!(ALLOWED.len(), allowed.len());
 /// display_table_combo_box.chars_allowed().copy_from_slice(allowed.as_slice());
@@ -546,7 +584,12 @@ macro_rules! SizedDtblEdit {
 /// }
 ///
 /// let display_table_combo_box: *const sys::DTBLCOMBOBOX = display_table_combo_box.as_ptr();
-/// assert_eq!(unsafe { display_table_combo_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_combo_box = unsafe { display_table_combo_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_combo_box.ulbLpszCharsAllowed, mem::size_of::<sys::DTBLCOMBOBOX>() as u32);
+/// assert_eq!(display_table_combo_box.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_combo_box.ulNumCharsAllowed, ALLOWED.len() as u32);
+/// assert_eq!(display_table_combo_box.ulPRPropertyName, sys::PR_DISPLAY_NAME_W);
+/// assert_eq!(display_table_combo_box.ulPRTableName, sys::PR_MESSAGE_DELIVERY_TIME);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -600,6 +643,7 @@ macro_rules! SizedDtblComboBox {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblCheckBox};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -607,7 +651,10 @@ macro_rules! SizedDtblComboBox {
 ///
 /// SizedDtblCheckBox! { DisplayTableCheckBoxA[u8; LABEL.len()] }
 ///
-/// let mut display_table_check_box = DisplayTableCheckBoxA::default();
+/// let mut display_table_check_box = DisplayTableCheckBoxA {
+///     ulPRPropertyName: sys::PR_DISPLAY_NAME_A,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_check_box.label().copy_from_slice(label.as_slice());
@@ -620,11 +667,17 @@ macro_rules! SizedDtblComboBox {
 /// }
 ///
 /// let display_table_check_box: *const sys::DTBLCHECKBOX = display_table_check_box.as_ptr();
-/// assert_eq!(unsafe { display_table_check_box.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_check_box = unsafe { display_table_check_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_check_box.ulbLpszLabel, mem::size_of::<sys::DTBLCHECKBOX>() as u32);
+/// assert_eq!(display_table_check_box.ulFlags, 0);
+/// assert_eq!(display_table_check_box.ulPRPropertyName, sys::PR_DISPLAY_NAME_A);
 ///
 /// SizedDtblCheckBox! { DisplayTableCheckBoxW[u16; LABEL.len()] }
 ///
-/// let mut display_table_check_box = DisplayTableCheckBoxW::default();
+/// let mut display_table_check_box = DisplayTableCheckBoxW {
+///     ulPRPropertyName: sys::PR_DISPLAY_NAME_W,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_check_box.label().copy_from_slice(label.as_slice());
@@ -637,7 +690,10 @@ macro_rules! SizedDtblComboBox {
 /// }
 ///
 /// let display_table_check_box: *const sys::DTBLCHECKBOX = display_table_check_box.as_ptr();
-/// assert_eq!(unsafe { display_table_check_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_check_box = unsafe { display_table_check_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_check_box.ulbLpszLabel, mem::size_of::<sys::DTBLCHECKBOX>() as u32);
+/// assert_eq!(display_table_check_box.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_check_box.ulPRPropertyName, sys::PR_DISPLAY_NAME_W);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -687,6 +743,7 @@ macro_rules! SizedDtblCheckBox {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblGroupBox};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -707,7 +764,9 @@ macro_rules! SizedDtblCheckBox {
 /// }
 ///
 /// let display_table_group_box: *const sys::DTBLGROUPBOX = display_table_group_box.as_ptr();
-/// assert_eq!(unsafe { display_table_group_box.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_group_box = unsafe { display_table_group_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_group_box.ulbLpszLabel, mem::size_of::<sys::DTBLGROUPBOX>() as u32);
+/// assert_eq!(display_table_group_box.ulFlags, 0);
 ///
 /// SizedDtblGroupBox! { DisplayTableGroupBoxW[u16; LABEL.len()] }
 ///
@@ -724,7 +783,9 @@ macro_rules! SizedDtblCheckBox {
 /// }
 ///
 /// let display_table_group_box: *const sys::DTBLGROUPBOX = display_table_group_box.as_ptr();
-/// assert_eq!(unsafe { display_table_group_box.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_group_box = unsafe { display_table_group_box.as_ref() }.unwrap();
+/// assert_eq!(display_table_group_box.ulbLpszLabel, mem::size_of::<sys::DTBLGROUPBOX>() as u32);
+/// assert_eq!(display_table_group_box.ulFlags, sys::MAPI_UNICODE);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -772,6 +833,7 @@ macro_rules! SizedDtblGroupBox {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblButton};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -779,7 +841,10 @@ macro_rules! SizedDtblGroupBox {
 ///
 /// SizedDtblButton! { DisplayTableButtonA[u8; LABEL.len()] }
 ///
-/// let mut display_table_button = DisplayTableButtonA::default();
+/// let mut display_table_button = DisplayTableButtonA {
+///     ulPRControl: sys::PR_DISPLAY_NAME_A,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_button.label().copy_from_slice(label.as_slice());
@@ -792,11 +857,17 @@ macro_rules! SizedDtblGroupBox {
 /// }
 ///
 /// let display_table_button: *const sys::DTBLBUTTON = display_table_button.as_ptr();
-/// assert_eq!(unsafe { display_table_button.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_button = unsafe { display_table_button.as_ref() }.unwrap();
+/// assert_eq!(display_table_button.ulbLpszLabel, mem::size_of::<sys::DTBLBUTTON>() as u32);
+/// assert_eq!(display_table_button.ulFlags, 0);
+/// assert_eq!(display_table_button.ulPRControl, sys::PR_DISPLAY_NAME_A);
 ///
 /// SizedDtblButton! { DisplayTableButtonW[u16; LABEL.len()] }
 ///
-/// let mut display_table_button = DisplayTableButtonW::default();
+/// let mut display_table_button = DisplayTableButtonW {
+///     ulPRControl: sys::PR_DISPLAY_NAME_W,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_button.label().copy_from_slice(label.as_slice());
@@ -809,7 +880,10 @@ macro_rules! SizedDtblGroupBox {
 /// }
 ///
 /// let display_table_button: *const sys::DTBLBUTTON = display_table_button.as_ptr();
-/// assert_eq!(unsafe { display_table_button.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_button = unsafe { display_table_button.as_ref() }.unwrap();
+/// assert_eq!(display_table_button.ulbLpszLabel, mem::size_of::<sys::DTBLBUTTON>() as u32);
+/// assert_eq!(display_table_button.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_button.ulPRControl, sys::PR_DISPLAY_NAME_W);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -859,6 +933,7 @@ macro_rules! SizedDtblButton {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblPage};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -867,7 +942,10 @@ macro_rules! SizedDtblButton {
 ///
 /// SizedDtblPage! { DisplayTablePageA[u8; LABEL.len(); COMPONENT.len()] }
 ///
-/// let mut display_table_page = DisplayTablePageA::default();
+/// let mut display_table_page = DisplayTablePageA {
+///     ulContext: 10,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_page.label().copy_from_slice(label.as_slice());
@@ -888,11 +966,19 @@ macro_rules! SizedDtblButton {
 /// }
 ///
 /// let display_table_page: *const sys::DTBLPAGE = display_table_page.as_ptr();
-/// assert_eq!(unsafe { display_table_page.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_page = unsafe { display_table_page.as_ref() }.unwrap();
+/// assert_eq!(display_table_page.ulbLpszLabel, mem::size_of::<sys::DTBLPAGE>() as u32);
+/// assert_eq!(display_table_page.ulFlags, 0);
+/// assert_eq!(display_table_page.ulbLpszComponent, (mem::size_of::<sys::DTBLPAGE>()
+///     + mem::size_of::<[u8; (LABEL.len() + 1)]>()) as u32);
+/// assert_eq!(display_table_page.ulContext, 10);
 ///
 /// SizedDtblPage! { DisplayTablePageW[u16; LABEL.len(); COMPONENT.len()] }
 ///
-/// let mut display_table_page = DisplayTablePageW::default();
+/// let mut display_table_page = DisplayTablePageW {
+///     ulContext: 10,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_page.label().copy_from_slice(label.as_slice());
@@ -913,7 +999,12 @@ macro_rules! SizedDtblButton {
 /// }
 ///
 /// let display_table_page: *const sys::DTBLPAGE = display_table_page.as_ptr();
-/// assert_eq!(unsafe { display_table_page.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_page = unsafe { display_table_page.as_ref() }.unwrap();
+/// assert_eq!(display_table_page.ulbLpszLabel, mem::size_of::<sys::DTBLPAGE>() as u32);
+/// assert_eq!(display_table_page.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_page.ulbLpszComponent, (mem::size_of::<sys::DTBLPAGE>()
+///     + mem::size_of::<[u16; (LABEL.len() + 1)]>()) as u32);
+/// assert_eq!(display_table_page.ulContext, 10);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
@@ -972,6 +1063,7 @@ macro_rules! SizedDtblPage {
 ///
 /// ### Sample
 /// ```
+/// use core::mem;
 /// use outlook_mapi::{sys, SizedDtblRadioButton};
 /// use windows_core::{PCSTR, PCWSTR};
 ///
@@ -979,7 +1071,12 @@ macro_rules! SizedDtblPage {
 ///
 /// SizedDtblRadioButton! { DisplayTableRadioButtonA[u8; LABEL.len()] }
 ///
-/// let mut display_table_radio_button = DisplayTableRadioButtonA::default();
+/// let mut display_table_radio_button = DisplayTableRadioButtonA {
+///     ulcButtons: 10,
+///     ulPropTag: sys::PR_DISPLAY_NAME_A,
+///     lReturnValue: -1,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.bytes().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_radio_button.label().copy_from_slice(label.as_slice());
@@ -993,10 +1090,21 @@ macro_rules! SizedDtblPage {
 ///
 /// let display_table_radio_button: *const sys::DTBLRADIOBUTTON = display_table_radio_button.as_ptr();
 /// assert_eq!(unsafe { display_table_radio_button.as_ref() }.unwrap().ulFlags, 0);
+/// let display_table_radio_button = unsafe { display_table_radio_button.as_ref() }.unwrap();
+/// assert_eq!(display_table_radio_button.ulbLpszLabel, mem::size_of::<sys::DTBLRADIOBUTTON>() as u32);
+/// assert_eq!(display_table_radio_button.ulFlags, 0);
+/// assert_eq!(display_table_radio_button.ulcButtons, 10);
+/// assert_eq!(display_table_radio_button.ulPropTag, sys::PR_DISPLAY_NAME_A);
+/// assert_eq!(display_table_radio_button.lReturnValue, -1);
 ///
 /// SizedDtblRadioButton! { DisplayTableRadioButtonW[u16; LABEL.len()] }
 ///
-/// let mut display_table_radio_button = DisplayTableRadioButtonW::default();
+/// let mut display_table_radio_button = DisplayTableRadioButtonW {
+///     ulcButtons: 10,
+///     ulPropTag: sys::PR_DISPLAY_NAME_W,
+///     lReturnValue: -1,
+///     ..Default::default()
+/// };
 /// let label: Vec<_> = LABEL.encode_utf16().collect();
 /// assert_eq!(LABEL.len(), label.len());
 /// display_table_radio_button.label().copy_from_slice(label.as_slice());
@@ -1009,7 +1117,12 @@ macro_rules! SizedDtblPage {
 /// }
 ///
 /// let display_table_radio_button: *const sys::DTBLRADIOBUTTON = display_table_radio_button.as_ptr();
-/// assert_eq!(unsafe { display_table_radio_button.as_ref() }.unwrap().ulFlags, sys::MAPI_UNICODE);
+/// let display_table_radio_button = unsafe { display_table_radio_button.as_ref() }.unwrap();
+/// assert_eq!(display_table_radio_button.ulbLpszLabel, mem::size_of::<sys::DTBLRADIOBUTTON>() as u32);
+/// assert_eq!(display_table_radio_button.ulFlags, sys::MAPI_UNICODE);
+/// assert_eq!(display_table_radio_button.ulcButtons, 10);
+/// assert_eq!(display_table_radio_button.ulPropTag, sys::PR_DISPLAY_NAME_W);
+/// assert_eq!(display_table_radio_button.lReturnValue, -1);
 /// ```
 #[macro_export]
 #[allow(non_snake_case)]
