@@ -1,6 +1,7 @@
 //! Utilities for accessing the `PROP_TYPE` and `PROP_ID` portions of a `u32` `PROP_TAG`.
 
 /// Simple wrapper for a MAPI `PROP_TAG`.
+#[repr(transparent)]
 pub struct PropTag(pub u32);
 
 impl PropTag {
