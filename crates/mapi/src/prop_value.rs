@@ -16,6 +16,9 @@ pub struct PropValue<'a> {
 
 /// Enum with values from the original [`sys::SPropValue::Value`] union.
 pub enum PropValueData<'a> {
+    /// [`sys::PT_NULL`]
+    Null,
+
     /// [`sys::PT_I2`] or [`sys::PT_SHORT`]
     Short(i16),
 
@@ -97,7 +100,7 @@ pub enum PropValueData<'a> {
     /// [`sys::PT_ERROR`]
     Error(HRESULT),
 
-    /// [`sys::PT_NULL`] or [`sys::PT_OBJECT`]
+    /// [`sys::PT_OBJECT`]
     Object(i32),
 }
 
@@ -105,10 +108,11 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
     /// Convert a [`sys::SPropValue`] reference into a friendlier [`PropValue`] type, which often
     /// supports safe access to the [`sys::SPropValue::Value`] union.
     fn from(value: &sys::SPropValue) -> Self {
-        let tag = PropTag::from(value.ulPropTag);
-        let prop_type = tag.prop_type() as u32 & !sys::MV_INSTANCE;
+        let tag = PropTag(value.ulPropTag);
+        let prop_type = tag.prop_type().remove_flags(sys::MV_INSTANCE).into();
         let data = unsafe {
             match prop_type {
+                sys::PT_NULL => PropValueData::Null,
                 sys::PT_SHORT => PropValueData::Short(value.Value.i),
                 sys::PT_LONG => PropValueData::Long(value.Value.l),
                 sys::PT_PTR => PropValueData::Pointer(value.Value.lpv),
@@ -270,7 +274,7 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
                     }
                 }
                 sys::PT_ERROR => PropValueData::Error(HRESULT(value.Value.err)),
-                sys::PT_NULL | sys::PT_OBJECT => PropValueData::Object(value.Value.x),
+                sys::PT_OBJECT => PropValueData::Object(value.Value.x),
                 _ => PropValueData::Error(E_INVALIDARG),
             }
         };
