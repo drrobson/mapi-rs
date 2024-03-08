@@ -13,6 +13,7 @@ pub mod sys {
 
 pub mod mapi_initialize;
 pub mod mapi_logon;
+pub mod mapi_ptr;
 pub mod prop_tag;
 pub mod prop_value;
 pub mod row;
@@ -21,6 +22,7 @@ pub mod sized_types;
 
 pub use mapi_initialize::*;
 pub use mapi_logon::*;
+pub use mapi_ptr::*;
 pub use prop_tag::*;
 pub use prop_value::*;
 pub use row::*;
