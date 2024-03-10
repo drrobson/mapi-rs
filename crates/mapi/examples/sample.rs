@@ -1,4 +1,4 @@
-use core::ptr;
+use core::{ptr, slice};
 use outlook_mapi::{sys::*, *};
 use windows_core::*;
 
@@ -81,6 +81,53 @@ fn main() -> Result<()> {
             "Store {idx}: {display_name} ({entry_id} byte ID)",
             entry_id = entry_id.len()
         );
+
+        unsafe {
+            let mut store = None;
+            logon.session.OpenMsgStore(
+                0,
+                entry_id.len() as u32,
+                entry_id.as_ptr() as *mut _,
+                &<IMsgStore as Interface>::IID as *const _ as *mut _,
+                MAPI_BEST_ACCESS | MAPI_DEFERRED_ERRORS | MDB_NO_DIALOG | MDB_NO_MAIL,
+                &mut store,
+            )?;
+            let Some(store) = store else {
+                eprintln!("OpenMsgStore succeeded but store is None");
+                continue;
+            };
+
+            let mut names = [MAPINAMEID {
+                lpguid: &PS_PUBLIC_STRINGS as *const _ as *mut _,
+                ulKind: MNID_STRING,
+                Kind: MAPINAMEID_0 {
+                    lpwstrName: PWSTR(w!("Keywords").0 as *mut _),
+                },
+            }];
+            let mut prop_ids = MAPIOutParam::default();
+            store.GetIDsFromNames(
+                names.len() as u32,
+                &mut ((&mut names) as *mut _),
+                0,
+                prop_ids.as_mut_ptr() as *mut _,
+            )?;
+            let Some(prop_ids) = prop_ids.as_mut::<SPropTagArray>() else {
+                eprintln!("GetIDsFromNames succeeded but prop_ids is None");
+                continue;
+            };
+            let prop_ids = slice::from_raw_parts_mut(
+                prop_ids.aulPropTag.as_mut_ptr(),
+                prop_ids.cValues as usize,
+            );
+            for prop_tag in prop_ids.iter().map(|tag| PropTag(*tag)) {
+                let prop_type: u32 = prop_tag.prop_type().into();
+                if prop_type != PT_UNSPECIFIED {
+                    eprintln!("Unexpected prop type");
+                    continue;
+                }
+                println!("Found prop id: {}", prop_tag.prop_id());
+            }
+        }
     }
 
     Ok(())
