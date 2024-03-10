@@ -2635,7 +2635,11 @@ pub mod Office {
                     }
                     __ValidateParameters(emethod, ppthis).ok()
                 }
-                ::windows_core::imp::com_interface!(IABContainer, IABContainer_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IABContainer,
+                    IABContainer_Vtbl,
+                    0x0002030d_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IABContainer,
                     ::windows_core::IUnknown,
@@ -3033,7 +3037,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IABLogon, IABLogon_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IABLogon,
+                    IABLogon_Vtbl,
+                    0x00020314_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IABLogon, ::windows_core::IUnknown);
                 impl IABLogon {
                     pub unsafe fn GetLastError(
@@ -3279,7 +3287,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IABProvider, IABProvider_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IABProvider,
+                    IABProvider_Vtbl,
+                    0x00020311_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IABProvider, ::windows_core::IUnknown);
                 impl IABProvider {
                     pub unsafe fn Shutdown(
@@ -3341,7 +3353,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IAddrBook, IAddrBook_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IAddrBook,
+                    IAddrBook_Vtbl,
+                    0x00020309_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IAddrBook,
                     ::windows_core::IUnknown,
@@ -4164,7 +4180,11 @@ pub mod Office {
                 pub struct IAttach_Vtbl {
                     pub base__: IMAPIProp_Vtbl,
                 }
-                ::windows_core::imp::com_interface!(IDistList, IDistList_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IDistList,
+                    IDistList_Vtbl,
+                    0x0002030e_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IDistList,
                     ::windows_core::IUnknown,
@@ -7064,7 +7084,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIAdviseSink, IMAPIAdviseSink_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIAdviseSink,
+                    IMAPIAdviseSink_Vtbl,
+                    0x00020302_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIAdviseSink,
                     ::windows_core::IUnknown
@@ -7094,7 +7118,7 @@ pub mod Office {
                 ::windows_core::imp::com_interface!(
                     IMAPIClientShutdown,
                     IMAPIClientShutdown_Vtbl,
-                    0
+                    0x00020397_0000_0000_c000_000000000046
                 );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIClientShutdown,
@@ -7136,7 +7160,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIContainer, IMAPIContainer_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIContainer,
+                    IMAPIContainer_Vtbl,
+                    0x0002030b_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIContainer,
                     ::windows_core::IUnknown,
@@ -7444,7 +7472,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIControl, IMAPIControl_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIControl,
+                    IMAPIControl_Vtbl,
+                    0x0002031b_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPIControl, ::windows_core::IUnknown);
                 impl IMAPIControl {
                     pub unsafe fn GetLastError(
@@ -7509,7 +7541,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIFolder, IMAPIFolder_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIFolder,
+                    IMAPIFolder_Vtbl,
+                    0x0002030c_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIFolder,
                     ::windows_core::IUnknown,
@@ -8114,7 +8150,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIForm, IMAPIForm_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIForm,
+                    IMAPIForm_Vtbl,
+                    0x00020327_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPIForm, ::windows_core::IUnknown);
                 impl IMAPIForm {
                     pub unsafe fn GetLastError(
@@ -8257,7 +8297,7 @@ pub mod Office {
                 ::windows_core::imp::com_interface!(
                     IMAPIFormAdviseSink,
                     IMAPIFormAdviseSink_Vtbl,
-                    0
+                    0x0002032f_0000_0000_c000_000000000046
                 );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIFormAdviseSink,
@@ -8308,7 +8348,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIFormContainer, IMAPIFormContainer_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIFormContainer,
+                    IMAPIFormContainer_Vtbl,
+                    0x0002032e_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIFormContainer,
                     ::windows_core::IUnknown
@@ -8461,7 +8505,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIFormFactory, IMAPIFormFactory_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIFormFactory,
+                    IMAPIFormFactory_Vtbl,
+                    0x00020350_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIFormFactory,
                     ::windows_core::IUnknown
@@ -8533,7 +8581,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIFormInfo, IMAPIFormInfo_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIFormInfo,
+                    IMAPIFormInfo_Vtbl,
+                    0x00020324_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIFormInfo,
                     ::windows_core::IUnknown,
@@ -8814,7 +8866,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIFormMgr, IMAPIFormMgr_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIFormMgr,
+                    IMAPIFormMgr_Vtbl,
+                    0x00020322_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPIFormMgr, ::windows_core::IUnknown);
                 impl IMAPIFormMgr {
                     pub unsafe fn GetLastError(
@@ -9162,7 +9218,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIMessageSite, IMAPIMessageSite_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIMessageSite,
+                    IMAPIMessageSite_Vtbl,
+                    0x00020370_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIMessageSite,
                     ::windows_core::IUnknown
@@ -9394,7 +9454,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIProgress, IMAPIProgress_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIProgress,
+                    IMAPIProgress_Vtbl,
+                    0x0002031f_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPIProgress, ::windows_core::IUnknown);
                 impl IMAPIProgress {
                     pub unsafe fn Progress(
@@ -9483,7 +9547,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIProp, IMAPIProp_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIProp,
+                    IMAPIProp_Vtbl,
+                    0x00020303_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPIProp, ::windows_core::IUnknown);
                 impl IMAPIProp {
                     pub unsafe fn GetLastError(
@@ -9764,7 +9832,7 @@ pub mod Office {
                 ::windows_core::imp::com_interface!(
                     IMAPIProviderShutdown,
                     IMAPIProviderShutdown_Vtbl,
-                    0
+                    0x00020398_0000_0000_c000_000000000046
                 );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIProviderShutdown,
@@ -9806,7 +9874,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPISession, IMAPISession_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPISession,
+                    IMAPISession_Vtbl,
+                    0x00020300_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPISession, ::windows_core::IUnknown);
                 impl IMAPISession {
                     pub unsafe fn GetLastError(
@@ -10280,7 +10352,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIStatus, IMAPIStatus_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIStatus,
+                    IMAPIStatus_Vtbl,
+                    0x00020305_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIStatus,
                     ::windows_core::IUnknown,
@@ -11601,7 +11677,11 @@ pub mod Office {
                         )
                             -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPITable, IMAPITable_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPITable,
+                    IMAPITable_Vtbl,
+                    0x00020301_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMAPITable, ::windows_core::IUnknown);
                 impl IMAPITable {
                     pub unsafe fn GetLastError(
@@ -12062,7 +12142,7 @@ pub mod Office {
                 ::windows_core::imp::com_interface!(
                     IMAPIViewAdviseSink,
                     IMAPIViewAdviseSink_Vtbl,
-                    0
+                    0x0002032b_0000_0000_c000_000000000046
                 );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIViewAdviseSink,
@@ -12132,7 +12212,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMAPIViewContext, IMAPIViewContext_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMAPIViewContext,
+                    IMAPIViewContext_Vtbl,
+                    0x00020321_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMAPIViewContext,
                     ::windows_core::IUnknown
@@ -12251,7 +12335,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMSCapabilities, IMSCapabilities_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMSCapabilities,
+                    IMSCapabilities_Vtbl,
+                    0x00020393_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMSCapabilities,
                     ::windows_core::IUnknown
@@ -12270,7 +12358,11 @@ pub mod Office {
                     pub GetCapabilities:
                         unsafe extern "system" fn(*mut ::core::ffi::c_void, MSCAP_SELECTOR) -> u32,
                 }
-                ::windows_core::imp::com_interface!(IMSLogon, IMSLogon_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMSLogon,
+                    IMSLogon_Vtbl,
+                    0x00020313_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMSLogon, ::windows_core::IUnknown);
                 impl IMSLogon {
                     pub unsafe fn GetLastError(
@@ -12440,7 +12532,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMSProvider, IMSProvider_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMSProvider,
+                    IMSProvider_Vtbl,
+                    0x00020310_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IMSProvider, ::windows_core::IUnknown);
                 impl IMSProvider {
                     pub unsafe fn Shutdown(
@@ -12595,7 +12691,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMailUser, IMailUser_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMailUser,
+                    IMailUser_Vtbl,
+                    0x0002030a_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMailUser,
                     ::windows_core::IUnknown,
@@ -12792,7 +12892,11 @@ pub mod Office {
                 pub struct IMailUser_Vtbl {
                     pub base__: IMAPIProp_Vtbl,
                 }
-                ::windows_core::imp::com_interface!(IMessage, IMessage_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMessage,
+                    IMessage_Vtbl,
+                    0x00020307_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMessage,
                     ::windows_core::IUnknown,
@@ -18236,7 +18340,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMsgServiceAdmin, IMsgServiceAdmin_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMsgServiceAdmin,
+                    IMsgServiceAdmin_Vtbl,
+                    0x0002031d_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMsgServiceAdmin,
                     ::windows_core::IUnknown
@@ -18509,7 +18617,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMsgServiceAdmin2, IMsgServiceAdmin2_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMsgServiceAdmin2,
+                    IMsgServiceAdmin2_Vtbl,
+                    0x00020387_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMsgServiceAdmin2,
                     ::windows_core::IUnknown
@@ -18809,7 +18921,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IMsgStore, IMsgStore_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IMsgStore,
+                    IMsgStore_Vtbl,
+                    0x00020306_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IMsgStore,
                     ::windows_core::IUnknown,
@@ -20092,7 +20208,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IPersistMessage, IPersistMessage_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IPersistMessage,
+                    IPersistMessage_Vtbl,
+                    0x0002032a_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IPersistMessage,
                     ::windows_core::IUnknown
@@ -20310,7 +20430,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IProfAdmin, IProfAdmin_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IProfAdmin,
+                    IProfAdmin_Vtbl,
+                    0x0002031c_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IProfAdmin, ::windows_core::IUnknown);
                 impl IProfAdmin {
                     pub unsafe fn GetLastError(
@@ -20522,7 +20646,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IProfSect, IProfSect_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IProfSect,
+                    IProfSect_Vtbl,
+                    0x00020304_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(
                     IProfSect,
                     ::windows_core::IUnknown,
@@ -20985,7 +21113,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IProviderAdmin, IProviderAdmin_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IProviderAdmin,
+                    IProviderAdmin_Vtbl,
+                    0x00020325_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IProviderAdmin, ::windows_core::IUnknown);
                 impl IProviderAdmin {
                     pub unsafe fn GetLastError(
@@ -21101,7 +21233,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(ISpoolerHook, ISpoolerHook_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    ISpoolerHook,
+                    ISpoolerHook_Vtbl,
+                    0x00020320_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(ISpoolerHook, ::windows_core::IUnknown);
                 impl ISpoolerHook {
                     pub unsafe fn InboundMsgHook<P0, P1, P2>(
@@ -21358,7 +21494,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IXPLogon, IXPLogon_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IXPLogon,
+                    IXPLogon_Vtbl,
+                    0x00020315_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IXPLogon, ::windows_core::IUnknown);
                 impl IXPLogon {
                     pub unsafe fn AddressTypes(
@@ -21609,7 +21749,11 @@ pub mod Office {
                     )
                         -> ::windows_core::HRESULT,
                 }
-                ::windows_core::imp::com_interface!(IXPProvider, IXPProvider_Vtbl, 0);
+                ::windows_core::imp::com_interface!(
+                    IXPProvider,
+                    IXPProvider_Vtbl,
+                    0x00020312_0000_0000_c000_000000000046
+                );
                 ::windows_core::imp::interface_hierarchy!(IXPProvider, ::windows_core::IUnknown);
                 impl IXPProvider {
                     pub unsafe fn Shutdown(
@@ -22794,6 +22938,8 @@ pub mod Office {
                 pub const MSV_UNVERIFIABLE: u32 = 2u32;
                 pub const MTA_PAD: u32 = 3u32;
                 pub const MTA_PAD_FOR_ACTIONS: u32 = 2u32;
+                pub const MUID_PROFILE_INSTANCE: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020385_0000_0000_c000_000000000046);
                 pub const MV_FLAG: u32 = 4096u32;
                 pub const MV_INSTANCE: u32 = 8192u32;
                 pub const NEEDS_PREPROCESSING: u32 = 1u32;
@@ -25394,6 +25540,20 @@ pub mod Office {
                 pub const PSTF_COMPRESSABLE_ENCRYPTION: u32 = 1073741824u32;
                 pub const PSTF_NO_ENCRYPTION: u32 = 2147483648u32;
                 pub const PST_EXTERN_PROPID_BASE: u32 = 26368u32;
+                pub const PS_MAPI: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020328_0000_0000_c000_000000000046);
+                pub const PS_PUBLIC_STRINGS: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020329_0000_0000_c000_000000000046);
+                pub const PS_ROUTING_ADDRTYPE: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020381_0000_0000_c000_000000000046);
+                pub const PS_ROUTING_DISPLAY_NAME: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020382_0000_0000_c000_000000000046);
+                pub const PS_ROUTING_EMAIL_ADDRESSES: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020380_0000_0000_c000_000000000046);
+                pub const PS_ROUTING_ENTRYID: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020383_0000_0000_c000_000000000046);
+                pub const PS_ROUTING_SEARCH_KEY: ::windows_core::GUID =
+                    ::windows_core::GUID::from_u128(0x00020384_0000_0000_c000_000000000046);
                 pub const PT_ACTIONS: u32 = 254u32;
                 pub const PT_APPTIME: u32 = 7u32;
                 pub const PT_BINARY: u32 = 258u32;
