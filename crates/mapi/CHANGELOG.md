@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.10.3...outlook-mapi-v0.11.0) - 2024-03-10
+
+### Added
+- Make MAPIBuffer and MAPIOutParam strongly typed
+
+### Other
+- Merge branch 'main' of https://github.com/wravery/mapi-rs
+
 ## [0.10.3](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.10.2...outlook-mapi-v0.10.3) - 2024-03-10
 
 ### Other
