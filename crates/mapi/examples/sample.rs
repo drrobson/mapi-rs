@@ -104,14 +104,14 @@ fn main() -> Result<()> {
                     lpwstrName: PWSTR(w!("Keywords").0 as *mut _),
                 },
             }];
-            let mut prop_ids = MAPIOutParam::default();
+            let mut prop_ids: MAPIOutParam<SPropTagArray> = Default::default();
             store.GetIDsFromNames(
                 names.len() as u32,
                 &mut ((&mut names) as *mut _),
                 0,
                 prop_ids.as_mut_ptr() as *mut _,
             )?;
-            let Some(prop_ids) = prop_ids.as_mut::<SPropTagArray>() else {
+            let Some(prop_ids) = prop_ids.as_mut() else {
                 eprintln!("GetIDsFromNames succeeded but prop_ids is None");
                 continue;
             };
