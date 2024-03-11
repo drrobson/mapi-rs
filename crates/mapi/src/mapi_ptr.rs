@@ -7,6 +7,7 @@
 use crate::sys;
 use core::{
     ffi,
+    marker::PhantomData,
     mem::{self, MaybeUninit},
     ptr, slice,
 };
@@ -49,32 +50,24 @@ enum Buffer<T>
 where
     T: Sized,
 {
-    Uninit(*mut T),
+    Uninit(*mut MaybeUninit<T>),
     Ready(*mut T),
-}
-
-trait TypedAlloc {
-    fn as_mut_ptr(&self) -> *mut ffi::c_void;
 }
 
 enum MAPIAlloc<'a, T>
 where
     T: Sized,
 {
-    Root(Buffer<T>, usize),
-    More(Buffer<T>, usize, &'a dyn TypedAlloc),
-}
-
-impl<T> TypedAlloc for MAPIAlloc<'_, T> {
-    fn as_mut_ptr(&self) -> *mut ffi::c_void {
-        match self {
-            Self::Root(buffer, _) => match buffer {
-                Buffer::Uninit(alloc) => *alloc as *mut _,
-                Buffer::Ready(alloc) => *alloc as *mut _,
-            },
-            Self::More(_, _, alloc) => alloc.as_mut_ptr(),
-        }
-    }
+    Root {
+        buffer: Buffer<T>,
+        byte_count: usize,
+    },
+    More {
+        buffer: Buffer<T>,
+        byte_count: usize,
+        root: *mut ffi::c_void,
+        phantom: PhantomData<&'a T>,
+    },
 }
 
 impl<'a, T> MAPIAlloc<'a, T>
@@ -83,8 +76,8 @@ where
 {
     fn new(count: usize) -> Result<Self, MAPIAllocError> {
         let byte_count = count * mem::size_of::<T>();
-        Ok(Self::Root(
-            unsafe {
+        Ok(Self::Root {
+            buffer: unsafe {
                 let mut alloc = ptr::null_mut();
                 HRESULT::from_win32(sys::MAPIAllocateBuffer(
                     u32::try_from(byte_count)
@@ -101,17 +94,23 @@ where
                 Buffer::Uninit(alloc as *mut _)
             },
             byte_count,
-        ))
+        })
     }
 
     fn chain<P>(&'a self, count: usize) -> Result<MAPIAlloc<'a, P>, MAPIAllocError>
     where
         P: Sized,
     {
-        let root = self.as_mut_ptr();
+        let root = match self {
+            Self::Root { buffer, .. } => match buffer {
+                Buffer::Uninit(alloc) => *alloc as *mut _,
+                Buffer::Ready(alloc) => *alloc as *mut _,
+            },
+            Self::More { root, .. } => *root,
+        };
         let byte_count = count * mem::size_of::<T>();
-        Ok(MAPIAlloc::<'a, P>::More(
-            unsafe {
+        Ok(MAPIAlloc::More {
+            buffer: unsafe {
                 let mut alloc = ptr::null_mut();
                 HRESULT::from_win32(sys::MAPIAllocateMore(
                     u32::try_from(byte_count)
@@ -129,89 +128,122 @@ where
                 Buffer::Uninit(alloc as *mut _)
             },
             byte_count,
-            self,
-        ))
+            root,
+            phantom: PhantomData,
+        })
     }
 
     fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         let (alloc, byte_count) = match self {
-            Self::Root(Buffer::Uninit(alloc), byte_count) => (alloc, byte_count),
-            Self::More(Buffer::Uninit(alloc), byte_count, _) => (alloc, byte_count),
+            Self::Root {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+            } => (alloc, byte_count),
+            Self::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                ..
+            } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::AlreadyInitialized),
         };
         if mem::size_of::<T>() > *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
-        Ok(unsafe { &mut *(*alloc as *mut _) })
+        Ok(unsafe { &mut *(*alloc) })
     }
 
     fn uninit_slice(&mut self, count: usize) -> Result<&mut [MaybeUninit<T>], MAPIAllocError> {
         let (alloc, byte_count) = match self {
-            Self::Root(Buffer::Uninit(alloc), byte_count) => (alloc, byte_count),
-            Self::More(Buffer::Uninit(alloc), byte_count, _) => (alloc, byte_count),
+            Self::Root {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+            } => (alloc, byte_count),
+            Self::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                ..
+            } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::AlreadyInitialized),
         };
         if mem::size_of::<T>() * count > *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
-        Ok(unsafe { slice::from_raw_parts_mut(*alloc as *mut _, count) })
+        Ok(unsafe { slice::from_raw_parts_mut(*alloc, count) })
     }
 
     unsafe fn assume_init(&mut self) -> Result<&mut T, MAPIAllocError> {
         let (buffer, byte_count) = match self {
-            Self::Root(buffer, byte_count) => (buffer, byte_count),
-            Self::More(buffer, byte_count, _) => (buffer, byte_count),
+            Self::Root { buffer, byte_count } => (buffer, byte_count),
+            Self::More {
+                buffer, byte_count, ..
+            } => (buffer, byte_count),
         };
         if mem::size_of::<T>() != *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
-        let mut result = MaybeUninit::uninit();
+        let result;
         *buffer = match buffer {
             Buffer::Uninit(alloc) => {
-                result.write(*alloc);
-                Buffer::Ready(*alloc)
+                result = *alloc as *mut T;
+                Buffer::Ready(result)
             }
-            Buffer::Ready(_) => return Err(MAPIAllocError::AlreadyInitialized),
+            _ => return Err(MAPIAllocError::AlreadyInitialized),
         };
-        Ok(&mut *(result.assume_init()))
+        Ok(&mut *result)
     }
 
     unsafe fn assume_init_slice(&mut self, count: usize) -> Result<&mut [T], MAPIAllocError> {
         let (buffer, byte_count) = match self {
-            Self::Root(buffer, byte_count) => (buffer, byte_count),
-            Self::More(buffer, byte_count, _) => (buffer, byte_count),
+            Self::Root { buffer, byte_count } => (buffer, byte_count),
+            Self::More {
+                buffer, byte_count, ..
+            } => (buffer, byte_count),
         };
         if mem::size_of::<T>() * count != *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
-        let mut result = MaybeUninit::uninit();
+        let result;
         *buffer = match buffer {
             Buffer::Uninit(alloc) => {
-                result.write(*alloc);
-                Buffer::Ready(*alloc)
+                result = *alloc as *mut T;
+                Buffer::Ready(result)
             }
             Buffer::Ready(_) => return Err(MAPIAllocError::AlreadyInitialized),
         };
-        Ok(slice::from_raw_parts_mut(result.assume_init(), count))
+        Ok(slice::from_raw_parts_mut(result, count))
     }
 
     fn as_mut(&mut self) -> Result<&mut T, MAPIAllocError> {
         let (alloc, byte_count) = match self {
-            Self::Root(Buffer::Ready(alloc), byte_count) => (alloc, byte_count),
-            Self::More(Buffer::Ready(alloc), byte_count, _) => (alloc, byte_count),
+            Self::Root {
+                buffer: Buffer::Ready(alloc),
+                byte_count,
+            } => (alloc, byte_count),
+            Self::More {
+                buffer: Buffer::Ready(alloc),
+                byte_count,
+                ..
+            } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::NotYetInitialized),
         };
         if mem::size_of::<T>() != *byte_count {
             Err(MAPIAllocError::OutOfBoundsAccess)
         } else {
-            Ok(unsafe { &mut *(*alloc) })
+            Ok(unsafe { &mut **alloc })
         }
     }
 
     fn as_mut_slice(&mut self, count: usize) -> Result<&mut [T], MAPIAllocError> {
         let (alloc, byte_count) = match self {
-            Self::Root(Buffer::Ready(alloc), byte_count) => (alloc, byte_count),
-            Self::More(Buffer::Ready(alloc), byte_count, _) => (alloc, byte_count),
+            Self::Root {
+                buffer: Buffer::Ready(alloc),
+                byte_count,
+            } => (alloc, byte_count),
+            Self::More {
+                buffer: Buffer::Ready(alloc),
+                byte_count,
+                ..
+            } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::NotYetInitialized),
         };
         if mem::size_of::<T>() * count != *byte_count {
@@ -224,9 +256,9 @@ where
 
 impl<T> Drop for MAPIAlloc<'_, T> {
     fn drop(&mut self) {
-        if let Self::Root(buffer, _) = self {
+        if let Self::Root { buffer, .. } = self {
             let alloc = match mem::replace(buffer, Buffer::Uninit(ptr::null_mut())) {
-                Buffer::Uninit(alloc) => alloc,
+                Buffer::Uninit(alloc) => alloc as *mut T,
                 Buffer::Ready(alloc) => alloc,
             };
             if !alloc.is_null() {
