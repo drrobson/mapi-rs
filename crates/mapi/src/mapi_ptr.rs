@@ -134,27 +134,31 @@ where
     }
 
     fn into<P>(self) -> Result<MAPIAlloc<'a, P>, MAPIAllocError> {
-        Ok(match self {
+        let result = match self {
             Self::Root {
                 buffer: Buffer::Uninit(alloc),
                 byte_count,
-            } => MAPIAlloc::Root {
+            } => Ok(MAPIAlloc::Root {
                 buffer: Buffer::Uninit(alloc as *mut _),
                 byte_count,
-            },
+            }),
             Self::More {
                 buffer: Buffer::Uninit(alloc),
                 byte_count,
                 root,
                 ..
-            } => MAPIAlloc::More {
+            } => Ok(MAPIAlloc::More {
                 buffer: Buffer::Uninit(alloc as *mut _),
                 byte_count,
                 root,
                 phantom: PhantomData,
-            },
-            _ => return Err(MAPIAllocError::AlreadyInitialized),
-        })
+            }),
+            _ => Err(MAPIAllocError::AlreadyInitialized),
+        };
+        if result.is_ok() {
+            mem::forget(self);
+        }
+        result
     }
 
     fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
@@ -286,6 +290,9 @@ impl<T> Drop for MAPIAlloc<'_, T> {
                 Buffer::Ready(alloc) => alloc,
             };
             if !alloc.is_null() {
+                #[cfg(test)]
+                unreachable!();
+                #[cfg(not(test))]
                 unsafe {
                     sys::MAPIFreeBuffer(alloc as *mut _);
                 }
@@ -430,9 +437,66 @@ where
 {
     fn drop(&mut self) {
         if !self.0.is_null() {
+            #[cfg(test)]
+            unreachable!();
+            #[cfg(not(test))]
             unsafe {
                 sys::MAPIFreeBuffer(self.0 as *mut _);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    SizedSPropTagArray! { TestTags[2] }
+
+    const TEST_TAGS: TestTags = TestTags {
+        cValues: 2,
+        aulPropTag: [sys::PR_INSTANCE_KEY, sys::PR_SUBJECT_W],
+    };
+
+    #[test]
+    fn buffer_uninit() {
+        let mut buffer: MaybeUninit<TestTags> = MaybeUninit::uninit();
+        let mut mapi_buffer = MAPIBuffer(MAPIAlloc::Root {
+            buffer: Buffer::Uninit(&mut buffer),
+            byte_count: mem::size_of::<TestTags>(),
+        });
+        assert!(mapi_buffer.uninit().is_ok());
+        mem::forget(mapi_buffer);
+    }
+
+    #[test]
+    fn buffer_into() {
+        let mut buffer: [MaybeUninit<u8>; mem::size_of::<TestTags>()] =
+            [MaybeUninit::uninit(); CbNewSPropTagArray(2)];
+        let mut mapi_buffer = MAPIBuffer(MAPIAlloc::Root {
+            buffer: Buffer::Uninit(buffer.as_mut_ptr()),
+            byte_count: buffer.len(),
+        });
+        assert!(mapi_buffer.uninit().is_ok());
+        let mut mapi_buffer = mapi_buffer.into::<TestTags>().expect("into failed");
+        assert!(mapi_buffer.uninit().is_ok());
+        mem::forget(mapi_buffer);
+    }
+
+    #[test]
+    fn buffer_assume_init() {
+        let mut buffer = MaybeUninit::uninit();
+        let mut mapi_buffer = MAPIBuffer(MAPIAlloc::Root {
+            buffer: Buffer::Uninit(&mut buffer),
+            byte_count: mem::size_of_val(&buffer),
+        });
+        let buffer: &mut TestTags =
+            unsafe { mapi_buffer.assume_init() }.expect("assume_init failed");
+        *buffer = TEST_TAGS;
+        let test_tags = mapi_buffer.as_mut().expect("as_mut failed");
+        assert_eq!(TEST_TAGS.cValues, test_tags.cValues);
+        assert_eq!(TEST_TAGS.aulPropTag, test_tags.aulPropTag);
+        mem::forget(mapi_buffer);
     }
 }
