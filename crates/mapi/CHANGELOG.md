@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.2](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.11.1...outlook-mapi-v0.11.2) - 2024-03-19
+
+### Added
+- Allow casting uninitialized MAPIBuffer to another type with into<P>()
+- Just hide impl macros in rustdoc instead of separate outlook-mapi-macros crate
+
+### Fixed
+- Prevent double free in into<P>(self) and add mapi_ptr unit tests
+
 ## [0.11.1](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.11.0...outlook-mapi-v0.11.1) - 2024-03-11
 
 ### Fixed
