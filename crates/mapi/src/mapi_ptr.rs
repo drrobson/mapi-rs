@@ -133,6 +133,30 @@ where
         })
     }
 
+    fn into<P>(self) -> Result<MAPIAlloc<'a, P>, MAPIAllocError> {
+        Ok(match self {
+            Self::Root {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+            } => MAPIAlloc::Root {
+                buffer: Buffer::Uninit(alloc as *mut _),
+                byte_count,
+            },
+            Self::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                root,
+                ..
+            } => MAPIAlloc::More {
+                buffer: Buffer::Uninit(alloc as *mut _),
+                byte_count,
+                root,
+                phantom: PhantomData,
+            },
+            _ => return Err(MAPIAllocError::AlreadyInitialized),
+        })
+    }
+
     fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         let (alloc, byte_count) = match self {
             Self::Root {
@@ -178,7 +202,7 @@ where
                 buffer, byte_count, ..
             } => (buffer, byte_count),
         };
-        if mem::size_of::<T>() != *byte_count {
+        if mem::size_of::<T>() > *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
         let result;
@@ -199,7 +223,7 @@ where
                 buffer, byte_count, ..
             } => (buffer, byte_count),
         };
-        if mem::size_of::<T>() * count != *byte_count {
+        if mem::size_of::<T>() * count > *byte_count {
             return Err(MAPIAllocError::OutOfBoundsAccess);
         }
         let result;
@@ -226,7 +250,7 @@ where
             } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::NotYetInitialized),
         };
-        if mem::size_of::<T>() != *byte_count {
+        if mem::size_of::<T>() > *byte_count {
             Err(MAPIAllocError::OutOfBoundsAccess)
         } else {
             Ok(unsafe { &mut **alloc })
@@ -246,7 +270,7 @@ where
             } => (alloc, byte_count),
             _ => return Err(MAPIAllocError::NotYetInitialized),
         };
-        if mem::size_of::<T>() * count != *byte_count {
+        if mem::size_of::<T>() * count > *byte_count {
             Err(MAPIAllocError::OutOfBoundsAccess)
         } else {
             Ok(unsafe { slice::from_raw_parts_mut(*alloc, count) })
@@ -295,6 +319,13 @@ impl<'a, T> MAPIBuffer<'a, T> {
     /// allocation created with [`MAPIBuffer::new`].
     pub fn chain<P>(&'a self, count: usize) -> Result<MAPIBuffer<'a, P>, MAPIAllocError> {
         Ok(MAPIBuffer::<'a, P>(self.0.chain::<P>(count)?))
+    }
+
+    /// Convert an uninitialized allocation to another type. You can use this, for example, to
+    /// perform an allocation with extra space in a `&mut [u8]` buffer, and then cast that to a
+    /// specific type. This is useful with the `CbNewXXX` functions in [`crate::sized_types`].
+    pub fn into<P>(self) -> Result<MAPIBuffer<'a, P>, MAPIAllocError> {
+        Ok(MAPIBuffer::<'a, P>(self.0.into::<P>()?))
     }
 
     /// Get an uninitialized out-parameter with enough room for a single element of type `T`.
