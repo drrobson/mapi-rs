@@ -62,7 +62,7 @@ macro_rules! SizedENTRYID {
             pub ab: [u8; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::ENTRYID);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::ENTRYID);
     };
 }
 
@@ -111,9 +111,9 @@ macro_rules! SizedSPropTagArray {
             pub aulPropTag: [u32; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::SPropTagArray);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::SPropTagArray);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             cValues: $count as u32,
             aulPropTag: [$crate::sys::PR_NULL; $count],
         });
@@ -173,7 +173,7 @@ macro_rules! SizedSPropProblemArray {
             pub aProblem: [$crate::sys::SPropProblem; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::SPropProblemArray);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::SPropProblemArray);
 
         {
             const DEFAULT_VALUE: $crate::sys::SPropProblem = $crate::sys::SPropProblem {
@@ -182,7 +182,7 @@ macro_rules! SizedSPropProblemArray {
                 scode: 0,
             };
 
-            outlook_mapi_macros::impl_sized_struct_default!($name {
+            $crate::impl_sized_struct_default!($name {
                 cProblem: $count as u32,
                 aProblem: [DEFAULT_VALUE; $count],
             });
@@ -288,7 +288,7 @@ macro_rules! SizedADRLIST {
             pub aEntries: [$crate::sys::ADRENTRY; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::ADRLIST);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::ADRLIST);
 
         {
             const DEFAULT_VALUE: $crate::sys::ADRENTRY = $crate::sys::ADRENTRY {
@@ -297,7 +297,7 @@ macro_rules! SizedADRLIST {
                 rgPropVals: core::ptr::null_mut(),
             };
 
-            outlook_mapi_macros::impl_sized_struct_default!($name {
+            $crate::impl_sized_struct_default!($name {
                 cEntries: $count as u32,
                 aEntries: [DEFAULT_VALUE; $count],
             });
@@ -358,7 +358,7 @@ macro_rules! SizedSRowSet {
             pub aRow: [$crate::sys::SRow; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::SRowSet);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::SRowSet);
 
         {
             const DEFAULT_VALUE: $crate::sys::SRow = $crate::sys::SRow {
@@ -367,7 +367,7 @@ macro_rules! SizedSRowSet {
                 lpProps: core::ptr::null_mut(),
             };
 
-            outlook_mapi_macros::impl_sized_struct_default!($name {
+            $crate::impl_sized_struct_default!($name {
                 cRows: $count as u32,
                 aRow: [DEFAULT_VALUE; $count],
             });
@@ -434,7 +434,7 @@ macro_rules! SizedSSortOrderSet {
             pub aSort: [$crate::sys::SSortOrder; $count],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::SSortOrderSet);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::SSortOrderSet);
 
         {
             const DEFAULT_VALUE: $crate::sys::SSortOrder = $crate::sys::SSortOrder {
@@ -442,7 +442,7 @@ macro_rules! SizedSSortOrderSet {
                 ulOrder: $crate::sys::TABLE_SORT_ASCEND,
             };
 
-            outlook_mapi_macros::impl_sized_struct_default!($name {
+            $crate::impl_sized_struct_default!($name {
                 cSorts: $count as u32,
                 cCategories: 0,
                 cExpanded: 0,
@@ -499,14 +499,11 @@ macro_rules! SizedDtblLabel {
             pub lpszLabelName: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLLABEL);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLLABEL);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabelName: core::mem::size_of::<$crate::sys::DTBLLABEL>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             lpszLabelName: [0; $count + 1],
         });
 
@@ -571,14 +568,11 @@ macro_rules! SizedDtblEdit {
             pub lpszCharsAllowed: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLEDIT);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLEDIT);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszCharsAllowed: core::mem::size_of::<$crate::sys::DTBLEDIT>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulNumCharsAllowed: 0,
             ulPropTag: $crate::sys::PR_NULL,
             lpszCharsAllowed: [0; $count + 1],
@@ -647,14 +641,11 @@ macro_rules! SizedDtblComboBox {
             pub lpszCharsAllowed: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLCOMBOBOX);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLCOMBOBOX);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszCharsAllowed: core::mem::size_of::<$crate::sys::DTBLCOMBOBOX>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulNumCharsAllowed: 0,
             ulPRPropertyName: $crate::sys::PR_NULL,
             ulPRTableName: $crate::sys::PR_NULL,
@@ -720,14 +711,11 @@ macro_rules! SizedDtblCheckBox {
             pub lpszLabel: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLCHECKBOX);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLCHECKBOX);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabel: core::mem::size_of::<$crate::sys::DTBLCHECKBOX>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulPRPropertyName: $crate::sys::PR_NULL,
             lpszLabel: [0; $count + 1],
         });
@@ -787,14 +775,11 @@ macro_rules! SizedDtblGroupBox {
             pub lpszLabel: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLGROUPBOX);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLGROUPBOX);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabel: core::mem::size_of::<$crate::sys::DTBLGROUPBOX>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             lpszLabel: [0; $count + 1],
         });
 
@@ -857,14 +842,11 @@ macro_rules! SizedDtblButton {
             pub lpszLabel: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLBUTTON);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLBUTTON);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabel: core::mem::size_of::<$crate::sys::DTBLBUTTON>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulPRControl: $crate::sys::PR_NULL,
             lpszLabel: [0; $count + 1],
         });
@@ -938,14 +920,11 @@ macro_rules! SizedDtblPage {
             pub lpszComponent: [$char; $count2 + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLPAGE);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLPAGE);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabel: core::mem::size_of::<$crate::sys::DTBLPAGE>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulbLpszComponent: (core::mem::size_of::<$crate::sys::DTBLPAGE>()
                 + core::mem::size_of::<[$char; $count1 + 1]>()) as u32,
             ulContext: 0,
@@ -1020,14 +999,11 @@ macro_rules! SizedDtblRadioButton {
             pub lpszLabel: [$char; $count + 1],
         }
 
-        outlook_mapi_macros::impl_sized_struct_casts!($name, $crate::sys::DTBLRADIOBUTTON);
+        $crate::impl_sized_struct_casts!($name, $crate::sys::DTBLRADIOBUTTON);
 
-        outlook_mapi_macros::impl_sized_struct_default!($name {
+        $crate::impl_sized_struct_default!($name {
             ulbLpszLabel: core::mem::size_of::<$crate::sys::DTBLRADIOBUTTON>() as u32,
-            ulFlags: outlook_mapi_macros::display_table_default_flags!(
-                $char,
-                $crate::sys::MAPI_UNICODE
-            ),
+            ulFlags: $crate::display_table_default_flags!($char, $crate::sys::MAPI_UNICODE),
             ulcButtons: 0,
             ulPropTag: $crate::sys::PR_NULL,
             lReturnValue: 0,
@@ -1040,6 +1016,52 @@ macro_rules! SizedDtblRadioButton {
             }
         }
     };
+}
+
+mod impl_macros {
+    /// Build the common casting function `impl` block for all of the SizedXXX macros.
+    #[macro_export]
+    #[doc(hidden)]
+    macro_rules! impl_sized_struct_casts {
+        ($name:ident, $sys_type:path) => {
+            #[allow(dead_code)]
+            impl $name {
+                pub fn as_ptr(&self) -> *const $sys_type {
+                    unsafe { std::mem::transmute::<&Self, &$sys_type>(self) }
+                }
+
+                pub fn as_mut_ptr(&mut self) -> *mut $sys_type {
+                    unsafe { std::mem::transmute::<&mut Self, &mut $sys_type>(self) }
+                }
+            }
+        };
+    }
+
+    /// Build an optional `impl Default` block for any of the SizedXXX macros.
+    #[macro_export]
+    #[doc(hidden)]
+    macro_rules! impl_sized_struct_default {
+    ($name:ident $body:tt) => {
+        #[allow(dead_code)]
+        impl Default for $name {
+            fn default() -> Self {
+                Self $body
+            }
+        }
+    };
+}
+
+    /// Get the `ulFlags` default value for any of the display table SizedXXX macros.
+    #[macro_export]
+    #[doc(hidden)]
+    macro_rules! display_table_default_flags {
+        (u8, $unicode:expr) => {
+            0
+        };
+        (u16, $unicode:expr) => {
+            $unicode
+        };
+    }
 }
 
 #[cfg(test)]
