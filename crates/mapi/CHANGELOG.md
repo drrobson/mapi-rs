@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.3](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.11.2...outlook-mapi-v0.11.3) - 2024-03-20
+
+### Added
+- Add MAPIBuffer::get accessor to index into slice offsets without unwrapping
+
+### Other
+- minor unit test cleanup
+- Merge branch 'main' of https://github.com/wravery/mapi-rs
+
 ## [0.11.2](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.11.1...outlook-mapi-v0.11.2) - 2024-03-19
 
 ### Added
