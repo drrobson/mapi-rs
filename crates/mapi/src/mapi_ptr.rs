@@ -161,6 +161,42 @@ where
         result
     }
 
+    fn get(&self, index: usize) -> Result<Self, MAPIAllocError> {
+        let offset = index * mem::size_of::<T>();
+        let end = offset + mem::size_of::<T>();
+        match self {
+            Self::Root {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+            } if *byte_count >= end => Ok(MAPIAlloc::More {
+                buffer: Buffer::Uninit(unsafe { alloc.add(index) }),
+                byte_count: *byte_count - offset,
+                root: *alloc as *mut _,
+                phantom: PhantomData,
+            }),
+            Self::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                root,
+                ..
+            } if *byte_count >= end => Ok(MAPIAlloc::More {
+                buffer: Buffer::Uninit(unsafe { alloc.add(index) }),
+                byte_count: *byte_count - offset,
+                root: *root,
+                phantom: PhantomData,
+            }),
+            Self::Root {
+                buffer: Buffer::Ready(_),
+                ..
+            }
+            | Self::More {
+                buffer: Buffer::Ready(_),
+                ..
+            } => Err(MAPIAllocError::AlreadyInitialized),
+            _ => Err(MAPIAllocError::OutOfBoundsAccess),
+        }
+    }
+
     fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         let (alloc, byte_count) = match self {
             Self::Root {
@@ -335,6 +371,11 @@ impl<'a, T> MAPIBuffer<'a, T> {
         Ok(MAPIBuffer::<'a, P>(self.0.into::<P>()?))
     }
 
+    /// Access an uninitialized element in a slice with a separate chained allocation.
+    pub fn get(&self, index: usize) -> Result<Self, MAPIAllocError> {
+        Ok(Self(self.0.get(index)?))
+    }
+
     /// Get an uninitialized out-parameter with enough room for a single element of type `T`.
     pub fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         self.0.uninit()
@@ -481,6 +522,35 @@ mod tests {
         assert!(mapi_buffer.uninit().is_ok());
         let mut mapi_buffer = mapi_buffer.into::<TestTags>().expect("into failed");
         assert!(mapi_buffer.uninit().is_ok());
+        mem::forget(mapi_buffer);
+    }
+
+    #[test]
+    fn buffer_get() {
+        let mut buffer: [MaybeUninit<u8>; 10] = [MaybeUninit::uninit(); 10];
+        let mapi_buffer = MAPIBuffer(MAPIAlloc::Root {
+            buffer: Buffer::Uninit(buffer.as_mut_ptr()),
+            byte_count: buffer.len(),
+        });
+
+        {
+            let end = mapi_buffer.get(5).expect("get failed");
+            assert!(match end {
+                MAPIBuffer(MAPIAlloc::More {
+                    buffer: Buffer::Uninit(alloc),
+                    byte_count,
+                    root,
+                    ..
+                }) => {
+                    assert_eq!(unsafe { buffer.as_mut_ptr().add(5) }, alloc);
+                    assert_eq!(byte_count, 5);
+                    assert_eq!(buffer.as_mut_ptr() as *mut ffi::c_void, root);
+                    true
+                }
+                _ => false,
+            });
+        }
+
         mem::forget(mapi_buffer);
     }
 
