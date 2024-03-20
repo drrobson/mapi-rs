@@ -534,7 +534,9 @@ mod tests {
         });
 
         {
-            let end = mapi_buffer.get(5).expect("get failed");
+            const INDEX: usize = 5;
+
+            let end = mapi_buffer.get(INDEX).expect("get failed");
             assert!(match end {
                 MAPIBuffer(MAPIAlloc::More {
                     buffer: Buffer::Uninit(alloc),
@@ -542,9 +544,9 @@ mod tests {
                     root,
                     ..
                 }) => {
-                    assert_eq!(unsafe { buffer.as_mut_ptr().add(5) }, alloc);
-                    assert_eq!(byte_count, 5);
-                    assert_eq!(buffer.as_mut_ptr() as *mut ffi::c_void, root);
+                    assert_eq!(unsafe { buffer.as_mut_ptr().add(INDEX) }, alloc);
+                    assert_eq!(byte_count, buffer.len() - INDEX);
+                    assert_eq!(buffer.as_mut_ptr() as *mut _, root);
                     true
                 }
                 _ => false,
