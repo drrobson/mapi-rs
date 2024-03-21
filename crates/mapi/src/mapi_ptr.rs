@@ -87,7 +87,7 @@ where
         })
     }
 
-    fn chain<P>(&'a self, count: usize) -> Result<Allocation<'a, P>, MAPIAllocError>
+    fn chain<P>(&self, count: usize) -> Result<Allocation<'a, P>, MAPIAllocError>
     where
         P: Sized,
     {
@@ -383,7 +383,7 @@ impl<'a, T> MAPIUninit<'a, T> {
     ///
     /// You may call [`MAPIUninit::chain`] on the result as well, they will both share a root
     /// allocation created with [`MAPIUninit::new`].
-    pub fn chain<P>(&'a self, count: usize) -> Result<MAPIUninit<'a, P>, MAPIAllocError> {
+    pub fn chain<P>(&self, count: usize) -> Result<MAPIUninit<'a, P>, MAPIAllocError> {
         Ok(MAPIUninit::<'a, P>(self.0.chain::<P>(count)?))
     }
 
@@ -452,7 +452,7 @@ impl<'a, T> MAPIBuffer<'a, T> {
     ///
     /// You may call [`MAPIBuffer::chain`] on the result as well, they will both share a root
     /// allocation created with [`MAPIUninit::new`].
-    pub fn chain<P>(&'a self, count: usize) -> Result<MAPIUninit<'a, P>, MAPIAllocError> {
+    pub fn chain<P>(&self, count: usize) -> Result<MAPIUninit<'a, P>, MAPIAllocError> {
         Ok(MAPIUninit::<'a, P>(self.0.chain::<P>(count)?))
     }
 
