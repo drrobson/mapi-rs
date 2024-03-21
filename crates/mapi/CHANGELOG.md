@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.12.0...outlook-mapi-v0.12.1) - 2024-03-21
+
+### Added
+- Implement `MAPIUninit::iter()`
+
 ## [0.12.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.11.3...outlook-mapi-v0.12.0) - 2024-03-21
 
 ### Added
