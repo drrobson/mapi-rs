@@ -187,50 +187,6 @@ where
         }
     }
 
-    fn split_off(&mut self, at: usize) -> Result<Self, MAPIAllocError> {
-        let offset = at * mem::size_of::<T>();
-        let end = offset + mem::size_of::<T>();
-        match self {
-            Self::Root {
-                buffer: Buffer::Ready(_),
-                ..
-            }
-            | Self::More {
-                buffer: Buffer::Ready(_),
-                ..
-            } => unreachable!(),
-            Self::Root {
-                buffer: Buffer::Uninit(alloc),
-                byte_count,
-            } if *byte_count >= end => {
-                let byte_count = mem::replace(byte_count, offset) - offset;
-
-                Ok(Allocation::More {
-                    buffer: Buffer::Uninit(unsafe { alloc.add(at) }),
-                    byte_count,
-                    root: *alloc as *mut _,
-                    phantom: PhantomData,
-                })
-            }
-            Self::More {
-                buffer: Buffer::Uninit(alloc),
-                byte_count,
-                root,
-                ..
-            } if *byte_count >= end => {
-                let byte_count = mem::replace(byte_count, offset) - offset;
-
-                Ok(Allocation::More {
-                    buffer: Buffer::Uninit(unsafe { alloc.add(at) }),
-                    byte_count,
-                    root: *root,
-                    phantom: PhantomData,
-                })
-            }
-            _ => Err(MAPIAllocError::OutOfBoundsAccess),
-        }
-    }
-
     fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         match self {
             Self::Root {
@@ -399,13 +355,6 @@ impl<'a, T> MAPIUninit<'a, T> {
         MAPIUninitIter(self.0.iter())
     }
 
-    /// Split an allocation at the specified offset. Returns a chained allocation containing the
-    /// range `[at, len)`. After the call, the original allocation will be left containing the
-    /// elements `[0, at)`.
-    pub fn split_off(&mut self, at: usize) -> Result<Self, MAPIAllocError> {
-        Ok(Self(self.0.split_off(at)?))
-    }
-
     /// Get an uninitialized out-parameter with enough room for a single element of type `T`.
     pub fn uninit(&mut self) -> Result<&mut MaybeUninit<T>, MAPIAllocError> {
         self.0.uninit()
@@ -531,8 +480,6 @@ where
 
 #[cfg(test)]
 mod tests {
-    use std::ops::DerefMut;
-
     use super::*;
     use crate::*;
 
@@ -609,47 +556,6 @@ mod tests {
             _ => false,
         });
         assert!(next.next().is_none());
-    }
-
-    #[test]
-    fn buffer_split_off() {
-        let mut buffer: [MaybeUninit<u8>; 10] = [MaybeUninit::uninit(); 10];
-        let mut mapi_buffer = ManuallyDrop::new(MAPIUninit(Allocation::Root {
-            buffer: Buffer::Uninit(buffer.as_mut_ptr()),
-            byte_count: buffer.len(),
-        }));
-
-        {
-            const INDEX: usize = 5;
-
-            let mut end =
-                ManuallyDrop::new(mapi_buffer.split_off(INDEX).expect("split_off failed"));
-            assert!(match mapi_buffer.deref_mut() {
-                MAPIUninit(Allocation::Root {
-                    buffer: Buffer::Uninit(alloc),
-                    byte_count,
-                }) => {
-                    assert_eq!(buffer.as_mut_ptr() as *mut _, *alloc);
-                    assert_eq!(*byte_count, INDEX);
-                    true
-                }
-                _ => false,
-            });
-            assert!(match end.deref_mut() {
-                MAPIUninit(Allocation::More {
-                    buffer: Buffer::Uninit(alloc),
-                    byte_count,
-                    root,
-                    ..
-                }) => {
-                    assert_eq!(unsafe { buffer.as_mut_ptr().add(INDEX) }, *alloc);
-                    assert_eq!(*byte_count, buffer.len() - INDEX);
-                    assert_eq!(buffer.as_mut_ptr() as *mut _, *root);
-                    true
-                }
-                _ => false,
-            });
-        }
     }
 
     #[test]
