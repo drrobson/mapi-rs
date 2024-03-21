@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.12.1...outlook-mapi-v0.13.0) - 2024-03-21
+
+### Fixed
+- `split_off` is less useful and more error prone than `iter`
+- Cleanup extra lifetime constraint on `chain(&'a self)`
+
 ## [0.12.1](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.12.0...outlook-mapi-v0.12.1) - 2024-03-21
 
 ### Added
