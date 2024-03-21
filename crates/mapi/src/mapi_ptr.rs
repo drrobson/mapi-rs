@@ -159,6 +159,34 @@ where
         result
     }
 
+    fn iter(&self) -> AllocationIter<'a, T> {
+        match self {
+            Self::Root {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+            } => AllocationIter {
+                alloc: *alloc,
+                byte_count: *byte_count,
+                element_size: mem::size_of::<T>(),
+                root: *alloc as *mut _,
+                phantom: PhantomData,
+            },
+            Self::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                root,
+                ..
+            } => AllocationIter {
+                alloc: *alloc,
+                byte_count: *byte_count,
+                element_size: mem::size_of::<T>(),
+                root: *root,
+                phantom: PhantomData,
+            },
+            _ => unreachable!(),
+        }
+    }
+
     fn split_off(&mut self, at: usize) -> Result<Self, MAPIAllocError> {
         let offset = at * mem::size_of::<T>();
         let end = offset + mem::size_of::<T>();
@@ -295,6 +323,42 @@ impl<T> Drop for Allocation<'_, T> {
     }
 }
 
+struct AllocationIter<'a, T>
+where
+    T: Sized,
+{
+    alloc: *mut MaybeUninit<T>,
+    byte_count: usize,
+    root: *mut ffi::c_void,
+    element_size: usize,
+    phantom: PhantomData<&'a T>,
+}
+
+impl<'a, T> Iterator for AllocationIter<'a, T>
+where
+    T: Sized,
+{
+    type Item = Allocation<'a, T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.byte_count < self.element_size {
+            return None;
+        }
+
+        let item = Allocation::More {
+            buffer: Buffer::Uninit(self.alloc),
+            byte_count: self.element_size,
+            root: self.root,
+            phantom: PhantomData,
+        };
+
+        self.byte_count -= self.element_size;
+        self.alloc = unsafe { self.alloc.add(1) };
+
+        Some(item)
+    }
+}
+
 /// Wrapper type for an allocation with either [`sys::MAPIAllocateBuffer`] or
 /// [`sys::MAPIAllocateMore`] which has not been initialized yet.
 pub struct MAPIUninit<'a, T>(Allocation<'a, T>)
@@ -330,6 +394,11 @@ impl<'a, T> MAPIUninit<'a, T> {
         Ok(MAPIUninit::<'a, P>(self.0.into::<P>()?))
     }
 
+    /// Get an iterator over the uninitialized elements.
+    pub fn iter(&self) -> MAPIUninitIter<'a, T> {
+        MAPIUninitIter(self.0.iter())
+    }
+
     /// Split an allocation at the specified offset. Returns a chained allocation containing the
     /// range `[at, len)`. After the call, the original allocation will be left containing the
     /// elements `[0, at)`.
@@ -352,6 +421,22 @@ impl<'a, T> MAPIUninit<'a, T> {
     /// uninitialized once we start accessing it.
     pub unsafe fn assume_init(self) -> MAPIBuffer<'a, T> {
         MAPIBuffer(self.0.assume_init())
+    }
+}
+
+/// Iterator over the uninitialized elements in a [`MAPIUninit`] allocation.
+pub struct MAPIUninitIter<'a, T>(AllocationIter<'a, T>)
+where
+    T: Sized;
+
+impl<'a, T> Iterator for MAPIUninitIter<'a, T>
+where
+    T: Sized,
+{
+    type Item = MAPIUninit<'a, T>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.next().map(MAPIUninit)
     }
 }
 
@@ -485,6 +570,45 @@ mod tests {
                 .expect("into failed"),
         );
         assert!(mapi_buffer.uninit().is_ok());
+    }
+
+    #[test]
+    fn buffer_iter() {
+        let mut buffer: [MaybeUninit<u32>; 2] = [MaybeUninit::uninit(); 2];
+        let mapi_buffer = ManuallyDrop::new(MAPIUninit(Allocation::Root {
+            buffer: Buffer::Uninit(buffer.as_mut_ptr()),
+            byte_count: buffer.len() * mem::size_of::<u32>(),
+        }));
+        let mut next = mapi_buffer.iter();
+        assert!(match next.next() {
+            Some(MAPIUninit(Allocation::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                root,
+                ..
+            })) => {
+                assert_eq!(alloc, buffer.as_mut_ptr() as *mut _);
+                assert_eq!(root, buffer.as_mut_ptr() as *mut _);
+                assert_eq!(byte_count, mem::size_of::<u32>());
+                true
+            }
+            _ => false,
+        });
+        assert!(match next.next() {
+            Some(MAPIUninit(Allocation::More {
+                buffer: Buffer::Uninit(alloc),
+                byte_count,
+                root,
+                ..
+            })) => {
+                assert_eq!(alloc, unsafe { buffer.as_mut_ptr().add(1) } as *mut _);
+                assert_eq!(root, buffer.as_mut_ptr() as *mut _);
+                assert_eq!(byte_count, mem::size_of::<u32>());
+                true
+            }
+            _ => false,
+        });
+        assert!(next.next().is_none());
     }
 
     #[test]
