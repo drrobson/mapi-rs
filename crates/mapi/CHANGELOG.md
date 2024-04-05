@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.1](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.13.0...outlook-mapi-v0.13.1) - 2024-04-05
+
+### Fixed
+- Drop `Logon::session` before `Logon::_initialized` for proper MAPI shutdown
+
 ## [0.13.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.12.1...outlook-mapi-v0.13.0) - 2024-03-21
 
 ### Fixed
