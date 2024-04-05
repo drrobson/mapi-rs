@@ -130,10 +130,10 @@ impl From<LogonFlags> for u32 {
 /// to [`sys::MAPIInitialize`] and [`sys::MAPIUninitialize`] around every [`Logon`] object that
 /// shares a reference to that instance of [`Initialize`].
 pub struct Logon {
-    _initialized: Arc<Initialize>,
-
     /// Access the [`sys::IMAPISession`].
     pub session: sys::IMAPISession,
+
+    _initialized: Arc<Initialize>,
 }
 
 impl Logon {
