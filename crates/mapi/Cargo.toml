@@ -22,12 +22,12 @@ olmapi32 = [ "outlook-mapi-sys/olmapi32" ]
 
 [dependencies]
 outlook-mapi-sys = { version = "0.4.0", default-features = false }
-windows-core = "0.54"
-windows-implement = "0.53"
-windows-interface = "0.53"
+windows-core = "0.56"
+windows-implement = "0.56"
+windows-interface = "0.56"
 
 [dependencies.windows]
-version = "0.54"
+version = "0.56"
 features = [ "implement" ]
 
 [dev-dependencies]
@@ -36,7 +36,7 @@ serde = { version = "1.0", features = [ "derive" ] }
 serde_json = "1.0"
 
 [dev-dependencies.windows]
-version = "0.54"
+version = "0.56"
 features = [
     "Win32_Graphics_Gdi",
     "Win32_System_Threading",
