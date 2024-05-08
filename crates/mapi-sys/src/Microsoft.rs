@@ -18590,6 +18590,8 @@ pub mod Office {
                     windows_core::HRESULT(0x80040301_u32 as _);
                 pub const MAPI_E_BUSY: windows_core::HRESULT =
                     windows_core::HRESULT(0x8004010B_u32 as _);
+                pub const MAPI_E_CALL_FAILED: windows_core::HRESULT =
+                    windows_core::HRESULT(0x80004005_u32 as _);
                 pub const MAPI_E_CANCEL: windows_core::HRESULT =
                     windows_core::HRESULT(0x80040501_u32 as _);
                 pub const MAPI_E_COLLISION: windows_core::HRESULT =
@@ -18619,6 +18621,8 @@ pub mod Office {
                 pub const MAPI_E_HAS_MESSAGES: windows_core::HRESULT =
                     windows_core::HRESULT(0x8004060A_u32 as _);
                 pub const MAPI_E_INSUFFICIENT_MEMORY: u32 = 5u32;
+                pub const MAPI_E_INTERFACE_NOT_SUPPORTED: windows_core::HRESULT =
+                    windows_core::HRESULT(0x80004002_u32 as _);
                 pub const MAPI_E_INVALID_ACCESS_TIME: windows_core::HRESULT =
                     windows_core::HRESULT(0x80040123_u32 as _);
                 pub const MAPI_E_INVALID_BOOKMARK: windows_core::HRESULT =
@@ -18629,6 +18633,8 @@ pub mod Office {
                 pub const MAPI_E_INVALID_MESSAGE: u32 = 17u32;
                 pub const MAPI_E_INVALID_OBJECT: windows_core::HRESULT =
                     windows_core::HRESULT(0x80040108_u32 as _);
+                pub const MAPI_E_INVALID_PARAMETER: windows_core::HRESULT =
+                    windows_core::HRESULT(0x80070057_u32 as _);
                 pub const MAPI_E_INVALID_RECIPS: u32 = 25u32;
                 pub const MAPI_E_INVALID_SESSION: u32 = 19u32;
                 pub const MAPI_E_INVALID_TYPE: windows_core::HRESULT =
@@ -18649,6 +18655,8 @@ pub mod Office {
                     windows_core::HRESULT(0x80040606_u32 as _);
                 pub const MAPI_E_NOT_ENOUGH_DISK: windows_core::HRESULT =
                     windows_core::HRESULT(0x8004010D_u32 as _);
+                pub const MAPI_E_NOT_ENOUGH_MEMORY: windows_core::HRESULT =
+                    windows_core::HRESULT(0x8007000E_u32 as _);
                 pub const MAPI_E_NOT_ENOUGH_RESOURCES: windows_core::HRESULT =
                     windows_core::HRESULT(0x8004010E_u32 as _);
                 pub const MAPI_E_NOT_FOUND: windows_core::HRESULT =
@@ -18660,6 +18668,8 @@ pub mod Office {
                 pub const MAPI_E_NOT_ME: windows_core::HRESULT =
                     windows_core::HRESULT(0x80040502_u32 as _);
                 pub const MAPI_E_NOT_SUPPORTED: u32 = 26u32;
+                pub const MAPI_E_NO_ACCESS: windows_core::HRESULT =
+                    windows_core::HRESULT(0x80070005_u32 as _);
                 pub const MAPI_E_NO_MESSAGES: u32 = 16u32;
                 pub const MAPI_E_NO_RECIPIENTS: windows_core::HRESULT =
                     windows_core::HRESULT(0x80040607_u32 as _);
