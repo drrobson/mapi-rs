@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.3](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.13.2...outlook-mapi-v0.13.3) - 2024-05-10
+
+### Fixed
+- PropTag and PropType should impl Copy
+
 ## [0.13.2](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.13.1...outlook-mapi-v0.13.2) - 2024-04-12
 
 ### Other
