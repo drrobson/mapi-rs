@@ -7,6 +7,7 @@ pub const PROP_TYPE_MASK: u32 = 0xFFFF;
 
 /// Simple wrapper for a MAPI `PROP_TAG`.
 #[repr(transparent)]
+#[derive(Clone, Copy)]
 pub struct PropTag(pub u32);
 
 impl PropTag {
@@ -43,6 +44,7 @@ impl From<PropTag> for u32 {
 
 /// Simple wrapper for a MAPI `PROP_TYPE`.
 #[repr(transparent)]
+#[derive(Clone, Copy)]
 pub struct PropType(u16);
 
 impl PropType {
