@@ -1,7 +1,7 @@
 //! Define [`PropValue`] and [`PropValueData`].
 
 use crate::{sys, PropTag};
-use core::{ffi, mem, slice};
+use core::{ffi, mem, ptr, slice};
 use windows::Win32::{
     Foundation::{E_INVALIDARG, E_POINTER, FILETIME},
     System::Com::CY,
@@ -279,5 +279,560 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
             }
         };
         PropValue { tag, value: data }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::{sys, PropTag, PropType};
+    use core::ptr;
+    use windows_core::{s, w};
+
+    #[test]
+    fn test_null() {
+        let value = sys::SPropValue {
+            ulPropTag: sys::PR_NULL,
+            ..Default::default()
+        };
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_NULL);
+    }
+
+    #[test]
+    fn test_short() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_I2 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.i = 1;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_I2);
+        assert!(matches!(value.value, PropValueData::Short(1)));
+    }
+
+    #[test]
+    fn test_long() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_I4 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.l = 2;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_I4);
+        assert!(matches!(value.value, PropValueData::Long(2)));
+    }
+
+    #[test]
+    fn test_pointer() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_PTR as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.lpv = ptr::null_mut();
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_PTR);
+        assert!(matches!(
+            value.value,
+            PropValueData::Pointer(ptr) if ptr.is_null()
+        ));
+    }
+
+    #[test]
+    fn test_float() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_R4 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.flt = 3.0;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_R4);
+        assert!(matches!(value.value, PropValueData::Float(3.0)));
+    }
+
+    #[test]
+    fn test_double() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_R8 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.dbl = 4.0;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_R8);
+        assert!(matches!(value.value, PropValueData::Double(4.0)));
+    }
+
+    #[test]
+    fn test_boolean() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_BOOLEAN as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.b = 5;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_BOOLEAN);
+        assert!(matches!(value.value, PropValueData::Boolean(5)));
+    }
+
+    #[test]
+    fn test_currency() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_CURRENCY as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.cur.int64 = 6;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_CURRENCY);
+        assert!(matches!(value.value, PropValueData::Currency(6)));
+    }
+
+    #[test]
+    fn test_app_time() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_APPTIME as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.at = 7.0;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_APPTIME);
+        assert!(matches!(value.value, PropValueData::AppTime(7.0)));
+    }
+
+    #[test]
+    fn test_file_time() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_SYSTIME as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.ft.dwLowDateTime = 8;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_SYSTIME);
+        assert!(matches!(
+            value.value,
+            PropValueData::FileTime(FILETIME {
+                dwHighDateTime: 0,
+                dwLowDateTime: 8
+            })
+        ));
+    }
+
+    #[test]
+    fn test_ansi_string() {
+        let expected = s!("nine");
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_STRING8 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.lpszA.0 = expected.0 as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_STRING8);
+        assert!(matches!(
+            value.value,
+            PropValueData::AnsiString(actual) if actual.0 == expected.0
+        ));
+    }
+
+    #[test]
+    fn test_binary() {
+        let expected = 10;
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_BINARY as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.bin.cb = mem::size_of_val(&expected) as u32;
+        value.Value.bin.lpb = &expected as *const i32 as *mut i32 as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_BINARY);
+        assert!(matches!(
+            value.value,
+            PropValueData::Binary(actual)
+                if actual.len() == mem::size_of_val(&expected)
+                    && actual.as_ptr() as *const i32 == &expected as *const i32
+        ));
+    }
+
+    #[test]
+    fn test_unicode() {
+        let expected = w!("eleven");
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_UNICODE as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.lpszW.0 = expected.0 as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_UNICODE);
+        assert!(matches!(
+            value.value,
+            PropValueData::Unicode(actual) if actual.0 == expected.0
+        ));
+    }
+
+    #[test]
+    fn test_guid() {
+        let expected = GUID {
+            data1: 12,
+            ..Default::default()
+        };
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_CLSID as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.lpguid = &expected as *const _ as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_CLSID);
+        assert!(matches!(
+            value.value,
+            PropValueData::Guid(actual) if actual as *const _ == &expected as *const _
+        ));
+    }
+
+    #[test]
+    fn test_large_integer() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_I8 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.li = 13;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_I8);
+        assert!(matches!(value.value, PropValueData::LargeInteger(13)));
+    }
+
+    #[test]
+    fn test_short_array() {
+        let expected = [14_i16, 15];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_SHORT as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVi.cValues = expected.len() as u32;
+        value.Value.MVi.lpi = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_SHORT);
+        assert!(matches!(value.value, PropValueData::ShortArray([14, 15])));
+    }
+
+    #[test]
+    fn test_long_array() {
+        let expected = [15_i32, 16];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_LONG as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVl.cValues = expected.len() as u32;
+        value.Value.MVl.lpl = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_LONG);
+        assert!(matches!(value.value, PropValueData::LongArray([15, 16])));
+    }
+
+    #[test]
+    fn test_float_array() {
+        let expected = [16.0_f32, 17.0];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_FLOAT as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVflt.cValues = expected.len() as u32;
+        value.Value.MVflt.lpflt = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_FLOAT);
+        assert!(matches!(
+            value.value,
+            PropValueData::FloatArray([16.0, 17.0])
+        ));
+    }
+
+    #[test]
+    fn test_double_array() {
+        let expected = [17.0_f64, 18.0];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_DOUBLE as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVdbl.cValues = expected.len() as u32;
+        value.Value.MVdbl.lpdbl = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_DOUBLE);
+        assert!(matches!(
+            value.value,
+            PropValueData::DoubleArray([17.0, 18.0])
+        ));
+    }
+
+    #[test]
+    fn test_currency_array() {
+        let expected = [CY { int64: 18 }, CY { int64: 19 }];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_CURRENCY as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVcur.cValues = expected.len() as u32;
+        value.Value.MVcur.lpcur = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_CURRENCY);
+        unsafe {
+            assert!(matches!(
+                value.value,
+                PropValueData::CurrencyArray([CY { int64: 18 }, CY { int64: 19 }])
+            ));
+        }
+    }
+
+    #[test]
+    fn test_app_time_array() {
+        let expected = [19.0_f64, 20.0];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_APPTIME as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVat.cValues = expected.len() as u32;
+        value.Value.MVat.lpat = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_APPTIME);
+        assert!(matches!(
+            value.value,
+            PropValueData::AppTimeArray([19.0, 20.0])
+        ));
+    }
+
+    #[test]
+    fn test_file_time_array() {
+        let expected = [
+            FILETIME {
+                dwHighDateTime: 20,
+                dwLowDateTime: 21,
+            },
+            FILETIME {
+                dwHighDateTime: 22,
+                dwLowDateTime: 23,
+            },
+        ];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_SYSTIME as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVft.cValues = expected.len() as u32;
+        value.Value.MVft.lpft = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_SYSTIME);
+        assert!(matches!(
+            value.value,
+            PropValueData::FileTimeArray([
+                FILETIME {
+                    dwHighDateTime: 20,
+                    dwLowDateTime: 21,
+                },
+                FILETIME {
+                    dwHighDateTime: 22,
+                    dwLowDateTime: 23,
+                }
+            ])
+        ));
+    }
+
+    #[test]
+    fn test_binary_array() {
+        let expected1 = [24_u8, 25_u8];
+        let expected1 = sys::SBinary {
+            cb: expected1.len() as u32,
+            lpb: expected1.as_ptr() as *mut _,
+        };
+        let expected2 = [26_u8, 27_u8];
+        let expected2 = sys::SBinary {
+            cb: expected2.len() as u32,
+            lpb: expected2.as_ptr() as *mut _,
+        };
+        let expected = [expected1, expected2];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_BINARY as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVbin.cValues = expected.len() as u32;
+        value.Value.MVbin.lpbin = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_BINARY);
+        assert!(matches!(
+            value.value,
+            PropValueData::BinaryArray([actual1, actual2])
+                if actual1.cb == expected[0].cb && actual1.lpb == expected[0].lpb
+                    && actual2.cb == expected[1].cb && actual2.lpb == expected[1].lpb
+        ));
+    }
+
+    #[test]
+    fn test_ansi_string_array() {
+        let expected = [s!("twenty-eight"), s!("twenty-nine")];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_STRING8 as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVszA.cValues = expected.len() as u32;
+        value.Value.MVszA.lppszA = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_STRING8);
+        assert!(matches!(
+            value.value,
+            PropValueData::AnsiStringArray([actual1, actual2])
+                if actual1.0 == expected[0].0 && actual2.0 == expected[1].0
+        ));
+    }
+
+    #[test]
+    fn test_unicode_string_array() {
+        let expected = [w!("thirty"), w!("thirty-one")];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_UNICODE as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVszW.cValues = expected.len() as u32;
+        value.Value.MVszW.lppszW = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_UNICODE);
+        assert!(matches!(
+            value.value,
+            PropValueData::UnicodeArray([actual1, actual2])
+                if actual1.0 == expected[0].0 && actual2.0 == expected[1].0
+        ));
+    }
+
+    #[test]
+    fn test_guid_array() {
+        let expected = [
+            GUID {
+                data1: 32,
+                ..Default::default()
+            },
+            GUID {
+                data2: 33,
+                ..Default::default()
+            },
+            GUID {
+                data3: 34,
+                ..Default::default()
+            },
+            GUID {
+                data4: [35, 0, 0, 0, 0, 0, 0, 0],
+                ..Default::default()
+            },
+        ];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_CLSID as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVguid.cValues = expected.len() as u32;
+        value.Value.MVguid.lpguid = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_CLSID);
+        assert!(matches!(
+            value.value,
+            PropValueData::GuidArray([
+                GUID { data1: 32, .. },
+                GUID { data2: 33, .. },
+                GUID { data3: 34, .. },
+                GUID {
+                    data4: [35, ..],
+                    ..
+                }
+            ])
+        ));
+    }
+
+    #[test]
+    fn test_large_integer_array() {
+        let expected = [36_i64, 37];
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_MV_LONGLONG as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.MVli.cValues = expected.len() as u32;
+        value.Value.MVli.lpli = expected.as_ptr() as *mut _;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_LONGLONG);
+        assert!(matches!(
+            value.value,
+            PropValueData::LargeIntegerArray([36, 37])
+        ));
+    }
+
+    #[test]
+    fn test_error() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_ERROR as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.err = 38;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_ERROR);
+        assert!(matches!(value.value, PropValueData::Error(HRESULT(38))));
+    }
+
+    #[test]
+    fn test_object() {
+        let mut value = sys::SPropValue {
+            ulPropTag: u32::from(
+                PropTag(sys::PR_NULL).change_prop_type(PropType::new(sys::PT_OBJECT as u16)),
+            ),
+            ..Default::default()
+        };
+        value.Value.x = 39;
+        let value = PropValue::from(&value);
+        assert_eq!(u32::from(value.tag.prop_type()), sys::PT_OBJECT);
+        assert!(matches!(value.value, PropValueData::Object(39)));
     }
 }
