@@ -1,7 +1,7 @@
 //! Define [`PropValue`] and [`PropValueData`].
 
 use crate::{sys, PropTag};
-use core::{ffi, mem, ptr, slice};
+use core::{ffi, ptr, slice};
 use windows::Win32::{
     Foundation::{E_INVALIDARG, E_POINTER, FILETIME},
     System::Com::CY,
@@ -56,7 +56,7 @@ pub enum PropValueData<'a> {
     Unicode(PCWSTR),
 
     /// [`sys::PT_CLSID`]
-    Guid(&'a GUID),
+    Guid(GUID),
 
     /// [`sys::PT_I8`] or [`sys::PT_LONGLONG`]
     LargeInteger(i64),
@@ -71,31 +71,31 @@ pub enum PropValueData<'a> {
     FloatArray(&'a [f32]),
 
     /// [`sys::PT_MV_DOUBLE`]
-    DoubleArray(&'a [f64]),
+    DoubleArray(Vec<f64>),
 
     /// [`sys::PT_MV_CURRENCY`]
-    CurrencyArray(&'a [CY]),
+    CurrencyArray(Vec<CY>),
 
     /// [`sys::PT_MV_APPTIME`]
-    AppTimeArray(&'a [f64]),
+    AppTimeArray(Vec<f64>),
 
     /// [`sys::PT_MV_SYSTIME`]
-    FileTimeArray(&'a [FILETIME]),
+    FileTimeArray(Vec<FILETIME>),
 
     /// [`sys::PT_MV_BINARY`]
-    BinaryArray(&'a [sys::SBinary]),
+    BinaryArray(Vec<sys::SBinary>),
 
     /// [`sys::PT_MV_STRING8`]
-    AnsiStringArray(&'a [PCSTR]),
+    AnsiStringArray(Vec<PCSTR>),
 
     /// [`sys::PT_MV_UNICODE`]
-    UnicodeArray(&'a [PCWSTR]),
+    UnicodeArray(Vec<PCWSTR>),
 
     /// [`sys::PT_MV_CLSID`]
-    GuidArray(&'a [GUID]),
+    GuidArray(Vec<GUID>),
 
     /// [`sys::PT_MV_LONGLONG`]
-    LargeIntegerArray(&'a [i64]),
+    LargeIntegerArray(Vec<i64>),
 
     /// [`sys::PT_ERROR`]
     Error(HRESULT),
@@ -146,12 +146,13 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
                         PropValueData::Unicode(PCWSTR::from_raw(value.Value.lpszW.as_ptr()))
                     }
                 }
-                sys::PT_CLSID => value
-                    .Value
-                    .lpguid
-                    .as_ref()
-                    .map(PropValueData::Guid)
-                    .unwrap_or(PropValueData::Error(E_POINTER)),
+                sys::PT_CLSID => {
+                    if value.Value.lpguid.is_null() {
+                        PropValueData::Error(E_POINTER)
+                    } else {
+                        PropValueData::Guid(ptr::read_unaligned(value.Value.lpguid))
+                    }
+                }
                 sys::PT_LONGLONG => PropValueData::LargeInteger(value.Value.li),
                 sys::PT_MV_SHORT => {
                     if value.Value.MVi.lpi.is_null() {
@@ -187,90 +188,117 @@ impl<'a> From<&'a sys::SPropValue> for PropValue<'a> {
                     if value.Value.MVdbl.lpdbl.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::DoubleArray(slice::from_raw_parts(
-                            value.Value.MVdbl.lpdbl,
-                            value.Value.MVdbl.cValues as usize,
-                        ))
+                        let count = value.Value.MVdbl.cValues as usize;
+                        let first = value.Value.MVdbl.lpdbl;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::DoubleArray(values)
                     }
                 }
                 sys::PT_MV_CURRENCY => {
                     if value.Value.MVcur.lpcur.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::CurrencyArray(slice::from_raw_parts(
-                            value.Value.MVcur.lpcur,
-                            value.Value.MVcur.cValues as usize,
-                        ))
+                        let count = value.Value.MVcur.cValues as usize;
+                        let first = value.Value.MVcur.lpcur;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::CurrencyArray(values)
                     }
                 }
                 sys::PT_MV_APPTIME => {
                     if value.Value.MVat.lpat.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::AppTimeArray(slice::from_raw_parts(
-                            value.Value.MVat.lpat,
-                            value.Value.MVat.cValues as usize,
-                        ))
+                        let count = value.Value.MVat.cValues as usize;
+                        let first = value.Value.MVat.lpat;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::AppTimeArray(values)
                     }
                 }
                 sys::PT_MV_SYSTIME => {
                     if value.Value.MVft.lpft.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::FileTimeArray(slice::from_raw_parts(
-                            value.Value.MVft.lpft,
-                            value.Value.MVft.cValues as usize,
-                        ))
+                        let count = value.Value.MVft.cValues as usize;
+                        let first = value.Value.MVft.lpft;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::FileTimeArray(values)
                     }
                 }
                 sys::PT_MV_BINARY => {
                     if value.Value.MVbin.lpbin.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::BinaryArray(slice::from_raw_parts(
-                            value.Value.MVbin.lpbin,
-                            value.Value.MVbin.cValues as usize,
-                        ))
+                        let count = value.Value.MVbin.cValues as usize;
+                        let first = value.Value.MVbin.lpbin;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::BinaryArray(values)
                     }
                 }
                 sys::PT_MV_STRING8 => {
                     if value.Value.MVszA.lppszA.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::AnsiStringArray(slice::from_raw_parts(
-                            mem::transmute(value.Value.MVszA.lppszA),
-                            value.Value.MVszA.cValues as usize,
-                        ))
+                        let count = value.Value.MVszA.cValues as usize;
+                        let first = value.Value.MVszA.lppszA;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(PCSTR(ptr::read_unaligned(first.add(idx)).0))
+                        }
+                        PropValueData::AnsiStringArray(values)
                     }
                 }
                 sys::PT_MV_UNICODE => {
                     if value.Value.MVszW.lppszW.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::UnicodeArray(slice::from_raw_parts(
-                            mem::transmute(value.Value.MVszW.lppszW),
-                            value.Value.MVszW.cValues as usize,
-                        ))
+                        let count = value.Value.MVszW.cValues as usize;
+                        let first = value.Value.MVszW.lppszW;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(PCWSTR(ptr::read_unaligned(first.add(idx)).0))
+                        }
+                        PropValueData::UnicodeArray(values)
                     }
                 }
                 sys::PT_MV_CLSID => {
                     if value.Value.MVguid.lpguid.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::GuidArray(slice::from_raw_parts(
-                            value.Value.MVguid.lpguid,
-                            value.Value.MVguid.cValues as usize,
-                        ))
+                        let count = value.Value.MVguid.cValues as usize;
+                        let first = value.Value.MVguid.lpguid;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::GuidArray(values)
                     }
                 }
                 sys::PT_MV_LONGLONG => {
                     if value.Value.MVli.lpli.is_null() {
                         PropValueData::Error(E_POINTER)
                     } else {
-                        PropValueData::LargeIntegerArray(slice::from_raw_parts(
-                            value.Value.MVli.lpli,
-                            value.Value.MVli.cValues as usize,
-                        ))
+                        let count = value.Value.MVli.cValues as usize;
+                        let first = value.Value.MVli.lpli;
+                        let mut values = Vec::with_capacity(count);
+                        for idx in 0..count {
+                            values.push(ptr::read_unaligned(first.add(idx)))
+                        }
+                        PropValueData::LargeIntegerArray(values)
                     }
                 }
                 sys::PT_ERROR => PropValueData::Error(HRESULT(value.Value.err)),
@@ -287,7 +315,7 @@ mod tests {
     use super::*;
 
     use crate::{sys, PropTag, PropType};
-    use core::ptr;
+    use core::{mem, ptr};
     use windows_core::{s, w};
 
     #[test]
@@ -509,7 +537,7 @@ mod tests {
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_CLSID);
         assert!(matches!(
             value.value,
-            PropValueData::Guid(actual) if actual as *const _ == &expected as *const _
+            PropValueData::Guid(GUID { data1: 12, .. })
         ));
     }
 
@@ -591,10 +619,10 @@ mod tests {
         value.Value.MVdbl.lpdbl = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_DOUBLE);
-        assert!(matches!(
-            value.value,
-            PropValueData::DoubleArray([17.0, 18.0])
-        ));
+        let PropValueData::DoubleArray(values) = value.value else {
+            panic!("wrong type")
+        };
+        assert!(matches!(values.as_slice(), [17.0, 18.0]));
     }
 
     #[test]
@@ -610,10 +638,13 @@ mod tests {
         value.Value.MVcur.lpcur = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_CURRENCY);
+        let PropValueData::CurrencyArray(values) = value.value else {
+            panic!("wrong type")
+        };
         unsafe {
             assert!(matches!(
-                value.value,
-                PropValueData::CurrencyArray([CY { int64: 18 }, CY { int64: 19 }])
+                values.as_slice(),
+                [CY { int64: 18 }, CY { int64: 19 }]
             ));
         }
     }
@@ -631,10 +662,10 @@ mod tests {
         value.Value.MVat.lpat = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_APPTIME);
-        assert!(matches!(
-            value.value,
-            PropValueData::AppTimeArray([19.0, 20.0])
-        ));
+        let PropValueData::AppTimeArray(values) = value.value else {
+            panic!("wrong type")
+        };
+        assert!(matches!(values.as_slice(), [19.0, 20.0]));
     }
 
     #[test]
@@ -659,9 +690,12 @@ mod tests {
         value.Value.MVft.lpft = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_SYSTIME);
+        let PropValueData::FileTimeArray(values) = value.value else {
+            panic!("wrong type")
+        };
         assert!(matches!(
-            value.value,
-            PropValueData::FileTimeArray([
+            values.as_slice(),
+            [
                 FILETIME {
                     dwHighDateTime: 20,
                     dwLowDateTime: 21,
@@ -670,7 +704,7 @@ mod tests {
                     dwHighDateTime: 22,
                     dwLowDateTime: 23,
                 }
-            ])
+            ]
         ));
     }
 
@@ -697,9 +731,12 @@ mod tests {
         value.Value.MVbin.lpbin = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_BINARY);
+        let PropValueData::BinaryArray(values) = value.value else {
+            panic!("wrong type")
+        };
         assert!(matches!(
-            value.value,
-            PropValueData::BinaryArray([actual1, actual2])
+            values.as_slice(),
+            [actual1, actual2]
                 if actual1.cb == expected[0].cb && actual1.lpb == expected[0].lpb
                     && actual2.cb == expected[1].cb && actual2.lpb == expected[1].lpb
         ));
@@ -718,9 +755,12 @@ mod tests {
         value.Value.MVszA.lppszA = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_STRING8);
+        let PropValueData::AnsiStringArray(values) = value.value else {
+            panic!("wrong type")
+        };
         assert!(matches!(
-            value.value,
-            PropValueData::AnsiStringArray([actual1, actual2])
+            values.as_slice(),
+            [actual1, actual2]
                 if actual1.0 == expected[0].0 && actual2.0 == expected[1].0
         ));
     }
@@ -738,9 +778,12 @@ mod tests {
         value.Value.MVszW.lppszW = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_UNICODE);
+        let PropValueData::UnicodeArray(values) = value.value else {
+            panic!("wrong type")
+        };
         assert!(matches!(
-            value.value,
-            PropValueData::UnicodeArray([actual1, actual2])
+            values.as_slice(),
+            [actual1, actual2]
                 if actual1.0 == expected[0].0 && actual2.0 == expected[1].0
         ));
     }
@@ -775,9 +818,12 @@ mod tests {
         value.Value.MVguid.lpguid = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_CLSID);
+        let PropValueData::GuidArray(values) = value.value else {
+            panic!("wrong type")
+        };
         assert!(matches!(
-            value.value,
-            PropValueData::GuidArray([
+            values.as_slice(),
+            [
                 GUID { data1: 32, .. },
                 GUID { data2: 33, .. },
                 GUID { data3: 34, .. },
@@ -785,7 +831,7 @@ mod tests {
                     data4: [35, ..],
                     ..
                 }
-            ])
+            ]
         ));
     }
 
@@ -802,10 +848,10 @@ mod tests {
         value.Value.MVli.lpli = expected.as_ptr() as *mut _;
         let value = PropValue::from(&value);
         assert_eq!(u32::from(value.tag.prop_type()), sys::PT_MV_LONGLONG);
-        assert!(matches!(
-            value.value,
-            PropValueData::LargeIntegerArray([36, 37])
-        ));
+        let PropValueData::LargeIntegerArray(values) = value.value else {
+            panic!("wrong type")
+        };
+        assert!(matches!(values.as_slice(), [36, 37]));
     }
 
     #[test]
