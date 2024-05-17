@@ -2,7 +2,7 @@
 name = "outlook-mapi-sys"
 version = "0.5.1"
 edition = "2021"
-rust-version = "1.61"
+rust-version = "1.70"
 description = "Bindings generated with the windows crate for the Outlook MAPI interface"
 repository = "https://github.com/wravery/mapi-rs"
 license = "MIT"
