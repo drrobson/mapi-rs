@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.13.3...outlook-mapi-v0.14.0) - 2024-05-17
+
+### Fixed
+- PropValue creates unaligned pointer references for multi-value types
+- Bump the major version of outlook-mapi for incompatible enum variants
+
+### Other
+- *(test)* Add tests for PropValue from SPropValue
+- Bump MSRV according to new clippy warnings
+
 ## [0.13.3](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.13.2...outlook-mapi-v0.13.3) - 2024-05-10
 
 ### Fixed
