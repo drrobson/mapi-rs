@@ -8,6 +8,7 @@
 /// Re-export all of the unsafe bindings from the
 /// [outlook-mapi-sys](https://crates.io/crates/outlook-mapi-sys) crate.
 pub mod sys {
+    pub use outlook_mapi_sys::is_outlook_mapi_installed;
     pub use outlook_mapi_sys::Microsoft::Office::Outlook::MAPI::Win32::*;
 }
 

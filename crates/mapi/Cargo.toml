@@ -1,6 +1,6 @@
 [package]
 name = "outlook-mapi"
-version = "0.14.1"
+version = "0.15.0"
 edition = "2021"
 rust-version = "1.76"
 description = "Rust bindings for the Outlook MAPI interface"
@@ -21,7 +21,7 @@ default = [ "olmapi32" ]
 olmapi32 = [ "outlook-mapi-sys/olmapi32" ]
 
 [dependencies]
-outlook-mapi-sys = { version = "0.5.3", default-features = false }
+outlook-mapi-sys = { version = "0.6.0", default-features = false }
 windows-core = "0.57"
 windows-implement = "0.57"
 windows-interface = "0.57"

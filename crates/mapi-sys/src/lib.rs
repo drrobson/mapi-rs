@@ -22,6 +22,10 @@ fn get_mapi_module() -> HMODULE {
     })
 }
 
+pub fn is_outlook_mapi_installed() -> bool {
+    load_mapi::ensure_olmapi32().is_ok()
+    }
+
 #[macro_use]
 extern crate outlook_mapi_stub;
 

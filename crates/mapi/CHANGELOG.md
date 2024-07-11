@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.14.1...outlook-mapi-v0.15.0) - 2024-07-11
+
+### Fixed
+-  Expose a new function to check for the presence of an Outlook MAPI installation
+
+### Other
+- *(deps)* Update outlook-mapi-sys to 0.6.0
+
 ## [0.14.1](https://github.com/wravery/mapi-rs/compare/outlook-mapi-v0.14.0...outlook-mapi-v0.14.1) - 2024-06-12
 
 ### Fixed
