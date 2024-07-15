@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.4](https://github.com/wravery/mapi-rs/compare/outlook-mapi-sys-v0.5.3...outlook-mapi-sys-v0.5.4) - 2024-07-15
+
+### Added
+- Expose a new function to attempt to load the Outlook MAPI subsystem DLL
+
 ## [0.5.3](https://github.com/wravery/mapi-rs/compare/outlook-mapi-sys-v0.5.2...outlook-mapi-sys-v0.5.3) - 2024-06-12
 
 ### Other
