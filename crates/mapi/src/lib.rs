@@ -28,3 +28,7 @@ pub use prop_value::*;
 pub use row::*;
 pub use row_set::*;
 pub use sized_types::*;
+
+pub fn is_outlook_mapi_installed() -> bool {
+    outlook_mapi_sys::ensure_olmapi32().is_ok()
+}
