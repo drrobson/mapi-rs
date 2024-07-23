@@ -11,15 +11,17 @@ fn get_mapi_module() -> HMODULE {
     use std::sync::OnceLock;
     use windows_core::*;
 
-    static MAPI_MODULE: OnceLock<HMODULE> = OnceLock::new();
-    *MAPI_MODULE.get_or_init(|| unsafe {
+    static MAPI_MODULE: OnceLock<usize> = OnceLock::new();
+    HMODULE(*MAPI_MODULE.get_or_init(|| unsafe {
         #[cfg(feature = "olmapi32")]
         if let Ok(module) = load_mapi::ensure_olmapi32() {
-            return module;
+            return module.0 as usize;
         }
 
-        LoadLibraryW(w!("mapi32")).expect("mapi32 should be loaded on demand")
-    })
+        LoadLibraryW(w!("mapi32"))
+            .expect("mapi32 should be loaded on demand")
+            .0 as usize
+    }) as *mut _)
 }
 
 #[macro_use]
