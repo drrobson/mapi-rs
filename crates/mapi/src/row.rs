@@ -59,7 +59,7 @@ impl Drop for Row {
     fn drop(&mut self) {
         if !self.props.is_null() {
             unsafe {
-                sys::MAPIFreeBuffer(mem::transmute(self.props));
+                sys::MAPIFreeBuffer(self.props as *mut _);
             }
         }
     }
