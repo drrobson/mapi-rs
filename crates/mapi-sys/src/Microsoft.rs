@@ -17944,6 +17944,7 @@ pub mod Office {
                 pub const ATTACH_BY_REF_ONLY: u32 = 4u32;
                 pub const ATTACH_BY_REF_RESOLVE: u32 = 3u32;
                 pub const ATTACH_BY_VALUE: u32 = 1u32;
+                pub const ATTACH_BY_WEBREFERENCE: u32 = 7u32;
                 pub const ATTACH_DIALOG: u32 = 1u32;
                 pub const ATTACH_EMBEDDED_MSG: u32 = 5u32;
                 pub const ATTACH_OLE: u32 = 6u32;
@@ -18306,6 +18307,84 @@ pub mod Office {
                 pub const IBT_CSETTAGGED: IMSGBODYTYPE = IMSGBODYTYPE(3i32);
                 pub const IBT_EMPTY: IMSGBODYTYPE = IMSGBODYTYPE(2i32);
                 pub const IBT_SECURE: IMSGBODYTYPE = IMSGBODYTYPE(0i32);
+                pub const ICON_INDEX_ACCEPT: u32 = 1029u32;
+                pub const ICON_INDEX_ASSIGNEE_TASK: u32 = 1282u32;
+                pub const ICON_INDEX_ASSIGNER_TASK: u32 = 1283u32;
+                pub const ICON_INDEX_CANCELATION: u32 = 1032u32;
+                pub const ICON_INDEX_CONTACT: u32 = 512u32;
+                pub const ICON_INDEX_DECLINE: u32 = 1030u32;
+                pub const ICON_INDEX_DELIVERY_MAIL: u32 = 264u32;
+                pub const ICON_INDEX_DISTRIBUTION_LIST: u32 = 514u32;
+                pub const ICON_INDEX_FORWARDED_MAIL: u32 = 262u32;
+                pub const ICON_INDEX_INFORMATIONAL_UPDATE: u32 = 1033u32;
+                pub const ICON_INDEX_IRM_COMPOSE_MAIL: u32 = 309u32;
+                pub const ICON_INDEX_IRM_FORWARDED_MAIL: u32 = 307u32;
+                pub const ICON_INDEX_IRM_READ_MAIL: u32 = 305u32;
+                pub const ICON_INDEX_IRM_REPLIED_MAIL: u32 = 308u32;
+                pub const ICON_INDEX_IRM_UNREAD_MAIL: u32 = 306u32;
+                pub const ICON_INDEX_JOURNAL_CONVERSATION: u32 = 1537u32;
+                pub const ICON_INDEX_JOURNAL_DOCUMENT: u32 = 1554u32;
+                pub const ICON_INDEX_JOURNAL_EMAIL_MESSAGE: u32 = 1538u32;
+                pub const ICON_INDEX_JOURNAL_FAX: u32 = 1545u32;
+                pub const ICON_INDEX_JOURNAL_LETTER: u32 = 1548u32;
+                pub const ICON_INDEX_JOURNAL_MEETING: u32 = 1555u32;
+                pub const ICON_INDEX_JOURNAL_MEETING_CANCELLATION: u32 = 1556u32;
+                pub const ICON_INDEX_JOURNAL_MEETING_REQUEST: u32 = 1539u32;
+                pub const ICON_INDEX_JOURNAL_MEETING_RESPONSE: u32 = 1540u32;
+                pub const ICON_INDEX_JOURNAL_MICROSOFT_OFFICE_ACCESS: u32 = 1552u32;
+                pub const ICON_INDEX_JOURNAL_MICROSOFT_OFFICE_EXCEL: u32 = 1550u32;
+                pub const ICON_INDEX_JOURNAL_MICROSOFT_OFFICE_POWER_POINT: u32 = 1551u32;
+                pub const ICON_INDEX_JOURNAL_MICROSOFT_OFFICE_WORD: u32 = 1549u32;
+                pub const ICON_INDEX_JOURNAL_NOTE: u32 = 1544u32;
+                pub const ICON_INDEX_JOURNAL_PHONE_CALL: u32 = 1546u32;
+                pub const ICON_INDEX_JOURNAL_REMOTE_SESSION: u32 = 1557u32;
+                pub const ICON_INDEX_JOURNAL_TASK_REQUEST: u32 = 1542u32;
+                pub const ICON_INDEX_JOURNAL_TASK_RESPONSE: u32 = 1543u32;
+                pub const ICON_INDEX_MAIL_ENCRYPTED: u32 = 272u32;
+                pub const ICON_INDEX_MAIL_ENCRYPTED_FORWARDED: u32 = 277u32;
+                pub const ICON_INDEX_MAIL_ENCRYPTED_READ: u32 = 279u32;
+                pub const ICON_INDEX_MAIL_ENCRYPTED_REPLIED: u32 = 275u32;
+                pub const ICON_INDEX_MAIL_SIGNED: u32 = 271u32;
+                pub const ICON_INDEX_MAIL_SMIME_RECEIPT: u32 = 274u32;
+                pub const ICON_INDEX_MAIL_SMIME_SIGNED: u32 = 273u32;
+                pub const ICON_INDEX_MAIL_SMIME_SIGNED_FORWARDED: u32 = 278u32;
+                pub const ICON_INDEX_MAIL_SMIME_SIGNED_READ: u32 = 280u32;
+                pub const ICON_INDEX_MAIL_SMIME_SIGNED_REPLIED: u32 = 276u32;
+                pub const ICON_INDEX_MEETING_REQUEST: u32 = 1028u32;
+                pub const ICON_INDEX_NEW_MAIL: u32 = 4294967295u32;
+                pub const ICON_INDEX_NONDELIVERY_MAIL: u32 = 266u32;
+                pub const ICON_INDEX_NONREAD_MAIL: u32 = 267u32;
+                pub const ICON_INDEX_OTHER: u32 = 3u32;
+                pub const ICON_INDEX_OUT_OF_OFFICE_MAIL: u32 = 283u32;
+                pub const ICON_INDEX_POST: u32 = 1u32;
+                pub const ICON_INDEX_READ_MAIL: u32 = 256u32;
+                pub const ICON_INDEX_READ_RECEIPT_MAIL: u32 = 265u32;
+                pub const ICON_INDEX_RECALL_F_MAIL: u32 = 269u32;
+                pub const ICON_INDEX_RECALL_MAIL: u32 = 284u32;
+                pub const ICON_INDEX_RECALL_S_MAIL: u32 = 268u32;
+                pub const ICON_INDEX_RECEIPT_MAIL: u32 = 260u32;
+                pub const ICON_INDEX_RECURRING_APPOINTMENT: u32 = 1025u32;
+                pub const ICON_INDEX_RECURRING_MEETING: u32 = 1027u32;
+                pub const ICON_INDEX_REMOTE_MAIL: u32 = 263u32;
+                pub const ICON_INDEX_REPLIED_MAIL: u32 = 261u32;
+                pub const ICON_INDEX_SINGLE_INSTANCE_APPOINTMENT: u32 = 1024u32;
+                pub const ICON_INDEX_SINGLE_INSTANCE_MEETING: u32 = 1026u32;
+                pub const ICON_INDEX_STICKY_NOTE_BLUE: u32 = 768u32;
+                pub const ICON_INDEX_STICKY_NOTE_GREEN: u32 = 769u32;
+                pub const ICON_INDEX_STICKY_NOTE_PINK: u32 = 770u32;
+                pub const ICON_INDEX_STICKY_NOTE_WHITE: u32 = 772u32;
+                pub const ICON_INDEX_STICKY_NOTE_YELLOW: u32 = 771u32;
+                pub const ICON_INDEX_SUBMITTED_MAIL: u32 = 258u32;
+                pub const ICON_INDEX_TASK: u32 = 1280u32;
+                pub const ICON_INDEX_TASK_ACCEPTANCE: u32 = 1285u32;
+                pub const ICON_INDEX_TASK_REJECTION: u32 = 1286u32;
+                pub const ICON_INDEX_TASK_REQUEST: u32 = 1284u32;
+                pub const ICON_INDEX_TENTATIVE: u32 = 1031u32;
+                pub const ICON_INDEX_TRACKED_MAIL: u32 = 304u32;
+                pub const ICON_INDEX_TRACKING_MAIL: u32 = 270u32;
+                pub const ICON_INDEX_UNASSIGNED_RECURRING_TASK: u32 = 1281u32;
+                pub const ICON_INDEX_UNREAD_MAIL: u32 = 257u32;
+                pub const ICON_INDEX_UNSENT_MAIL: u32 = 259u32;
                 pub const IDistList_CopyEntries: METHODS = METHODS(47i32);
                 pub const IDistList_CreateEntry: METHODS = METHODS(46i32);
                 pub const IDistList_DeleteEntries: METHODS = METHODS(48i32);
@@ -19398,6 +19477,7 @@ pub mod Office {
                 pub const PR_BEEPER_TELEPHONE_NUMBER_W: u32 = 975241247u32;
                 pub const PR_BILATERAL_INFO: u32 = 1071382786u32;
                 pub const PR_BIRTHDAY: u32 = 977403968u32;
+                pub const PR_BLOCK_STATUS: u32 = 278265859u32;
                 pub const PR_BODY: u32 = 268435486u32;
                 pub const PR_BODY_A: u32 = 268435486u32;
                 pub const PR_BODY_CRC: u32 = 236716035u32;
@@ -19504,6 +19584,7 @@ pub mod Office {
                 pub const PR_CONTROL_ID: u32 = 1057423618u32;
                 pub const PR_CONTROL_STRUCTURE: u32 = 1057030402u32;
                 pub const PR_CONTROL_TYPE: u32 = 1057095683u32;
+                pub const PR_CONVERSATION_ID: u32 = 806551810u32;
                 pub const PR_CONVERSATION_INDEX: u32 = 7405826u32;
                 pub const PR_CONVERSATION_KEY: u32 = 721154u32;
                 pub const PR_CONVERSATION_TOPIC: u32 = 7340062u32;
@@ -20756,6 +20837,7 @@ pub mod Office {
                 pub const PR_FILE_SIZE_EXTENDED: u32 = 1732706324u32;
                 pub const PR_FILTERING_HOOKS: u32 = 1023934722u32;
                 pub const PR_FINDER_ENTRYID: u32 = 904331522u32;
+                pub const PR_FLAG_STATUS: u32 = 277872643u32;
                 pub const PR_FLAT_URL_NAME: u32 = 1728970782u32;
                 pub const PR_FLAT_URL_NAME_A: u32 = 1728970782u32;
                 pub const PR_FLAT_URL_NAME_W: u32 = 1728970783u32;
@@ -20848,7 +20930,9 @@ pub mod Office {
                 pub const PR_HOME_TELEPHONE_NUMBER: u32 = 973668382u32;
                 pub const PR_HOME_TELEPHONE_NUMBER_A: u32 = 973668382u32;
                 pub const PR_HOME_TELEPHONE_NUMBER_W: u32 = 973668383u32;
+                pub const PR_HTML: u32 = 269680898u32;
                 pub const PR_ICON: u32 = 268239106u32;
+                pub const PR_ICON_INDEX: u32 = 276824067u32;
                 pub const PR_ICS_CHANGE_KEY: u32 = 1716846850u32;
                 pub const PR_IDENTITY_DISPLAY: u32 = 1040187422u32;
                 pub const PR_IDENTITY_DISPLAY_A: u32 = 1040187422u32;
@@ -20873,12 +20957,25 @@ pub mod Office {
                 pub const PR_INTERNET_CONTENT_HANDLE: u32 = 1717108995u32;
                 pub const PR_INTERNET_CPID: u32 = 1071513603u32;
                 pub const PR_INTERNET_MDNS: u32 = 1722089483u32;
+                pub const PR_INTERNET_MESSAGE_ID: u32 = 271908894u32;
+                pub const PR_INTERNET_MESSAGE_ID_A: u32 = 271908894u32;
+                pub const PR_INTERNET_MESSAGE_ID_W: u32 = 271908895u32;
                 pub const PR_INTERNET_NEWSGROUP_NAME: u32 = 1722220574u32;
                 pub const PR_INTERNET_NEWSGROUP_NAME_A: u32 = 1722220574u32;
                 pub const PR_INTERNET_NEWSGROUP_NAME_W: u32 = 1722220575u32;
+                pub const PR_INTERNET_REFERENCES: u32 = 272171038u32;
+                pub const PR_INTERNET_REFERENCES_A: u32 = 272171038u32;
+                pub const PR_INTERNET_REFERENCES_W: u32 = 272171039u32;
                 pub const PR_IN_CONFLICT: u32 = 1718353931u32;
+                pub const PR_IN_REPLY_TO: u32 = 272760862u32;
+                pub const PR_IN_REPLY_TO_A: u32 = 272760862u32;
+                pub const PR_IN_REPLY_TO_W: u32 = 272760863u32;
                 pub const PR_IN_TRANSIT: u32 = 1712848907u32;
+                pub const PR_IPM_APPOINTMENT_ENTRYID: u32 = 919601410u32;
+                pub const PR_IPM_ARCHIVE_ENTRYID: u32 = 905904386u32;
+                pub const PR_IPM_CONTACT_ENTRYID: u32 = 919666946u32;
                 pub const PR_IPM_DAF_ENTRYID: u32 = 1713307906u32;
+                pub const PR_IPM_DRAFTS_ENTRYID: u32 = 920060162u32;
                 pub const PR_IPM_FAVORITES_ENTRYID: u32 = 1714422018u32;
                 pub const PR_IPM_ID: u32 = 1573122u32;
                 pub const PR_IPM_OUTBOX_ENTRYID: u32 = 904003842u32;
@@ -20889,6 +20986,7 @@ pub mod Office {
                 pub const PR_IPM_SENTMAIL_SEARCH_KEY: u32 = 873660674u32;
                 pub const PR_IPM_SUBTREE_ENTRYID: u32 = 903872770u32;
                 pub const PR_IPM_SUBTREE_SEARCH_KEY: u32 = 873464066u32;
+                pub const PR_IPM_TASK_ENTRYID: u32 = 919863554u32;
                 pub const PR_IPM_WASTEBASKET_ENTRYID: u32 = 904069378u32;
                 pub const PR_IPM_WASTEBASKET_SEARCH_KEY: u32 = 873595138u32;
                 pub const PR_ISDN_NUMBER: u32 = 976027678u32;
@@ -21003,6 +21101,7 @@ pub mod Office {
                 pub const PR_MSG_FOLD_TIME: u32 = 1716781120u32;
                 pub const PR_MSG_STATUS: u32 = 236388355u32;
                 pub const PR_MTS_SUBJECT_ID: u32 = 1717764354u32;
+                pub const PR_NATIVE_BODY_INFO: u32 = 269877251u32;
                 pub const PR_NDR_DIAG_CODE: u32 = 201654275u32;
                 pub const PR_NDR_REASON_CODE: u32 = 201588739u32;
                 pub const PR_NEWSFEED_INFO: u32 = 1722155266u32;
@@ -21522,6 +21621,9 @@ pub mod Office {
                 pub const PR_SERVICE_UID: u32 = 1024196866u32;
                 pub const PR_SHORTTERM_ENTRYID_FROM_OBJECT: u32 = 1718747394u32;
                 pub const PR_SHORTTERM_PARENT_ENTRYID_FROM_OBJECT: u32 = 1718681858u32;
+                pub const PR_SMTP_ADDRESS: u32 = 972947486u32;
+                pub const PR_SMTP_ADDRESS_A: u32 = 972947486u32;
+                pub const PR_SMTP_ADDRESS_W: u32 = 972947487u32;
                 pub const PR_SORT_LOCALE_ID: u32 = 1728380931u32;
                 pub const PR_SORT_PARENTID: u32 = 807469314u32;
                 pub const PR_SORT_POSITION: u32 = 807403778u32;
@@ -21643,10 +21745,42 @@ pub mod Office {
                 pub const PR_XMT_SECURITY_ROLE_8_AS_XML: u32 = 1026293790u32;
                 pub const PR_XPOS: u32 = 1057292291u32;
                 pub const PR_YPOS: u32 = 1057357827u32;
+                pub const PSETID_Address: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062004_0000_0000_c000_000000000046);
+                pub const PSETID_Appointment: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062002_0000_0000_c000_000000000046);
+                pub const PSETID_Attachment: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x96357f7f_59e1_47d0_99a7_46515c183b54);
+                pub const PSETID_Common: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062008_0000_0000_c000_000000000046);
+                pub const PSETID_Log: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x0006200a_0000_0000_c000_000000000046);
+                pub const PSETID_Meeting: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x6ed8da90_450b_101b_98da_00aa003f1305);
+                pub const PSETID_Messaging: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x41f28f13_83f4_4114_a584_eedb5a6b0bff);
+                pub const PSETID_Note: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x0006200e_0000_0000_c000_000000000046);
+                pub const PSETID_PostRss: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062041_0000_0000_c000_000000000046);
+                pub const PSETID_Remote: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062014_0000_0000_c000_000000000046);
+                pub const PSETID_Report: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062013_0000_0000_c000_000000000046);
+                pub const PSETID_Sharing: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062040_0000_0000_c000_000000000046);
+                pub const PSETID_Task: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00062003_0000_0000_c000_000000000046);
+                pub const PSETID_UnifiedMessaging: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x4442858e_a9e3_4e80_b900_317a210cc15b);
+                pub const PSETID_XmlExtractedEntities: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x23239608_685d_4732_9c55_4c95cb4e8e33);
                 pub const PSTF_BEST_ENCRYPTION: u32 = 536870912u32;
                 pub const PSTF_COMPRESSABLE_ENCRYPTION: u32 = 1073741824u32;
                 pub const PSTF_NO_ENCRYPTION: u32 = 2147483648u32;
                 pub const PST_EXTERN_PROPID_BASE: u32 = 26368u32;
+                pub const PS_INTERNET_HEADERS: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x00020386_0000_0000_c000_000000000046);
                 pub const PS_MAPI: windows_core::GUID =
                     windows_core::GUID::from_u128(0x00020328_0000_0000_c000_000000000046);
                 pub const PS_PUBLIC_STRINGS: windows_core::GUID =
@@ -21806,6 +21940,8 @@ pub mod Office {
                 pub const SERVICE_SINGLE_COPY: u32 = 2u32;
                 pub const SERVICE_UI_ALLOWED: u32 = 16u32;
                 pub const SERVICE_UI_ALWAYS: u32 = 2u32;
+                pub const SETID_AirSync: windows_core::GUID =
+                    windows_core::GUID::from_u128(0x71035549_0739_4dcb_9163_00f0580dbbdf);
                 pub const SF_DISABLE_STARTUP_SYNC: u32 = 1u32;
                 pub const SHALLOW_SEARCH: u32 = 8u32;
                 pub const SHOW_SOFT_DELETES: u32 = 2u32;
